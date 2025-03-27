@@ -1,0 +1,18 @@
+using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+public class UI_Popup : UI_Base
+{
+    public override void Init()
+    {
+        Managers.UI.SetCanvas(gameObject, true);
+    }
+
+    public virtual void ClosedPopupUI()
+    {
+        Managers.UI.ClosePopupUI(this);
+    }
+}
