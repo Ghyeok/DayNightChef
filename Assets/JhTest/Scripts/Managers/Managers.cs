@@ -5,12 +5,15 @@ using System.Collections;
 public class Managers : MonoBehaviour
 {
     static Managers s_instance;
+
     ResourceManager _resource = new ResourceManager();
     InputManager _input = new InputManager();
     UIManager _ui = new UIManager();
+
     public static InputManager Input {get {return Instance._input;}}
     public static ResourceManager Resource {get {return Instance._resource;}}
     public static UIManager UI { get {return Instance._ui;}}
+
     public static Managers Instance
     {
         get

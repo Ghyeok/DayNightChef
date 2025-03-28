@@ -13,6 +13,7 @@ public class ResourceManager
         if(prefab == null)
         {
             Debug.Log($"Filed to load prefab : {path}");
+
             if (prefab == null)
             {
                 Debug.Log($"Filed to load prefab : {path}");
