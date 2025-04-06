@@ -39,6 +39,7 @@ public class Define
     {
         BGM,
         VFX,
+        MaxCount,
     }
 
     // enum Ãß°¡....

@@ -13,13 +13,13 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
 
     public void OnPointerClick(PointerEventData eventData)// eventdata 에 이벤트와 관련 정보 담김 ex)마우스 좌표
     {
-        if(OnClickHandler != null)
+        if (OnClickHandler != null)
             OnClickHandler.Invoke(eventData);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(OnDragHandler != null)
+        if (OnDragHandler != null)
             OnDragHandler.Invoke(eventData);
     }
 }

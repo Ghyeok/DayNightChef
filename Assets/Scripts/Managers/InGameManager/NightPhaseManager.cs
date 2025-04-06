@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class NightPhaseManager : MonoBehaviour
 {
-    public enum RestaurantType
+    public enum RestaurantState
     {
         Ready,
         Open,
@@ -16,16 +16,11 @@ public class NightPhaseManager : MonoBehaviour
     public enum CustomerType
     {
         Normal,
-        Special
+        Special,
     }
 
-    public enum UpgradeType
-    {
-        Restaurant,
-    }
-
-    public int managementFee;
     public int reputation;
+    public int customerNum;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,5 +32,10 @@ public class NightPhaseManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void UpgradeRestaurant()
+    {
+
     }
 }

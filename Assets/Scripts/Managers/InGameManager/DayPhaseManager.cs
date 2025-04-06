@@ -17,13 +17,15 @@ public class DayPhaseManager : MonoBehaviour
         Hunting,
         Fishing,
         Gathering,
+        MaxCount,
     }
 
     public enum MapType // 온대, 열대, 한대 기후
     {
         Warm,
         Hot,
-        Cold
+        Cold,
+        MaxCount,
     }
 
     public enum UpgradeType
@@ -32,7 +34,8 @@ public class DayPhaseManager : MonoBehaviour
         MoveSpeed,
         Knife,
         Fishing,
-        Bag
+        Bag,
+        MaxCount,
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

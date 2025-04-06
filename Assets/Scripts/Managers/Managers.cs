@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 /* 모든 매니저들을 자동으로 싱글톤 선언을 해주는 클래스
- * 
+ * 그러나 하나하나 직접 추가해야 되서 비효율적인 느낌....?
  */
 
 public class Managers : MonoBehaviour
@@ -11,17 +11,20 @@ public class Managers : MonoBehaviour
     private static Managers s_instance;
     public static Managers Instance { get { Init(); return s_instance; } }
 
+    GameManager _game = new GameManager();
     ResourceManager _resource = new ResourceManager();
     InputManager _input = new InputManager();
     UIManager _ui = new UIManager();
     DayPhaseManager _day = new DayPhaseManager();
     NightPhaseManager _night = new NightPhaseManager();
 
+    public static GameManager Game { get { return Instance._game; } }
     public static InputManager Input { get { return Instance._input; } }
     public static ResourceManager Resource { get { return Instance._resource; } }
     public static UIManager UI { get { return Instance._ui; } }
     public static DayPhaseManager DayPhase { get { return Instance._day; } }
     public static NightPhaseManager NightPhase { get { return Instance._night; } }
+    
 
     void Awake()
     {
