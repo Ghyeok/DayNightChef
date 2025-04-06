@@ -3,28 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 public class UIManager
 {
-    int _order = 10; // 고정 ui : 값이 0으로 고정, 가장 먼저 그려져 밑에서 그려지게, 스태긍로 관리될 필요 x
-    //팝업 ui : 고정 ui와 겹치지 않게 10부터 시작, 이후 11,12...
-    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    int _order = 10; // 고정 ui : 값이 0으로 고정, 가장 먼저 그려져 밑에서 그려지게, 스택으로 관리될 필요 x
+    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>(); // 팝업 ui : 고정 ui와 겹치지 않게 10부터 시작, 이후 11,12...
     UI_scene _sceneUI = null;
 
-    public GameObject Root
+    public GameObject Root // 모든 UI들은 UI_Root의 Child로 생성되어 관리된다
     {
         get
         {
             GameObject root = GameObject.Find("@UI_Root");
-            if(root == null)
-                root = new GameObject { name = "@UI_Root"};
+            if (root == null)
+                root = new GameObject { name = "@UI_Root" };
             return root;
         }
     }
+
     public void SetCanvas(GameObject go, bool sort = true)
     {
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.overrideSorting = true; // 캔버스 중첩의 경우 (부모캔버스가 어떤값을 가지던 나는 내 오더값을 가짐)
 
-        if(sort)
+        if (sort)
         {
             canvas.sortingOrder = _order;
             _order++;
@@ -34,9 +34,9 @@ public class UIManager
             canvas.sortingOrder = 0;
         }
     }
-    public T showSceneUI<T> (string name = null) where T : UI_scene
+    public T ShowSceneUI<T>(string name = null) where T : UI_scene
     {
-        if(string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
         GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
         T sceneUI = Util.GetOrAddComponent<T>(go);
@@ -44,6 +44,7 @@ public class UIManager
         go.transform.SetParent(Root.transform);
         return sceneUI;
     }
+
     public T ShowPopupUI<T>(string name = null) where T : UI_Popup
     {
         if(string.IsNullOrEmpty(name))
@@ -77,8 +78,7 @@ public class UIManager
     }
     public void CloseAllPopupUI()
     {
-        while(_popupStack.Count > 0)
-            ClosePopupUI();
-        
+        while (_popupStack.Count > 0)
+            ClosePopupUI();      
     }
 }

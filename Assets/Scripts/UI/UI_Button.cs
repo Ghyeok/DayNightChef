@@ -32,6 +32,7 @@ public class UI_Button : UI_Popup
     public override void Init()
     {
         base.Init(); // Popup의 init
+
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
@@ -39,7 +40,7 @@ public class UI_Button : UI_Popup
 
         GetButton((int)Buttons.PointButton).gameObject.BindEvent(OnButtonClicked);
         GameObject go = GetImage((int)Images.ButtonIcon).gameObject;
-        BindEvent(go,(PointerEventData data) =>{go.transform.position = data.position;}, Define.UIEvent.Drag);
+        BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);
     }
 
     int _score = 0;
