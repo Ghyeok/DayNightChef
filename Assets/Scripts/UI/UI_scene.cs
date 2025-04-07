@@ -6,6 +6,6 @@ public class UI_scene : UI_Base
 {
     public override void Init()
     {
-        Managers.UI.SetCanvas(gameObject, false);
+        UIManager.Instance.SetCanvas(gameObject, false);
     }
 }
