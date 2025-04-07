@@ -3,7 +3,7 @@ using UnityEngine;
 /* 낮, 밤 공통으로 사용되는 기능을 관리
  */
 
-public class GameManager : MonoBehaviour
+public class GameManager : Managers<GameManager>
 {
     public enum GameState
     {

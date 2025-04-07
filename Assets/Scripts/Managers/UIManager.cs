@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class UIManager
+public class UIManager : Managers<UIManager>
 {
     int _order = 10; // 고정 ui : 값이 0으로 고정, 가장 먼저 그려져 밑에서 그려지게, 스택으로 관리될 필요 x
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>(); // 팝업 ui : 고정 ui와 겹치지 않게 10부터 시작, 이후 11,12...
