@@ -35,10 +35,10 @@ public class Define
         Night,
     }
 
-    public enum SoundType
+    public enum Sounds
     {
         BGM,
-        VFX,
+        SFX,
         MaxCount,
     }
 
