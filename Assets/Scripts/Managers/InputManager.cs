@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class InputManager : Managers<InputManager>
+public class InputManager : SingletonManager<InputManager>
 {
     public Action KeyAction = null;
 

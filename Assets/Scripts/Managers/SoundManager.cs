@@ -7,7 +7,7 @@ using UnityEngine;
 *  AudioSource : 해당 클립을 관리하는 역할
 */
 
-public class SoundManager : Managers<SoundManager>
+public class SoundManager : SingletonManager<SoundManager>
 {
     AudioSource[] audioSources = new AudioSource[(int)Define.Sounds.MaxCount];
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();

@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/GHTest/Scene/GHTestTutorialScene.unity
+    path: Assets/Scenes/TestTutorialScene.unity
     guid: 28e3825da3deef2439095d91a7e20306
   - enabled: 1
-    path: Assets/GHTest/Scene/GHTestMainLobbyScene.unity
+    path: Assets/Scenes/TestMainLobbyScene.unity
     guid: 08d4a128d6317e947a8adccfabf6280a
   - enabled: 1
     path: Assets/JhTest/Scene/TestJH.unity

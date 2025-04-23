@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-public class ResourceManager : Managers<ResourceManager>
+public class ResourceManager : SingletonManager<ResourceManager>
 {
     public T Load<T>(string path) where T : Object
     {

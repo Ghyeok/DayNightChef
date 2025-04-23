@@ -14,7 +14,7 @@ public class TouchStart : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
         {
-            SceneManager.LoadScene("GHTestTutorialScene");
+            SceneManager.LoadScene("TestTutorialScene");
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
  * 
  */
 
-public class DayPhaseManager : Managers<DayPhaseManager>
+public class DayPhaseManager : SingletonManager<DayPhaseManager>
 {
     public enum PlayerState
     {

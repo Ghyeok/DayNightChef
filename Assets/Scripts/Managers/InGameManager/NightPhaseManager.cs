@@ -4,7 +4,7 @@ using UnityEngine;
  * 
  */
 
-public class NightPhaseManager : Managers<NightPhaseManager>
+public class NightPhaseManager : SingletonManager<NightPhaseManager>
 {
     public enum RestaurantState
     {

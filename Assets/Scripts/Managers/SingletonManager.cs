@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Managers<T> : MonoBehaviour where T : MonoBehaviour
+public class SingletonManager<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
     public static T Instance { get { Init(); return _instance; } }
