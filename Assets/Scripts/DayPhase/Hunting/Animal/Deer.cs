@@ -1,23 +1,12 @@
 using UnityEngine;
 
-public class Deer : Animals, IAttack, IDamagable
+public class Deer : Animals//IAttack, IDamagable
 {
 
     private void Awake()
     {
         Init();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Setup();
     }
 
     public override void Init()
@@ -29,15 +18,16 @@ public class Deer : Animals, IAttack, IDamagable
         currentHp = maxHp;
         attack = 3f;
         attackRange = 1f;
+        speed = 1f;
         isDead = false;
     }
 
     public void Attack()
     {
-        Debug.Log("Deer°¡ °ø°ÝÇÕ´Ï´Ù!");
+        Debug.Log("Deerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½!");
     }
 
-    public void TakeDamage(float damage)
+    /*public void TakeDamage(float damage)
     {
         currentHp -= damage;
 
@@ -45,5 +35,5 @@ public class Deer : Animals, IAttack, IDamagable
         {
             Die();
         }
-    }
+    }*/
 }
