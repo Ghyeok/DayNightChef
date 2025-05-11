@@ -13,8 +13,6 @@ public class GameManager : SingletonManager<GameManager>
 
     public int currentWeek;
     public int totalGold;
-    public float maxBagWeight;
-    public float curBanWeight;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

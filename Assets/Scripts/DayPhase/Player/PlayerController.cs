@@ -5,11 +5,9 @@ public class PlayerController : MonoBehaviour
     private CharacterController cc;
     private Animator anim;
 
-    public float speed;
-
     private void Awake()
     {
-        speed = 2f;
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,7 +30,7 @@ public class PlayerController : MonoBehaviour
         float v = Input.GetAxis("Vertical");
         Vector3 dir = new Vector3(h, 0, v).normalized;
 
-        cc.Move(dir * speed * Time.deltaTime);
+        cc.Move(dir * DayPhasePlayerManager.Instance.playerMoveSpeed * Time.deltaTime);
 
         if (dir != Vector3.zero)
         {
