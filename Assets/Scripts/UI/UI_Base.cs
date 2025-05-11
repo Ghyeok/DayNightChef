@@ -6,9 +6,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-/* 어캐 쓰는거지..?
-*
-*/
 public abstract class UI_Base : MonoBehaviour
 {
     // _objects = 씬 상에 존재하는 오브젝트들을 로드하여 이 곳에 바인딩하여 보관하는 dictionary

@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class Animals : Organism
 
 {
+    // 주석
     public float maxHp;
     public float currentHp;
     public float attack;

@@ -1,8 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-/* �� ������� ���� ����� ��Ƴ��� �Ŵ���
- * 
- */
 
 public class DayPhaseManager : SingletonManager<DayPhaseManager>
 {
@@ -29,7 +26,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         MaxCount,
     }
 
-    public enum MapType // �´�, ����, �Ѵ� ����
+    public enum MapType
     {
         Warm,
         Hot,

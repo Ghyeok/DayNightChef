@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public Transform target;
-    private Vector3 offset = new Vector3(0f, 2.5f, -4f);
+    private Vector3 offset = new Vector3(0f, 7f, -6f);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
