@@ -1,20 +1,77 @@
-using UnityEngine;
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
+using UnityEngine;
+
 public class UIManager : SingletonManager<UIManager>
 {
-    int _order = 10; // 고정 ui : 값이 0으로 고정, 가장 먼저 그려져 밑에서 그려지게, 스택으로 관리될 필요 x
-    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>(); // 팝업 ui : 고정 ui와 겹치지 않게 10부터 시작, 이후 11,12...
-    UI_scene _sceneUI = null;
+    private GameObject _root;
 
-    public GameObject Root // 모든 UI들은 UI_Root의 Child로 생성되어 관리된다
+    public static GameObject Root
     {
         get
         {
-            GameObject root = GameObject.Find("@UI_Root");
-            if (root == null)
-                root = new GameObject { name = "@UI_Root" };
-            return root;
+            if (Instance._root == null)
+            {
+                GameObject root = GameObject.Find("UI_Root");
+                if (root == null)
+                {
+                    root = new GameObject { name = "UI_Root" };
+                }
+
+                Instance._root = root;
+                return Instance._root;
+            }
+            else
+            {
+                return Instance._root;
+            }
+        }
+    }
+
+    // 나중에 ExitButton 있는 UI 클래스에서 호출하세요
+    // UIManager.Instance.OnExitButton(); 이런식으로
+    public void OnExitButton()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
+    // UI 코드가 한곳에 집중됩니다. 유지보수 편리하고 재사용성도 좋습니다
+    // UIManager.LoadUI(Define.UIType.PauseUI) 이런식으로 쓰시면 됩니다
+    public static GameObject LoadUI(Define.UIType newUIType)
+    {
+        GameObject ui;
+        try
+        {
+            ui = Instantiate(Resources.Load<GameObject>($"Prefabs/UIs/{newUIType}"));
+            ui.transform.SetParent(Root.transform, false);
+            return ui;
+        }
+        catch
+        {
+            Debug.LogError($"[Error] UI Load 실패 : Prefabs/UIs/{newUIType} 확인 바람");
+            return null;
+        }
+    }
+
+    // 이건 String으로 호출하는거
+    public static GameObject LoadUI(string newUIType)
+    {
+        GameObject ui;
+        try
+        {
+            ui = Instantiate(Resources.Load<GameObject>($"Prefabs/UIs/{newUIType}"));
+            ui.transform.SetParent(Root.transform, false);
+            return ui;
+        }
+        catch
+        {
+            Debug.LogError($"[Error] UI Load 실패 : Prefabs/UIs/{newUIType} 확인 바람");
+            return null;
         }
     }
 
@@ -22,63 +79,85 @@ public class UIManager : SingletonManager<UIManager>
     {
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.overrideSorting = true; // 캔버스 중첩의 경우 (부모캔버스가 어떤값을 가지던 나는 내 오더값을 가짐)
+        canvas.overrideSorting = true;
+
 
         if (sort)
         {
             canvas.sortingOrder = _order;
             _order++;
         }
-        else // 고정 ui
+        else
         {
             canvas.sortingOrder = 0;
         }
     }
-    public T ShowSceneUI<T>(string name = null) where T : UI_scene
-    {
-        if (string.IsNullOrEmpty(name))
-            name = typeof(T).Name;
-        GameObject go = ResourceManager.Instance.Instantiate($"UI/Scene/{name}");
-        T sceneUI = Util.GetOrAddComponent<T>(go);
-        _sceneUI = sceneUI;
-        go.transform.SetParent(Root.transform);
-        return sceneUI;
-    }
+
+    // UI 팝업 구현
+    int _order = 10;
+    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
 
     public T ShowPopupUI<T>(string name = null) where T : UI_Popup
     {
-        if(string.IsNullOrEmpty(name))
+        if (string.IsNullOrEmpty(name))
+        {
             name = typeof(T).Name;
-        GameObject go = ResourceManager.Instance.Instantiate($"UI/Popup/{name}");
+        }
+
+        GameObject go = LoadUI($"Popup/{name}"); // Resources/Prefabs/UIs/Popup/
         T popup = Util.GetOrAddComponent<T>(go);
         _popupStack.Push(popup);
 
-        go.transform.SetParent(Root.transform);
         return popup;
-
     }
+
+    // 엉뚱한 UI를 삭제하는 것을 방지
     public void ClosePopupUI(UI_Popup popup)
     {
-        if(_popupStack.Count == 0)
-            return;
-        if(_popupStack.Peek() != popup) // popup이 가장 위에것이 아니라면 삭제불가
+        if (_popupStack.Count == 0)
         {
-            Debug.Log("Close Popup Failed");
             return;
         }
+
+        if (_popupStack.Peek() != popup)
+        {
+            Debug.Log("Close Popup Failed!");
+            return;
+        }
+
+        ClosePopupUI();
     }
+
     public void ClosePopupUI()
     {
-        if(_popupStack.Count == 0)
+        if (_popupStack.Count == 0)
+        {
             return;
+        }
+
         UI_Popup popup = _popupStack.Pop();
-        ResourceManager.Instance.Destory(popup.gameObject);
-        popup = null;
-        _order--;
     }
+
     public void CloseAllPopupUI()
     {
         while (_popupStack.Count > 0)
-            ClosePopupUI();      
+        {
+            ClosePopupUI();
+        }
+    }
+
+    // 팝업이 아닌 Scene에 구현되어 있는 UI
+    UI_Scene _sceneUI = null;
+
+    public T ShowSceneUI<T>(string name = null) where T : UI_Scene
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject go = LoadUI($"Scene/{name}");
+        T sceneUI = Util.GetOrAddComponent<T>(go);
+        _sceneUI = sceneUI;
+
+        return sceneUI;
     }
 }

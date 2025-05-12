@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System;
 
 public class DayPhaseManager : SingletonManager<DayPhaseManager>
 {
@@ -44,9 +46,18 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         MaxCount,
     }
 
+    public override void Awake()
+    {
+        base.Awake();
+
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (SceneManager.GetActiveScene().name == "TestDayPhase")
+            InitGame();
+
         if(animalList == null)
             animalList = new List<Animals>();
     }
@@ -63,4 +74,10 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
             }
         }
     }
+
+    private void InitGame()
+    {
+        UI_DayPhaseScene _day = UIManager.Instance.ShowSceneUI<UI_DayPhaseScene>("DayPhaseScene");
+    }
+
 }
