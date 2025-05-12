@@ -30,7 +30,7 @@ public class UI_DayPhaseScene : UI_Scene
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        Init();
     }
 
     // Update is called once per frame
