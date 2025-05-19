@@ -17,8 +17,8 @@ public class Deer : Animals//IAttack, IDamagable
         maxHp = 10f;
         currentHp = maxHp;
         attack = 3f;
-        attackRange = 1f;
         speed = 1f;
+        attackRange = 3f;
         isDead = false;
     }
 

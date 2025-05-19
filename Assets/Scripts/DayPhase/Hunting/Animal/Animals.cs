@@ -1,19 +1,20 @@
 using UnityEngine;
 
-public abstract class Animals : Organism
+public abstract class Animals : Organism , IDamagable
 
 {
     // 주석
     public float maxHp;
     public float currentHp;
     public float attack;
-    public float attackRange;
     public float speed;
+    public float attackRange;
     public bool isDead;
     public Vector3 spawnPoint;
     //가지고있는 모든 상태
     private State[] states;
     private State currentState;
+    public BoxCollider attackcollider;
 
     // Animals가 가지는 모든 상태
 
@@ -44,15 +45,6 @@ public abstract class Animals : Organism
         }
     }
 
-    /* public virtual void Die()
-    {
-        if(!isDead && currentHp <= 0)
-        {
-            Debug.Log($"{gameObject.name}�� �׾����ϴ�!");
-            isDead = true;
-            Destroy(gameObject);
-        }
-    }*/
     public void ChangeState(DayPhaseManager.AnimalStates newState)
     {
         //새로 바꾸려는 상태가 비어있으면 상태를 바꾸지 않는다.
@@ -67,5 +59,11 @@ public abstract class Animals : Organism
         currentState = states[(int)newState];
         currentState.Enter(this);
 
+    }
+    public void TakeDamage(float damage)
+    {
+        currentHp -= damage;
+        if(currentHp <= 0) ChangeState(DayPhaseManager.AnimalStates.Die);
+        else ChangeState(DayPhaseManager.AnimalStates.Chase);
     }
 }
