@@ -522,6 +522,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animalList: []
+  hpLevel: 0
+  moveSpeedLevel: 0
+  knifeLevel: 0
+  fishingLevel: 0
+  bagLevel: 0
 --- !u!4 &1549417567
 Transform:
   m_ObjectHideFlags: 0
@@ -852,7 +857,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e461f5412bb0e459d94c0203fb3d47d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curHP: 0
+  playerMaxHP: 0
+  playerCurHP: 0
+  radius: 0
+  colliders: []
 --- !u!1001 &5520196613763308726
 PrefabInstance:
   m_ObjectHideFlags: 0

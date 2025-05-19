@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class FishingInteraction : Interaction
+public class FishingInteraction : MonoBehaviour, IInteract
 {
-    public override void Interact(GameObject interactor)
+    public void Interact(GameObject interactor)
     {
 
     }

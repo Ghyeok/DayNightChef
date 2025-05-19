@@ -15,7 +15,7 @@ public class AttackRange : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        player = other.GetComponent<DayPlayer>();
+        player = other.gameObject.GetComponent<DayPlayer>();
         if(other.CompareTag("Player"))
         {
             player.TakeDamage(damage);

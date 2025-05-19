@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class HuntingInteraction : Interaction
+public class HuntingInteraction : MonoBehaviour, IInteract
 {
-    public override void Interact(GameObject interactor)
+    public void Interact(GameObject interactor)
     {
-            
+        Debug.Log("Hunting Interaction!");
     }
 }

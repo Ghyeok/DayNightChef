@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class GatheringInteraciton : Interaction
+public class GatheringInteraciton : MonoBehaviour, IInteract
 {
-    public override void Interact(GameObject interactor)
+    public void Interact(GameObject interactor)
     {
 
     }

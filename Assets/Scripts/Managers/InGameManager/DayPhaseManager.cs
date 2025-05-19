@@ -7,6 +7,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
 {
     //현재 존재하는 animals
     public List<Animals> animalList = new List<Animals>();
+
     public enum PlayerState
     {
         Alive,
@@ -45,6 +46,12 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         Bag,
         MaxCount,
     }
+
+    public int hpLevel;
+    public int moveSpeedLevel;
+    public int knifeLevel;
+    public int fishingLevel;
+    public int bagLevel;
 
     public override void Awake()
     {
