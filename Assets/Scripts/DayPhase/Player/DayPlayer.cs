@@ -24,7 +24,7 @@ public class DayPlayer :  MonoBehaviour , IDamagable
 
     void Awake()
     {
-        radius = 2f;
+        radius = 3f;
     }
 
     private void OnDrawGizmos()
