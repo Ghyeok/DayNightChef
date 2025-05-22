@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "DayNightChef.sln"
+    "dotnet.defaultSolution": "DayNightChef.sln",
+    "dotnet.preferCSharpExtension": true
 }
