@@ -2,8 +2,14 @@ using UnityEngine;
 
 public class FishingInteraction : MonoBehaviour, IInteract
 {
+    public DayPhaseManager.PlayerBehavior GetBehaviorType()
+    {
+        return DayPhaseManager.PlayerBehavior.Fishing;
+    }
+
     public void Interact(GameObject interactor)
     {
-        Debug.Log("FishingInteraction!");
+        UIManager.Instance.ShowPopupUI<UI_FishingMiniGamePopup>("UI_FishingMiniGamePopup");
+        Debug.Log("Fishing Mini Game Popup!");
     }
 }

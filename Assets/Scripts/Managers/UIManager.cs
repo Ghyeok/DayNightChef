@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : SingletonManager<UIManager>
 {
@@ -159,5 +160,31 @@ public class UIManager : SingletonManager<UIManager>
         _sceneUI = sceneUI;
 
         return sceneUI;
+    }
+
+    private Dictionary<DayPhaseManager.PlayerBehavior, Sprite> interactionIcons;
+    private void InitInteractionButton()
+    {
+        if(interactionIcons != null)
+            return;
+
+        interactionIcons = new Dictionary<DayPhaseManager.PlayerBehavior, Sprite>
+        {
+            {DayPhaseManager.PlayerBehavior.Hunting, Resources.Load<Sprite>("Sprites/Hunting") },
+            {DayPhaseManager.PlayerBehavior.Fishing, Resources.Load<Sprite>("Sprites/Fishing") },
+            {DayPhaseManager.PlayerBehavior.Gathering, Resources.Load<Sprite>("Sprites/Gathering") },
+        };
+    }
+
+    public Sprite SetInteractionButton(DayPhaseManager.PlayerBehavior behavior)
+    {
+        InitInteractionButton();
+
+        if (interactionIcons == null || !interactionIcons.ContainsKey(behavior))
+        {
+            Debug.Log("버튼 아이콘을 찾을 수 없습니다!");
+            return null;
+        }
+        return interactionIcons[behavior];
     }
 }

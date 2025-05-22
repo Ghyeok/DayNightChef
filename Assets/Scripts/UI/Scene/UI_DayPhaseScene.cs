@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_DayPhaseScene : UI_Scene
@@ -38,6 +39,7 @@ public class UI_DayPhaseScene : UI_Scene
     {
         SetWeightText();
         SetHPBarImage();
+        SetInteractionIcon();
     }
 
     public override void Init()
@@ -46,7 +48,8 @@ public class UI_DayPhaseScene : UI_Scene
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
 
-        Button _upgrade = GetButton((int)Buttons.UpgradeButton);
+        GameObject interact = GetButton((int)Buttons.InteractionButton).gameObject;
+        AddUIEvent(interact, InteractionButtonOnclicked, Define.UIEvent.Click);
     }
 
     public void SetWeightText()
@@ -57,5 +60,26 @@ public class UI_DayPhaseScene : UI_Scene
     public void SetHPBarImage()
     {
         GetImage((int)Images.HPBarImage).fillAmount = DayPhasePlayerManager.Instance.playerCurHP / DayPhasePlayerManager.Instance.playerMaxHP;
+    }
+
+    private void SetInteractionIcon()
+    {
+        Button button = GetButton((int)Buttons.InteractionButton);
+        var interact = DayPhasePlayerManager.Instance.currentInteract;
+
+        if(interact == null)
+        {
+            button.image.sprite = null;
+            button.image.enabled = false;
+            return;
+        }
+
+        button.image.enabled = true;
+        button.image.sprite = UIManager.Instance.SetInteractionButton(interact.GetBehaviorType());
+    }
+
+    public void InteractionButtonOnclicked(PointerEventData data)
+    {
+        DayPhasePlayerManager.Instance.currentInteract.Interact(DayPhasePlayerManager.Instance.dayPlayer);
     }
 }

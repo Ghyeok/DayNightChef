@@ -24,7 +24,7 @@ public class DayPlayer :  MonoBehaviour , IDamagable
 
     void Awake()
     {
-        radius = 3f;
+        radius = 1f;
     }
 
     private void OnDrawGizmos()
@@ -84,14 +84,14 @@ public class DayPlayer :  MonoBehaviour , IDamagable
             }
         }
 
+        if (colliders.Length == 0)
+        {
+            DayPhasePlayerManager.Instance.currentInteract = null;
+        }
+
         if (closestInteract != null)
         {
-            Interact(closestInteract);
+            DayPhasePlayerManager.Instance.currentInteract = closestInteract;
         }
-    }
-
-    public void Interact(IInteract interact)
-    {
-        interact.Interact(this.gameObject); // 플레이어를 인자로 넘긴다.
     }
 }

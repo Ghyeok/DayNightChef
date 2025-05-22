@@ -11,6 +11,11 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
     public float maxBagWeight;
     public float curBagWeight;
 
+    public Transform spawnPoint;
+    public GameObject dayPlayerPrefab;
+    public GameObject dayPlayer;
+    public IInteract currentInteract;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Awake()
     {
@@ -26,10 +31,20 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 
     private void Init()
     {
+        GameObject go = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
+        if(go == null)
+        {
+            dayPlayer = Instantiate(dayPlayerPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
+        else
+        {
+            dayPlayer = go;
+        }
+
         playerMaxHP = 100f;
         playerCurHP = playerMaxHP;
 
-        playerAttack = 10f;
+        playerAttack = 1f;
         playerMoveSpeed = 3f;
 
         maxBagWeight = 10f;
