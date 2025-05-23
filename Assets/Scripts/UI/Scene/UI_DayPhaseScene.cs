@@ -5,10 +5,15 @@ using UnityEngine.UI;
 
 public class UI_DayPhaseScene : UI_Scene
 {
+    public enum GameObjects
+    {
+        Joystick,
+    }
+
     public enum Texts
     {
         WeightText,
-
+        GoldText,
     }
 
     public enum Images
@@ -17,11 +22,11 @@ public class UI_DayPhaseScene : UI_Scene
         HeartImage,
         HPBarImage,
         HPBackBarImage,
+        GoldImage,
     }
 
     public enum Buttons
     {
-        JoyStickButton,
         InteractionButton,
         PauseButton,
         UpgradeButton,
@@ -40,21 +45,38 @@ public class UI_DayPhaseScene : UI_Scene
         SetWeightText();
         SetHPBarImage();
         SetInteractionIcon();
+        SetGoldText();
     }
 
     public override void Init()
     {
+        Bind<GameObject>(typeof(GameObjects));
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
 
         GameObject interact = GetButton((int)Buttons.InteractionButton).gameObject;
         AddUIEvent(interact, InteractionButtonOnclicked, Define.UIEvent.Click);
+
+        SetJoyStickToPlayer();
     }
+
+    public void SetJoyStickToPlayer()
+    {
+        PlayerController pc = DayPhasePlayerManager.Instance.dayPlayer.GetComponent<PlayerController>();
+        var joystick = Get<GameObject>((int)GameObjects.Joystick);
+        pc.joystick = joystick.GetComponent<VariableJoystick>();
+    }
+
 
     public void SetWeightText()
     {
         GetText((int)Texts.WeightText).text = $"{DayPhasePlayerManager.Instance.curBagWeight}" + " / " + $"{DayPhasePlayerManager.Instance.maxBagWeight}";
+    }
+
+    public void SetGoldText()
+    {
+        GetText((int)Texts.GoldText).text = $"{GameManager.Instance.totalGold}" + "G";
     }
 
     public void SetHPBarImage()

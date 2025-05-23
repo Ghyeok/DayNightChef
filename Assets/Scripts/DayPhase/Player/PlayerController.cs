@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public VariableJoystick joystick;
+
     private CharacterController cc;
     private Animator anim;
 
@@ -26,8 +28,8 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = joystick.Horizontal;
+        float v = joystick.Vertical;
         Vector3 dir = new Vector3(h, 0, v).normalized;
 
         cc.Move(dir * DayPhasePlayerManager.Instance.playerMoveSpeed * Time.deltaTime);
