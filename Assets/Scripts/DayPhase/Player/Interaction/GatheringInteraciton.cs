@@ -15,7 +15,11 @@ public class GatheringInteraciton : MonoBehaviour, IInteract
 
     IEnumerator Gathering()
     {
+        Animator anim = DayPhasePlayerManager.Instance.dayPlayer.GetComponent<Animator>();
+        anim.SetTrigger("Gathering");
+
         yield return new WaitForSeconds(2f);
+
         GameObject gather = GetComponent<GatheringInteraciton>().gameObject;
         Destroy(gather);
         Debug.Log($"Gathering Success! name : {gather.gameObject.name}");
