@@ -157,6 +157,7 @@ namespace AnimalOwnedStates
         public override void Exit(Animals entity)
         {
             anim.SetBool("IsAttack", false);
+            attackrange.enabled = false;
         }
         IEnumerator Hit()
         {
@@ -240,9 +241,22 @@ namespace AnimalOwnedStates
 
     public class Die : State
     {
+        Animator anim;
+        Animals currentEntity;
+        BoxCollider col;
+        HuntingInteraction hi;
+        MonoBehaviour coroutineHost;
         public override void Enter(Animals entity)
         {
-
+            currentEntity=entity;
+            anim = entity.GetComponent<Animator>();
+            col = entity.GetComponent<BoxCollider>();
+            hi = entity.GetComponent<HuntingInteraction>();
+            coroutineHost = entity;
+            anim.SetTrigger("DoDie");
+            if(col!=null) col.enabled = false;
+            if(hi!=null) hi.enabled = false;
+            coroutineHost.StartCoroutine(WaitDie());
         }
         public override void Execute(Animals entity)
         {
@@ -251,6 +265,12 @@ namespace AnimalOwnedStates
         public override void Exit(Animals entity)
         {
 
+        }
+
+        IEnumerator WaitDie()
+        {
+            yield return new WaitForSeconds(2f);
+            GameObject.Destroy(currentEntity.gameObject);
         }
     }
 }
