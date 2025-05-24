@@ -270,6 +270,7 @@ namespace AnimalOwnedStates
         IEnumerator WaitDie()
         {
             yield return new WaitForSeconds(2f);
+            DayPhaseManager.Instance.animalList.Remove(currentEntity);
             GameObject.Destroy(currentEntity.gameObject);
         }
     }

@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class AnimalSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject deerPrefab;
+    [SerializeField] private GameObject animalPrefab;
+    public int maxCount;
+    public float respawntime;
+    private bool isReSpawning = false;
+    List<Animals> animallist = new List<Animals>();
 
-    public void SpawnDeer(Vector3 spawnPosition)
+    public void SpawnAnimal(Vector3 spawnPosition)
     {
-        GameObject deerObj = Instantiate(deerPrefab, spawnPosition, Quaternion.identity);
-        Animals deer = deerObj.GetComponent<Animals>();
+        GameObject animalObj = Instantiate(animalPrefab, GetRandomPoint(spawnPosition, 5f), Quaternion.identity);
+        Animals animal = animalObj.GetComponent<Animals>();
 
-        if (deer != null)
+        if (animal != null)
         {
-            DayPhaseManager.Instance.animalList.Add(deer);
+            DayPhaseManager.Instance.animalList.Add(animal);
+            animallist.Add(animal);
         }
         else
         {
@@ -21,9 +26,43 @@ public class AnimalSpawner : MonoBehaviour
         }
     }
 
-    // 테스트용 자동 스폰
+    private void Awake()
+    {
+    }
     private void Start()
     {
-        SpawnDeer(transform.position);
+        for (int i = 0; i < maxCount; i++)
+        {
+            SpawnAnimal(gameObject.transform.position);
+        }
+    }
+
+    private void Update()
+    {
+        for (int i = animallist.Count - 1; i >= 0; i--)
+        {
+            if (animallist[i] == null)
+            {
+                animallist.RemoveAt(i);
+            }
+        }
+        while (animallist.Count < maxCount && !isReSpawning)
+        {
+            StartCoroutine(ReSpawn());
+        }
+    }
+
+    Vector3 GetRandomPoint(Vector3 center, float radius)
+    {
+        Vector2 randomPos = Random.insideUnitCircle * radius;
+        return new Vector3(center.x + randomPos.x, center.y, center.z + randomPos.y);
+    }
+
+    IEnumerator ReSpawn()
+    {
+        isReSpawning = true;
+        yield return new WaitForSeconds(respawntime);
+        SpawnAnimal(transform.position);
+        isReSpawning = false;
     }
 }
