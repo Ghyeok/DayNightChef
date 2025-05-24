@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Deer : Animals//IAttack, IDamagable
 {
-
+    BoxCollider boxcollider;
     private void Awake()
     {
         Init();
@@ -13,7 +13,7 @@ public class Deer : Animals//IAttack, IDamagable
     {
         mapType = DayPhaseManager.MapType.Warm;
         // dropIngredient = ??
-
+        boxcollider=GetComponent<BoxCollider>();
         maxHp = 10f;
         currentHp = maxHp;
         attack = 3f;

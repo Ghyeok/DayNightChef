@@ -146,7 +146,8 @@ namespace AnimalOwnedStates
             anim = entity.GetComponent<Animator>();
             currentAniaml = entity;
             coroutineHost = entity;
-            attackrange = entity.GetComponentInChildren<BoxCollider>();
+            Transform attackarea = entity.transform.Find("AttackRange");
+            attackrange = attackarea.GetComponent<BoxCollider>();
             coroutineHost.StartCoroutine(Hit());
         }
         public override void Execute(Animals entity)
