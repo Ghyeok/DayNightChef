@@ -71,20 +71,18 @@ public class DayPlayer :  MonoBehaviour , IDamagable
         IInteract closestInteract = null;
 
         foreach (Collider collider in colliders)
-        {
-            if (!collider.gameObject.CompareTag("AttackRange"))
+        {   
+            IInteract interact = collider.gameObject.GetComponentInParent<IInteract>();
+            if (interact != null)
             {
-                IInteract interact = collider.gameObject.GetComponent<IInteract>();
-                if (interact != null)
+                float distance = Vector3.Distance(transform.position, collider.transform.position);
+                if (distance < closestDistance)
                 {
-                    float distance = Vector3.Distance(transform.position, collider.transform.position);
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestInteract = interact;
-                    }
+                    closestDistance = distance;
+                    closestInteract = interact;
                 }
             }
+            
         }
 
         if (colliders.Length == 0)

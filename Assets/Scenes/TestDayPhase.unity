@@ -1281,9 +1281,65 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1726923741230733463, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2039231925399021551, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2433407009139584612, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2727692190410923713, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019658188774608069, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306973723825392041, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4862994758530331665, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6032917064016142043, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6241795890735565048, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 6260861146594801975, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
       propertyPath: m_Name
       value: DayPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6987246339290000272, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7732109971994218905, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7798736035798485543, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7915293972967043616, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8559679899505109734, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

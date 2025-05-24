@@ -39,9 +39,9 @@ namespace AnimalOwnedStates
                 isReturningToSpawn = true;
                 agent.SetDestination(entity.spawnPoint);
             }
-            coroutineHost.StartCoroutine(test1());
+            //coroutineHost.StartCoroutine(test1());
         }
-//- - - - - - - - - - - - - - - -- - - - - - - - Test
+/*/- - - - - - - - - - - - - - - -- - - - - - - - Test
         IEnumerator test1() 
         {
             yield return new WaitForSeconds(10f);
@@ -51,7 +51,7 @@ namespace AnimalOwnedStates
         {
             currentEntity.TakeDamage(3f);
         }
-//- - - - - - - - - - - - - - - -- - - - - - - - Test
+//- - - - - - - - - - - - - - - -- - - - - - - - Test*/
         public override void Execute(Animals entity)
         {
             if (agent.pathPending) return;
