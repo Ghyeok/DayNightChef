@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     private CharacterController cc;
     private Animator anim;
 
+    private float verticalVelocity;
+
     private void Awake()
     {
 
@@ -32,14 +34,28 @@ public class PlayerController : MonoBehaviour
         float v = joystick.Vertical;
         Vector3 dir = new Vector3(h, 0, v).normalized;
 
-        cc.Move(dir * DayPhasePlayerManager.Instance.playerMoveSpeed * Time.deltaTime);
+        if(cc.isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -1f;
+        }
+        else
+        {
+            verticalVelocity += Physics.gravity.y * Time.deltaTime;
+        }
+
+        Vector3 moveVector = dir * DayPhasePlayerManager.Instance.playerMoveSpeed;
+        moveVector.y = verticalVelocity;
+        cc.Move(moveVector * Time.deltaTime);
 
         if (dir != Vector3.zero)
         {
             transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
             anim.SetBool("isWalk", true);
         }
-        else if (dir.magnitude < 0.01f) anim.SetBool("isWalk", false);
+        else if (dir.magnitude < 0.01f)
+        {
+            anim.SetBool("isWalk", false);
+        }
     }
 
     private void TestAttack()
