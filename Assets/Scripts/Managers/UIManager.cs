@@ -170,9 +170,9 @@ public class UIManager : SingletonManager<UIManager>
 
         interactionIcons = new Dictionary<DayPhaseManager.PlayerBehavior, Sprite>
         {
-            {DayPhaseManager.PlayerBehavior.Hunting, Resources.Load<Sprite>("Sprites/Hunting") },
-            {DayPhaseManager.PlayerBehavior.Fishing, Resources.Load<Sprite>("Sprites/Fishing") },
-            {DayPhaseManager.PlayerBehavior.Gathering, Resources.Load<Sprite>("Sprites/Gathering") },
+            {DayPhaseManager.PlayerBehavior.Hunting, ResourceManager.Instance.Load<Sprite>("Sprites/Hunting") },
+            {DayPhaseManager.PlayerBehavior.Fishing, ResourceManager.Instance.Load<Sprite>("Sprites/Fishing") },
+            {DayPhaseManager.PlayerBehavior.Gathering, ResourceManager.Instance.Load<Sprite>("Sprites/Gathering") },
         };
     }
 

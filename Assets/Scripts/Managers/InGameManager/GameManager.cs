@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/* ³·, ¹ã °øÅëÀ¸·Î »ç¿ëµÇ´Â ±â´ÉÀ» °ü¸®
+/* ë‚®, ë°¤ ê³µí†µìœ¼ë¡œ ì‚¬ìš©ë˜ëŠ” ê¸°ëŠ¥ì„ ê´€ë¦¬
  */
 
 public class GameManager : SingletonManager<GameManager>
@@ -24,10 +24,5 @@ public class GameManager : SingletonManager<GameManager>
     void Update()
     {
         
-    }
-
-    public void PayManagermentFee()
-    {
-
     }
 }

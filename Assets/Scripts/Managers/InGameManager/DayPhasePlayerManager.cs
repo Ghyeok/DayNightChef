@@ -31,6 +31,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 
     private void Init()
     {
+        spawnPoint = GameObject.Find("PlayerSpawner").transform;
         GameObject go = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
         if(go == null)
         {
@@ -39,6 +40,8 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         else
         {
             dayPlayer = go;
+            dayPlayer.transform.position = spawnPoint.position;
+            dayPlayer.transform.rotation = spawnPoint.rotation;
         }
 
         playerMaxHP = 100f;

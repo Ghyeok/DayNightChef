@@ -68,7 +68,6 @@ public class UI_DayPhaseScene : UI_Scene
         pc.joystick = joystick.GetComponent<VariableJoystick>();
     }
 
-
     public void SetWeightText()
     {
         GetText((int)Texts.WeightText).text = $"{DayPhasePlayerManager.Instance.curBagWeight}" + " / " + $"{DayPhasePlayerManager.Instance.maxBagWeight}";

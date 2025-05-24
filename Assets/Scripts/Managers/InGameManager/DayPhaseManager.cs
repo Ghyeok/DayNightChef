@@ -13,6 +13,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         Alive,
         Dead,
     }
+
     public enum AnimalStates
     {
         Patrol = 0,
