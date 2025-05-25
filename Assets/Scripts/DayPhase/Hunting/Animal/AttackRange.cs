@@ -10,6 +10,7 @@ public class AttackRange : MonoBehaviour
     private void Awake()
     {
         parentAnimal = GetComponentInParent<Animals>();
+        
         damage = GetComponentInParent<Animals>().attack;
     }
 
