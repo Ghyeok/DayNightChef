@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class DayPlayer :  MonoBehaviour , IDamagable
 {
