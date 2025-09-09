@@ -162,7 +162,7 @@ public class UIManager : SingletonManager<UIManager>
     }
 
     private Dictionary<DayPhaseManager.PlayerBehavior, Sprite> interactionIcons;
-    private void InitInteractionButton()
+    private void InitInteractionButton() // 상호작용 버튼 초기 세팅
     {
         if(interactionIcons != null)
             return;
@@ -175,6 +175,9 @@ public class UIManager : SingletonManager<UIManager>
         };
     }
 
+    /// <summary>
+    /// 상호작용에 알맞은 버튼 스프라이트 반환
+    /// </summary>
     public Sprite SetInteractionButton(DayPhaseManager.PlayerBehavior behavior)
     {
         InitInteractionButton();
