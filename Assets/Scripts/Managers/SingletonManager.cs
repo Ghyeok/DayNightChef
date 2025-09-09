@@ -26,7 +26,7 @@ public class SingletonManager<T> : MonoBehaviour where T : MonoBehaviour
         if (_instance == null)
         {
             GameObject go = new GameObject();
-            go.name = typeof(T).Name;
+            go.name = "@" + typeof(T).Name;
             _instance = go.AddComponent<T>();
             DontDestroyOnLoad(go);
         }
@@ -48,17 +48,5 @@ public class SingletonManager<T> : MonoBehaviour where T : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

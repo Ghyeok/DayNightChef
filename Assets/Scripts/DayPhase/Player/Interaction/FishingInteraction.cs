@@ -9,7 +9,7 @@ public class FishingInteraction : MonoBehaviour, IInteract
 
     public void Interact(GameObject interactor)
     {
-        UIManager.Instance.ShowPopupUI<UI_FishingMiniGamePopup>("UI_FishingMiniGamePopup");
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_FishingMiniGamePopup");
         Debug.Log("Fishing Mini Game Popup!");
     }
 }
