@@ -18,7 +18,6 @@ public class UI_DayPhaseScene : UI_Scene
 
     public enum Images
     {
-        WeightImage,
         HeartImage,
         HPBarImage,
         HPBackBarImage,
@@ -30,6 +29,7 @@ public class UI_DayPhaseScene : UI_Scene
         InteractionButton,
         PauseButton,
         UpgradeButton,
+        WeightButton,
     }
 
 
@@ -57,6 +57,9 @@ public class UI_DayPhaseScene : UI_Scene
 
         GameObject interact = GetButton((int)Buttons.InteractionButton).gameObject;
         AddUIEvent(interact, InteractionButtonOnclicked, Define.UIEvent.Click);
+
+        var weightBtn = GetButton((int)Buttons.WeightButton).gameObject;
+        AddUIEvent(weightBtn, _ => UI_Inven.Show(), Define.UIEvent.Click);
 
         SetJoyStickToPlayer();
     }
