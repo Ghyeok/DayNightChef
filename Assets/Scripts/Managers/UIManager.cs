@@ -1,11 +1,22 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager : SingletonManager<UIManager>
 {
     private GameObject _root;
+
+    public float canvasWidth = 1920f;
+    public float canvasHeight = 1080f;
+
+    public void Init()
+    {
+        ShowSceneUI<UI_Scene>("UI_MainMenuScene");
+
+        //#if UNITY_ANDROID
+        //        Screen.SetResolution(1920, 1080, true);
+        //#endif
+    }
 
     public static GameObject Root
     {
@@ -81,7 +92,6 @@ public class UIManager : SingletonManager<UIManager>
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.overrideSorting = true;
 
-
         if (sort)
         {
             canvas.sortingOrder = _order;
@@ -136,6 +146,9 @@ public class UIManager : SingletonManager<UIManager>
         }
 
         UI_Popup popup = _popupStack.Pop();
+        Destroy(popup.gameObject);
+        popup = null;
+        _order--;
     }
 
     public void CloseAllPopupUI()
