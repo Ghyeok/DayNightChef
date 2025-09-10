@@ -16,6 +16,7 @@ public class UI_Inven : UI_Popup
     {
         InvenSlot,
     }
+
     public enum Texts
     {
         InvenWeight,
@@ -26,9 +27,12 @@ public class UI_Inven : UI_Popup
 
     public override void Init()
     {
+        base.Init();
+
         Bind<Button>(typeof(Buttons));
         Bind<GameObject>(typeof(GameObjects));
         Bind<TextMeshProUGUI>(typeof(Texts));
+
         var exitBtn = GetButton((int)Buttons.ExitBtn);
         if (exitBtn != null)
             UI_Base.AddUIEvent(exitBtn.gameObject, _ => UIManager.Instance.ClosePopupUI(this));
@@ -38,7 +42,9 @@ public class UI_Inven : UI_Popup
         _weightText = GetText((int)Texts.InvenWeight);
         if (_weightText == null)
             Debug.LogError("[UI_Inven] InvenWeight 텍스트가 없습니다. 하이어라키 이름을 확인하세요.");
+
         InventoryManager.Instance.Init();
+
         // 슬롯 루트 찾기
         var rootGo = Get<GameObject>((int)GameObjects.InvenSlot);
         if (rootGo == null)
@@ -62,6 +68,7 @@ public class UI_Inven : UI_Popup
                 _slots[i].TryAutoWireChildren();
             }
         }
+
         InventoryManager.Instance.OnInventoryChanged -= RefreshAll;
         InventoryManager.Instance.OnInventoryChanged += RefreshAll;
         RefreshAll();
@@ -79,12 +86,13 @@ public class UI_Inven : UI_Popup
         var entries = InventoryManager.Instance.Entries;
         int N = Mathf.Min(_slots.Length, entries.Count);
 
-        for(int i=0;i<N;i++)
+        for (int i = 0; i < N; i++)
         {
             _slots[i].RefreshUI();
         }
         RefreshWeightUI();
     }
+
     private void RefreshWeightUI()
     {
         if (_weightText == null) return;
@@ -102,5 +110,6 @@ public class UI_Inven : UI_Popup
         else
             _weightText.color = Color.white; // 기본 흰색
     }
-    public static UI_Inven Show() => UIManager.Instance.ShowPopupUI<UI_Inven>();
+
+    public static UI_Inven Show() => UIManager.Instance.ShowPopupUI<UI_Inven>("UI_Inven");
 }

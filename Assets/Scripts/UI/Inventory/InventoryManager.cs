@@ -12,6 +12,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         public Item item; // 아이템
         public int count; // 아이템 개수
     }
+
     [Header("최대 무게")]
     public float maxWeight = 30f; // 최대 무게
     public int slotCount = 40; // 가방 슬롯 개수
@@ -29,7 +30,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
             _entries.Add(new Entry { item = null, count = 0 });
         }
     }
+
     public IReadOnlyList<Entry> Entries => _entries; // 인벤토리 항목 읽기 전용 리스트
+
     public float CurrentWeight // 현재 무게 계산
     {
         get
@@ -54,6 +57,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     {
         if (!CanAdd(item, count)) return false;
         int remain = count;
+
         // 1. 이미 있는 아이템에 추가
         if(item.stackable)
         {
@@ -68,6 +72,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 }
             }
         }
+
         // 2. 빈 슬롯에 추가
         for (int i = 0; i< _entries.Count && remain > 0; i++)
         {
@@ -94,6 +99,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         {
             return; // A가 빈칸이면 아무것도 안함
         }
+
         //같은 아이템이면 합치기
         if(B.item != null && B.item == A.item && A.item.stackable)
         {
@@ -109,6 +115,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
             }
             return;
         }
+
         // 아니면 그냥 스왑
         _entries[from] = B;
         _entries[to] = A;
