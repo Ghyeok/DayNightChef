@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,13 +12,16 @@ using UnityEngine.UI;
 /// </summary>
 public class UI_FishingMiniGamePopup : UI_Popup
 {
+    [SerializeField] private bool useUnScaled = true;
+
     [Header("참조")]
     [SerializeField] private RectTransform ring; // 외곽 링
     [SerializeField] private Image progressBar; // 진행률 바
     [SerializeField] private Button exitButton;
     
     [Header("회전")]
-    public float rotateSpeed = 120f; // 도/초
+    public float rotateSpeed = 240f; // 도/초
+    public float curRotation = 0f;
 
     [Header("판정 & 진행률")]
     private static readonly (float min, float max)[] BonusRanges =
@@ -37,7 +41,7 @@ public class UI_FishingMiniGamePopup : UI_Popup
     [Range(0f, 100f)][SerializeField] private float progress = 0f;
     [Range(1f, 100f)][SerializeField] private float gainPerHit = 20f;
     [Range(1f, 100f)][SerializeField] private float gainBonusPerHit = 25f;
-    [Range(1f, 100f)][SerializeField] private float missPenalty = 5f;
+    [Range(1f, 100f)][SerializeField] private float missPenalty = 10f;
 
     public event Action OnSuccess; // 진행률이 100이 되면 Invoke
     public event Action OnHit; // 성공 범위면 Invoke
@@ -46,6 +50,11 @@ public class UI_FishingMiniGamePopup : UI_Popup
     public enum Buttons
     {
         ExitButton,
+    }
+
+    public enum Texts
+    {
+        ProgressText,
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -58,17 +67,31 @@ public class UI_FishingMiniGamePopup : UI_Popup
     {
         base.Init();
         Bind<Button>(typeof(Buttons));
+        Bind < TextMeshProUGUI>(typeof(Texts));
 
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
         AddUIEvent(exit, ExitButtonOnClicked, Define.UIEvent.Click);
+
+        curRotation = ring ? ring.localEulerAngles.z : 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
+        float dt = useUnScaled? Time.unscaledDeltaTime : Time.deltaTime;
+
+        UpdateProgressUI();
+
+        if (ring != null)
+        {
+            curRotation = NormalizeDegrees(curRotation - rotateSpeed * dt);
+            ring.localRotation = Quaternion.Euler(0f, 0f, curRotation);
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-
+            RandomRotationSpeed();
+            Judge(curRotation);
         }
     }
 
@@ -84,30 +107,58 @@ public class UI_FishingMiniGamePopup : UI_Popup
     }
 
     /// <summary>
-    /// 12시=0°, 시계방향(+) 기준으로
-    /// 시작각 start에서 arcLen(도)만큼 펼쳐진 부채꼴 안에 angle(도)이 포함되는지 검사합니다.
-    /// 각도는 모두 [0,360)으로 정규화하며, 구간이 0도를 넘는 경우에도 올바르게 처리합니다.
+    /// 12시 = 0°, 시계방향(+) 기준으로
+    /// 특정 각도가 범위 내에 있는지를 판단합니다.
     /// </summary>
     /// <param name="angle">판정할 각도</param>
-    /// <param name="start">부채꼴 시작각</param>
-    /// <param name="arcLen">부채꼴 호 길이(도)</param>
-    /// <returns>angle이 부채꼴 안이면 true, 아니면 false 반환</returns>
-    private static bool IsInArcRange(float angle, float start, float arcLen)
+    /// <param name="min">판정 최소 범위</param>
+    /// <param name="max">판정 최대 범위</param>
+    /// <returns>angle이 min과 max 사이에 있으면 true 반환</returns>
+    private static bool IsInRange(float angle, float min, float max)
     {
         angle = NormalizeDegrees(angle);
+        min = NormalizeDegrees(min);
+        max = NormalizeDegrees(max);
 
-        float a = NormalizeDegrees(start);
-        float b = NormalizeDegrees(start + arcLen);
+        // min <= max: 일반 구간, min > max: 0°래핑 구간
+        if (Mathf.Approximately(min, max)) return true; // 전체 원 의도 시
+        return (min <= max) ? (angle >= min && angle <= max)
+                            : (angle >= min || angle <= max);
+    }
 
-        if (arcLen <= 0f) return false;
-        if (arcLen >= 360f) return true;
+    private static bool IsInAnyRange(float angle, (float min, float max)[] ranges)
+    {
+        for (int i = 0; i < ranges.Length; i++)
+            if (IsInRange(angle, ranges[i].min, ranges[i].max))
+                return true;
 
-        return (a <= b) ? (angle >= a && angle <= b) : (angle >= a || angle <= b);
+        return false;
     }
 
     private void Judge(float degree)
     {
-        
+        Debug.Log($"현재 각도: {curRotation}");
+
+        if (IsInAnyRange(degree, BonusRanges))
+        {
+            Debug.Log("보너스!");
+            progress = Mathf.Min(100f, progress + gainBonusPerHit);
+            OnHit?.Invoke();
+        }
+        else if (IsInAnyRange(degree, SuccessRanges))
+        {
+            Debug.Log("성공!");
+            progress = Mathf.Min(100f, progress + gainPerHit);
+            OnHit?.Invoke();
+        }
+        else
+        {
+            Debug.Log("실패!");
+            progress = Mathf.Max(0f, progress - missPenalty);
+            OnMiss?.Invoke();
+        }
+
+        if (progress >= 100f) OnSuccess?.Invoke();
     }
 
     private void UpdateProgressUI()
@@ -115,12 +166,41 @@ public class UI_FishingMiniGamePopup : UI_Popup
         if (progressBar != null)
         {
             progressBar.fillAmount = Mathf.Clamp01(progress / 100f);
+            GetText((int)Texts.ProgressText).text = $"진행률 {progress}%";
         }
     }
+
+    private void RandomRotationSpeed()
+    {
+        float rand = UnityEngine.Random.Range(120f, 360f);
+        rotateSpeed = rand;
+    }
+
+    private void SuccessFishing()
+    {
+        rotateSpeed = 0f;
+
+        // 성공 문구와 함께 잡은 물고기 UI 표시 후 모든 팝업 닫음
+        Debug.Log("낚시 성공!");
+        //UIManager.Instance.CloseAllPopupUI();
+    }
+
+
 
     private void ExitButtonOnClicked(PointerEventData data)
     {
         Debug.Log("ExitButton Clicked!");
         UIManager.Instance.ClosePopupUI(this);
+    }
+
+    private void OnEnable()
+    {
+        OnSuccess -= SuccessFishing;
+        OnSuccess += SuccessFishing;
+    }
+
+    private void OnDisable()
+    {
+        OnSuccess -= SuccessFishing;
     }
 }
