@@ -28,7 +28,7 @@ public class UI_Inven : UI_Popup
     public override void Init()
     {
         base.Init();
-
+        
         Bind<Button>(typeof(Buttons));
         Bind<GameObject>(typeof(GameObjects));
         Bind<TextMeshProUGUI>(typeof(Texts));
