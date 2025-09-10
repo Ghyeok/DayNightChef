@@ -3,7 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[System.Serializable]
+public class InventoryEntry
+{
+    public Item item;
+    public int count;
+}
 public class InventoryManager : SingletonManager<InventoryManager>
 {
     [Serializable]

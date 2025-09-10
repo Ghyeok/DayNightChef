@@ -1,8 +1,8 @@
+using System.IO.Enumeration;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
-public class Item : MonoBehaviour
+[CreateAssetMenu(fileName = "NewItem", menuName = "Item")]
+public class Item : ScriptableObject
 {
     public int item_number; // 아이템 번호
     public string item_name; // 아이템 이름
