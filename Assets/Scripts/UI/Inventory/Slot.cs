@@ -12,25 +12,37 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 {
     [Header("Index")]
     public int index; // 슬롯 인덱스
+
     [Header("UI")]
     [SerializeField] private Image itemImage; // 아이템이미지
     [SerializeField] private TextMeshProUGUI countText; // 아이템갯수
     [SerializeField] private TextMeshProUGUI itemWeight; // 아이템무게
+
     [Header("Drag Visual")]
     [SerializeField] private float draggingAlpha = 0.7f;
-    private Canvas canvas; // 최상위 캔버스
-    private RectTransform rectTransform; // 슬롯 위치
+
+    private Canvas rootCanvas;
+    private RectTransform rootCanvasRect;     // 루트 캔버스의 RectTransform
+    private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
+
     private Transform originalParent;
-    private Vector2 originalAnchoredPos;
-    private GameObject placeholder; // 드래그시 레이아웃 유지를 위한 빈 오브젝트
+    private Vector2 originalAnchoredPos;      // 시작 anchoredPosition
+    private GameObject placeholder;           // 레이아웃 유지용
     private bool isDragging;
+
+    private Vector2 dragOffset;
+    private Camera uiCamera;
+
+    // anchor/pivot 백업용
+    private Vector2 oldAnchorMin, oldAnchorMax, oldPivot;
     void Awake()
     {
-        canvas = GetComponentInParent<Canvas>(true);
-        if (canvas == null)
+        rootCanvas = GetComponentInParent<Canvas>(true);
+        if (rootCanvas != null)
         {
-            Debug.LogError("[Slot] 상위에서 Canvas를 찾지 못했습니다. 이 Slot은 반드시 Canvas 하위에 있어야 합니다.", this);
+            rootCanvasRect = rootCanvas.transform as RectTransform;
+            uiCamera = rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : rootCanvas.worldCamera;
         }
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
@@ -59,7 +71,6 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         }
         if (index < 0 || index >= inv.Entries.Count)
         {
-            Debug.LogWarning($"[Slot] 인덱스 범위 초과 index={index}, entries={inv.Entries.Count}", this);
             if (itemImage) { itemImage.enabled = false; itemImage.sprite = null; }
             if (countText) countText.text = string.Empty;
             if (itemWeight) itemWeight.text = string.Empty;
@@ -101,18 +112,14 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         var inv = InventoryManager.Instance;
         if (inv == null || inv.Entries == null) return;
         if (index < 0 || index >= inv.Entries.Count) return;
+        if (inv.Entries[index].item == null) return; // 빈 슬롯 X
+        if (!rootCanvasRect) return;
 
-        var entry = inv.Entries[index];
-        if (entry.item == null) return; // 빈 슬롯이면 드래그 시작 안 함
-
-        if (canvas == null)
-        {
-            Debug.LogError("[Slot] Canvas가 없어 드래그를 시작할 수 없습니다.", this);
-            return;
-        }
         isDragging = true;
+
         originalParent = transform.parent;
         originalAnchoredPos = rectTransform.anchoredPosition;
+
         // 레이아웃 유지용 placeholder 생성
         placeholder = new GameObject("Placeholder", typeof(LayoutElement));
         var myLE = GetComponent<LayoutElement>();
@@ -123,19 +130,33 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             le.preferredWidth = myLE.preferredWidth; le.preferredHeight = myLE.preferredHeight;
             le.flexibleWidth = myLE.flexibleWidth; le.flexibleHeight = myLE.flexibleHeight;
         }
+        else
         {
-            // LayoutElement가 없다면 Rect 크기로 대강 맞춰줌
-            var rt = GetComponent<RectTransform>();
-            if (rt)
-            {
-                le.preferredWidth = rt.rect.width;
-                le.preferredHeight = rt.rect.height;
-            }
+            var rt = rectTransform;
+            le.preferredHeight = rt.rect.height;
+            le.preferredWidth = rt.rect.width;
         }
+
         placeholder.transform.SetParent(originalParent, false); // placeholder를 원래 부모에 넣기
         placeholder.transform.SetSiblingIndex(transform.GetSiblingIndex());// placeholder를 원래 위치에 넣기
-        // 캔버스 최상단으로 올려 자유 이동
-        transform.SetParent(canvas.transform, false);
+
+        // 부모를 먼저 캔버스로 옮기고 로컬 좌표계 유지
+        transform.SetParent(rootCanvas.transform, false);
+        transform.SetAsLastSibling();
+
+        // anchor/pivot 백업 후 센터로 통일
+        oldAnchorMin = rectTransform.anchorMin;
+        oldAnchorMax = rectTransform.anchorMax;
+        oldPivot = rectTransform.pivot;
+
+        rectTransform.anchorMin = rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(rootCanvasRect, e.position, uiCamera, out var lp))
+        {
+            rectTransform.anchoredPosition = lp;
+        }
+
         // Drop 대상이 이벤트를 받도록 설정
         if (canvasGroup)
         {
@@ -147,13 +168,25 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     public void OnDrag(PointerEventData e)
     {
         if (!isDragging) return;
-        if (canvas == null || rectTransform == null) return;
-        rectTransform.anchoredPosition += e.delta / canvas.scaleFactor; // 캔버스 스케일 보정
+        if (rootCanvas == null || rectTransform == null) return;
+
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(rootCanvasRect, e.position, uiCamera, out var lp))
+        {
+            rectTransform.anchoredPosition = lp;
+        }
+
+        Debug.Log($"[Drag] Mouse:{e.position} Local:{rectTransform.anchoredPosition}");
     }
 
     public void OnEndDrag(PointerEventData e)
     {
         if (!isDragging) return;
+
+        // anchor/pivot 원상복귀
+        rectTransform.anchorMin = oldAnchorMin;
+        rectTransform.anchorMax = oldAnchorMax;
+        rectTransform.pivot = oldPivot;
+
         // 드롭 실패시 원래 위치로 복귀
         ReturnToOriginalParent();
         if (canvasGroup)
