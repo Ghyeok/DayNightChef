@@ -26,6 +26,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
     private List<Entry> _entries; // 인벤토리 항목 리스트
 
+    public bool IsInitialized { get; private set; }
     public void Init() // 인벤토리 초기화
     {
         if(_entries == null)
@@ -34,8 +35,15 @@ public class InventoryManager : SingletonManager<InventoryManager>
         {
             _entries.Add(new Entry { item = null, count = 0 });
         }
+        IsInitialized = true;
+        OnInventoryChanged?.Invoke();
     }
 
+    public override void Awake() // 싱글톤 초기화
+    {
+        base.Awake();
+        Init();
+    }
     public IReadOnlyList<Entry> Entries => _entries; // 인벤토리 항목 읽기 전용 리스트
 
     public float CurrentWeight // 현재 무게 계산

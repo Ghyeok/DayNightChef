@@ -1596,8 +1596,6 @@ MonoBehaviour:
   playerCurHP: 0
   playerAttack: 0
   playerMoveSpeed: 0
-  maxBagWeight: 0
-  curBagWeight: 0
   spawnPoint: {fileID: 1011197465}
   dayPlayerPrefab: {fileID: 6260861146594801975, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
   dayPlayer: {fileID: 0}

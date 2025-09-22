@@ -8,8 +8,8 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
     public float playerAttack;
     public float playerMoveSpeed;
 
-    public float maxBagWeight;
-    public float curBagWeight;
+    public float maxBagWeight => InventoryManager.Instance?.maxWeight ?? 0f;
+    public float curBagWeight => InventoryManager.Instance?.CurrentWeight ?? 0f;
 
     public Transform spawnPoint;
     public GameObject dayPlayerPrefab;
@@ -31,6 +31,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 
     private void Init()
     {
+        
         spawnPoint = GameObject.Find("PlayerSpawner").transform;
         GameObject go = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
         if(go == null)
@@ -49,8 +50,5 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 
         playerAttack = 1f;
         playerMoveSpeed = 3f;
-
-        maxBagWeight = 10f;
-        curBagWeight = maxBagWeight;
     }
 }

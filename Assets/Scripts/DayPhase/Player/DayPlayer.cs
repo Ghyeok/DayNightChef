@@ -13,8 +13,8 @@ public class DayPlayer :  MonoBehaviour , IDamagable
     private float playerAttack;
     private float playerMoveSpeed;
 
-    private float maxBagWeight;
-    private float curBagWeight;
+    public float CurBagWeight => InventoryManager.Instance?.CurrentWeight ?? 0f;
+    public float MaxBagWeight => InventoryManager.Instance?.maxWeight ?? 0f;
 
     [Header("주변 오브젝트 탐지")]
     public float radius;
@@ -39,9 +39,6 @@ public class DayPlayer :  MonoBehaviour , IDamagable
 
         playerAttack = DayPhasePlayerManager.Instance.playerAttack;
         playerMoveSpeed = DayPhasePlayerManager.Instance.playerMoveSpeed;
-
-        maxBagWeight = DayPhasePlayerManager.Instance.maxBagWeight;
-        curBagWeight = DayPhasePlayerManager.Instance.curBagWeight;
 
         DetectGameObject(layerMask);
     }
