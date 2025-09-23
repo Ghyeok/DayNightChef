@@ -87,6 +87,8 @@ GameObject:
   - component: {fileID: 8569600529142062693}
   - component: {fileID: 2966742157012490591}
   - component: {fileID: 7240935713540238082}
+  - component: {fileID: 1172699586382873294}
+  - component: {fileID: 5940667480425516447}
   m_Layer: 5
   m_Name: StoreSlot
   m_TagString: Untagged
@@ -199,6 +201,34 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &1172699586382873294
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4438685240570395839}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &5940667480425516447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4438685240570395839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82c7a4178b6f0ab468dc748281085d7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Index: 0
+  StoreItemImage: {fileID: 0}
+  StoreItemName: {fileID: 0}
+  StoreItemPrice: {fileID: 0}
 --- !u!1 &6867973697764171592
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 3g
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4cae336f1f4afe4469885fab8cd391a3, type: 2}
   m_sharedMaterial: {fileID: 8399884637820582456, guid: 4cae336f1f4afe4469885fab8cd391a3, type: 2}
@@ -400,7 +430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC18C\uAE08"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4cae336f1f4afe4469885fab8cd391a3, type: 2}
   m_sharedMaterial: {fileID: 8399884637820582456, guid: 4cae336f1f4afe4469885fab8cd391a3, type: 2}
@@ -536,7 +566,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -906435098, guid: 2f8285c746c710c4199d71c7691f404f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

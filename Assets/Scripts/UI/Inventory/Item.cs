@@ -11,4 +11,5 @@ public class Item : ScriptableObject
     public int item_maxcount; // 아이템 최대소지갯수
     public bool isGet = false; // 아이템 획득 여부
     public bool stackable = true; // 아이템이 중첩 가능한지 여부
+    public int item_price; // 아이템 가격
 }

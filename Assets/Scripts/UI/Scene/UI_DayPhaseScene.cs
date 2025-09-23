@@ -33,6 +33,8 @@ public class UI_DayPhaseScene : UI_Scene
         PauseButton,
         UpgradeButton,
         WeightButton,
+        //테스트용 상점 버튼
+        TestStoreButton,
     }
 
 
@@ -65,6 +67,9 @@ public class UI_DayPhaseScene : UI_Scene
 
         var weightBtn = GetButton((int)Buttons.WeightButton).gameObject;
         AddUIEvent(weightBtn, _ => UI_Inven.Show(), Define.UIEvent.Click);
+
+        var TestStoreBtn = GetButton((int)Buttons.TestStoreButton).gameObject;
+        AddUIEvent(TestStoreBtn, _ => UI_GroceryStorePopup.Show(), Define.UIEvent.Click);
 
         SetJoyStickToPlayer();
 

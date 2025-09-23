@@ -19,3 +19,4 @@ MonoBehaviour:
   item_maxcount: 99
   isGet: 0
   stackable: 1
+  item_price: 1
