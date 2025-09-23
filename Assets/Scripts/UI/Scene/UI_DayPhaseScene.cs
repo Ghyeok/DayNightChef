@@ -48,7 +48,7 @@ public class UI_DayPhaseScene : UI_Scene
         //SetWeightText(); Update가 아닌 이벤트를 구독하여 필요시에만 호출하도록함
         SetHPBarImage();
         SetInteractionIcon();
-        SetGoldText();
+        //SetGoldText(); 위와 동일
     }
 
     public override void Init()
@@ -73,7 +73,10 @@ public class UI_DayPhaseScene : UI_Scene
 
     private void OnEnable()
     {
-        _waitCo = StartCoroutine(InvWaitAndBind());
+        if (_waitCo == null)
+        {
+            _waitCo = StartCoroutine(WaitAndBind());
+        }
     }
 
     private void OnDisable()
@@ -85,15 +88,29 @@ public class UI_DayPhaseScene : UI_Scene
         }
         if(InventoryManager.Instance != null)
             InventoryManager.Instance.OnInventoryChanged -= RefreshWeightText;
+        if(GameManager.Instance != null)
+            GameManager.Instance.OnGoldChanged -= RefreshGoldText;
     }
 
-    private IEnumerator InvWaitAndBind()
+    private IEnumerator WaitAndBind()
     {
         while (!_bound) yield return null; // 씬 바인드까지 대기
-        while (InventoryManager.Instance == null || !InventoryManager.Instance.IsInitialized) yield return null;
+
         // 인벤토리 매니저 Init까지 대기
+        while (InventoryManager.Instance == null || !InventoryManager.Instance.IsInitialized) yield return null;
+
+        // 게임매니저 Init까지 대기
+        while (GameManager.Instance == null) yield return null;
+
+        // 이벤트 구독
         InventoryManager.Instance.OnInventoryChanged += RefreshWeightText;
+        GameManager.Instance.OnGoldChanged += RefreshGoldText;
+
+        // UI 초기 갱신
         RefreshWeightText();
+        RefreshGoldText();
+
+        _waitCo = null;
     }
 
     public void SetJoyStickToPlayer()
@@ -110,7 +127,7 @@ public class UI_DayPhaseScene : UI_Scene
         GetText((int)Texts.WeightText).text = $"{cur:0.#}/{max:0.#}";
     }
 
-    public void SetGoldText()
+    public void RefreshGoldText()
     {
         GetText((int)Texts.GoldText).text = $"{GameManager.Instance.totalGold}" + "G";
     }
