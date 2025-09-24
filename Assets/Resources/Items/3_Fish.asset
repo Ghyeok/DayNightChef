@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: 3_Fish
   m_EditorClassIdentifier: 
   item_number: 0
+  itemType: 1
   item_name: 
   item_image: {fileID: 0}
   item_weight: 0
   item_maxcount: 0
   isGet: 0
   stackable: 1
+  item_price: 0
