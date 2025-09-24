@@ -30,14 +30,6 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         MaxCount,
     }
 
-    public enum MapType
-    {
-        Warm,
-        Hot,
-        Cold,
-        MaxCount,
-    }
-
     public enum UpgradeType
     {
         Hp,

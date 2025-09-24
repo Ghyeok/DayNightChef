@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class Organism : MonoBehaviour
 {
-    public DayPhaseManager.MapType mapType;
+    public MapType mapType;
     public Ingredient dropIngredient;
 
     public abstract void Init();

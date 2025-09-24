@@ -11,7 +11,7 @@ public class Deer : Animals//IAttack, IDamagable
 
     public override void Init()
     {
-        mapType = DayPhaseManager.MapType.Warm;
+        mapType = MapType.Warm;
         // dropIngredient = ??
         boxcollider=GetComponent<BoxCollider>();
         maxHp = 10f;
