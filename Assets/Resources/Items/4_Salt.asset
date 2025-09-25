@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item_number: 4
   itemType: 3
-  item_name: Salt
+  itemMapType: 0
+  item_name: "\uC18C\uAE08"
   item_image: {fileID: 21300000, guid: 2f8285c746c710c4199d71c7691f404f, type: 3}
   item_weight: 1
   item_maxcount: 99

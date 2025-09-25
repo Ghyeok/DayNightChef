@@ -21,6 +21,7 @@ public class UI_GroceryStorePopup : UI_Popup
         StoreSlots,
     }
     [SerializeField] private GameObject storeSlotPrefab;
+    [SerializeField] private UI_MiniInven miniInven;
 
     private List<StoreSlot> _storeSlots = new();
     private InventoryManager _inv;
@@ -36,6 +37,8 @@ public class UI_GroceryStorePopup : UI_Popup
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
+
+        if(miniInven != null) miniInven.gameObject.SetActive(true);
 
         var exitBtn = GetButton((int)Buttons.ExitBtn);
         if (exitBtn != null)

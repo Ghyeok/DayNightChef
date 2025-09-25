@@ -43,8 +43,6 @@ public class UI_Inven : UI_Popup
         if (_weightText == null)
             Debug.LogError("[UI_Inven] InvenWeight 텍스트가 없습니다. 하이어라키 이름을 확인하세요.");
 
-        InventoryManager.Instance.Init();
-
         // 슬롯 루트 찾기
         var rootGo = Get<GameObject>((int)GameObjects.InvenSlot);
         if (rootGo == null)
