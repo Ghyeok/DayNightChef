@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2632e78a4a0de434891abfdecad25e81, type: 3}
-  m_Name: "6_\uBD81\uADF9\uBBFC\uD2B8"
+  m_Name: 8_IcyRoot
   m_EditorClassIdentifier: 
-  item_number: 6
+  item_number: 8
   itemType: 2
   itemMapType: 2
-  item_name: PolarMint
-  item_image: {fileID: 21300000, guid: 944e1f1bb08f0f5498cbfb13ccadd9c0, type: 3}
+  item_name: "\uB3D9\uD1A0\uC758\uBFCC\uB9AC"
+  item_image: {fileID: 21300000, guid: f3403a72b0b8aa2488a0a2bf5b1d314d, type: 3}
   item_weight: 0
   item_maxcount: 0
   isGet: 0

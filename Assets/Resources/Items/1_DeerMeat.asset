@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: 1_DeerMeat
   m_EditorClassIdentifier: 
   item_number: 1
-  item_name: DeerMeat
+  itemType: 0
+  itemMapType: 0
+  item_name: "\uC0AC\uC2B4\uACE0\uAE30"
   item_image: {fileID: -704395282, guid: 16f4889618ec9014c8a1eba73c0d113b, type: 3}
   item_weight: 3
   item_maxcount: 99
   isGet: 0
   stackable: 1
+  item_price: 0

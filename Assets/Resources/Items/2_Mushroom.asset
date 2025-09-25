@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item_number: 2
   itemType: 2
-  item_name: Mushroom
+  itemMapType: 0
+  item_name: "\uBC84\uC12F"
   item_image: {fileID: 649992934, guid: 16f4889618ec9014c8a1eba73c0d113b, type: 3}
   item_weight: 1
   item_maxcount: 99
