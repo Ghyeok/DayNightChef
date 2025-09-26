@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2632e78a4a0de434891abfdecad25e81, type: 3}
-  m_Name: 1_DeerMeat
+  m_Name: 50_Sugar
   m_EditorClassIdentifier: 
-  item_number: 1
-  item_Type: 0
-  item_MapType: 0
-  item_name: "\uC0AC\uC2B4\uACE0\uAE30"
+  item_number: 50
+  item_Type: 3
+  item_MapType: 3
+  item_name: "\uC124\uD0D5"
   item_requireLevel: 0
-  item_image: {fileID: 21300000, guid: ce6772be5e3741643847db577bf71f6a, type: 3}
-  item_weight: 3
+  item_image: {fileID: 21300000, guid: 13ccd59e321860a4b91937bdb97bddf9, type: 3}
+  item_weight: 1
   item_maxcount: 99
   isGet: 0
   stackable: 1
-  item_price: 0
+  item_price: 1
