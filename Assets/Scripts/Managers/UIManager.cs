@@ -179,12 +179,16 @@ public class UIManager : SingletonManager<UIManager>
     {
         if(interactionIcons != null)
             return;
-
+        if(DayPhaseManager.Instance == null)
+        {
+            Debug.Log("DayPhaseManager Instance가 없습니다!");
+            return;
+        }
         interactionIcons = new Dictionary<DayPhaseManager.PlayerBehavior, Sprite>
         {
-            {DayPhaseManager.PlayerBehavior.Hunting, ResourceManager.Instance.Load<Sprite>("Sprites/Hunting") },
-            {DayPhaseManager.PlayerBehavior.Fishing, ResourceManager.Instance.Load<Sprite>("Sprites/Fishing") },
-            {DayPhaseManager.PlayerBehavior.Gathering, ResourceManager.Instance.Load<Sprite>("Sprites/Gathering") },
+            {DayPhaseManager.PlayerBehavior.Hunting, ResourceManager.Instance.Load<Sprite>("Arts/UI/Hunting") },
+            {DayPhaseManager.PlayerBehavior.Fishing, ResourceManager.Instance.Load<Sprite>("Arts/UI/Fishing") },
+            {DayPhaseManager.PlayerBehavior.Gathering, ResourceManager.Instance.Load<Sprite>("Arts/UI/Gathering") },
         };
     }
 
@@ -193,8 +197,12 @@ public class UIManager : SingletonManager<UIManager>
     /// </summary>
     public Sprite SetInteractionButton(DayPhaseManager.PlayerBehavior behavior)
     {
+        if(DayPhaseManager.Instance == null)
+        {
+            Debug.Log("DayPhaseManager Instance가 없습니다!");
+            return null;
+        }
         InitInteractionButton();
-
         if (interactionIcons == null || !interactionIcons.ContainsKey(behavior))
         {
             Debug.Log("버튼 아이콘을 찾을 수 없습니다!");

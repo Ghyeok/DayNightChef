@@ -97,6 +97,14 @@ public class UI_DayPhaseScene : UI_Scene
             GameManager.Instance.OnGoldChanged -= RefreshGoldText;
     }
 
+    private static float SafeRatio (float cur, float max) // 분모 0 방지
+    {
+        if (max <= 0f || float.IsNaN(max) || float.IsInfinity(max)) return 0f;
+        float r = cur / max;
+        if (!float.IsFinite(r)) return 0f;
+        return Mathf.Clamp01(r);
+    }
+
     private IEnumerator WaitAndBind()
     {
         while (!_bound) yield return null; // 씬 바인드까지 대기
@@ -106,6 +114,10 @@ public class UI_DayPhaseScene : UI_Scene
 
         // 게임매니저 Init까지 대기
         while (GameManager.Instance == null) yield return null;
+
+        // HP 준비 대기 : 플레이어 스텟이 준비될때까지 대기
+        while (DayPhasePlayerManager.Instance == null || DayPhasePlayerManager.Instance.playerMaxHP <= 0f)
+            yield return null;
 
         // 이벤트 구독
         InventoryManager.Instance.OnInventoryChanged += RefreshWeightText;
@@ -127,39 +139,63 @@ public class UI_DayPhaseScene : UI_Scene
 
     public void RefreshWeightText()
     {
-        float cur = InventoryManager.Instance?.CurrentWeight ?? 0f;
-        float max = InventoryManager.Instance?.maxWeight ?? 0f;
+        var inv = InventoryManager.Instance;
+        if (inv == null)
+        {
+            GetText((int)Texts.WeightText).text = "0/0";
+            return;
+        }
+
+        float cur = inv.CurrentWeight;
+        float max = inv.maxWeight;
+        if (max <= 0f) max = 1f;
+
+        cur = Mathf.Clamp(cur, 0f, max);
         GetText((int)Texts.WeightText).text = $"{cur:0.#}/{max:0.#}";
     }
 
     public void RefreshGoldText()
     {
-        GetText((int)Texts.GoldText).text = $"{GameManager.Instance.totalGold}" + "G";
+        var gm = GameManager.Instance;
+        if (gm == null)
+        {
+            GetText((int)Texts.GoldText).text = "0G";
+            return;
+        }
+
+        GetText((int)Texts.GoldText).text = $"{gm.totalGold}G";
     }
 
     public void SetHPBarImage()
     {
-        GetImage((int)Images.HPBarImage).fillAmount = DayPhasePlayerManager.Instance.playerCurHP / DayPhasePlayerManager.Instance.playerMaxHP;
+        var dpm = DayPhasePlayerManager.Instance;
+        if (dpm == null)
+            return;
+
+        float fill = SafeRatio(dpm.playerCurHP, dpm.playerMaxHP);
+        var img = GetImage((int)Images.HPBarImage);
+        if (img != null)
+            img.fillAmount = fill;
     }
 
     private void SetInteractionIcon()
     {
         Button button = GetButton((int)Buttons.InteractionButton);
         var interact = DayPhasePlayerManager.Instance.currentInteract;
-
-        if(interact == null)
+        if (interact == null)
         {
             button.image.sprite = null;
             button.image.enabled = false;
             return;
         }
-
         button.image.enabled = true;
         button.image.sprite = UIManager.Instance.SetInteractionButton(interact.GetBehaviorType());
     }
-
     public void InteractionButtonOnclicked(PointerEventData data)
     {
-        DayPhasePlayerManager.Instance.currentInteract.Interact(DayPhasePlayerManager.Instance.dayPlayer);
+        var dpm = DayPhasePlayerManager.Instance;
+        if (dpm?.currentInteract == null || dpm.dayPlayer == null) return;
+
+        dpm.currentInteract.Interact(dpm.dayPlayer);
     }
 }

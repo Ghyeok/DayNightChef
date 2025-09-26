@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e923ed3f8d9194ea07ddee445021bb, type: 3}
+  m_Name: BagWeight
+  m_EditorClassIdentifier: 
+  statType: 1
+  useValue: 1
+  records:
+  - level: 1
+    value: 30
+    goldToNext: 3
+  - level: 2
+    value: 35
+    goldToNext: 5
+  - level: 3
+    value: 40
+    goldToNext: 8
+  - level: 4
+    value: 45
+    goldToNext: 10
+  - level: 5
+    value: 50
+    goldToNext: 10
+  - level: 6
+    value: 55
+    goldToNext: 10
+  - level: 7
+    value: 60
+    goldToNext: 10
+  - level: 8
+    value: 65
+    goldToNext: 10
+  - level: 9
+    value: 70
+    goldToNext: 10
+  - level: 10
+    value: 75
+    goldToNext: 10

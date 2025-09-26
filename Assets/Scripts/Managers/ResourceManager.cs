@@ -26,7 +26,7 @@ public class ResourceManager : SingletonManager<ResourceManager>
         return Object.Instantiate(prefab, parent);
     } //Load를 사용해 prefab 에 path에 해당하는 gameobject타입의 에셋을 할당
 
-    public void Destory(GameObject go)
+    public void Destroy(GameObject go)
     {
         if (go == null)
             return;

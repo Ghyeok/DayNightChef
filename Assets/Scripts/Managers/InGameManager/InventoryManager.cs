@@ -18,8 +18,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
         public int count; // 아이템 개수
     }
 
-    [Header("최대 무게")]
-    public float maxWeight = 30f; // 최대 무게
+    [Header("최대 무게(기본값, DB 로드전 임시 무게")]
+    [SerializeField] private float defaultMaxWeight = 30f;
     public int slotCount = 40; // 가방 슬롯 개수
 
     public event Action OnInventoryChanged; // 인벤토리 변경 이벤트
@@ -27,6 +27,39 @@ public class InventoryManager : SingletonManager<InventoryManager>
     private List<Entry> _entries; // 인벤토리 항목 리스트
 
     public bool IsInitialized { get; private set; }
+    private PlayerStats _ps;
+    private PlayerStats PS
+    {
+        get
+        {
+            if (_ps == null)
+                _ps = FindFirstObjectByType<PlayerStats>();
+            return _ps;
+        }
+    }
+
+    public float maxWeight
+    {
+        get
+        {
+            if (PS != null && PS.IsReady)
+            {
+                return PS.GetValue(StatType.BagWeight);
+            }
+            return defaultMaxWeight;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        PlayerStats.OnReady -= HandlePlayerStatsReady;
+    }
+
+    private void HandlePlayerStatsReady()
+    {
+        OnInventoryChanged?.Invoke();
+    }
+
     public void Init() // 인벤토리 초기화
     {
         if (_entries == null)
@@ -37,6 +70,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
             }
         IsInitialized = true;
         OnInventoryChanged?.Invoke();
+
+        PlayerStats.OnReady -= HandlePlayerStatsReady;
+        PlayerStats.OnReady += HandlePlayerStatsReady;
     }
 
     public override void Awake() // 싱글톤 초기화

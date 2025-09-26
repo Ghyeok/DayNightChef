@@ -56,7 +56,7 @@ public class GameManager : SingletonManager<GameManager>
     //테스트용
     public void GiveGold()
     {
-        int g = 1;
+        int g = 100;
         if (GameManager.Instance != null)
         {
             GameManager.Instance.AddGold(g);

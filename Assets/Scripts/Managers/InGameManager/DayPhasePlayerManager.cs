@@ -1,12 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
 public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 {
-    public float playerMaxHP;
-    public float playerCurHP;
+    public float playerMaxHP { get; private set; }
+    public float playerCurHP { get; private set; }
 
-    public float playerAttack;
-    public float playerMoveSpeed;
+    public float playerAttack   { get; private set; }
+    public float playerMoveSpeed { get; private set; }
 
     public float maxBagWeight => InventoryManager.Instance?.maxWeight ?? 0f;
     public float curBagWeight => InventoryManager.Instance?.CurrentWeight ?? 0f;
@@ -20,7 +21,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
     public override void Awake()
     {
         base.Awake();
-        Init();
+        StartCoroutine(InitRoutine());
     }
 
     // Update is called once per frame
@@ -29,12 +30,11 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         
     }
 
-    private void Init()
+    private IEnumerator InitRoutine()
     {
-        
         spawnPoint = GameObject.Find("PlayerSpawner").transform;
         GameObject go = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
-        if(go == null)
+        if (go == null)
         {
             dayPlayer = Instantiate(dayPlayerPrefab, spawnPoint.position, spawnPoint.rotation);
         }
@@ -45,10 +45,12 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
             dayPlayer.transform.rotation = spawnPoint.rotation;
         }
 
-        playerMaxHP = 100f;
+        PlayerStats ps = null;
+        while ((ps = FindFirstObjectByType<PlayerStats>()) == null || !ps.IsReady)
+                yield return null;
+        playerMaxHP = ps.GetValue(StatType.MaxHP);
         playerCurHP = playerMaxHP;
-
-        playerAttack = 1f;
-        playerMoveSpeed = 3f;
+        playerAttack = ps.GetValue(StatType.Attack);
+        playerMoveSpeed = ps.GetValue(StatType.MoveSpeed);
     }
 }
