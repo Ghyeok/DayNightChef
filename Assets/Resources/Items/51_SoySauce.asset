@@ -15,10 +15,10 @@ MonoBehaviour:
   item_number: 51
   item_Type: 3
   item_MapType: 3
-  item_name: "\uC124\uD0D5"
-  item_requireLevel: 0
-  item_image: {fileID: 21300000, guid: 13ccd59e321860a4b91937bdb97bddf9, type: 3}
-  item_weight: 1
+  item_name: "\uAC04\uC7A5"
+  item_requireLevel: 1
+  item_image: {fileID: 21300000, guid: 28d6d21aac8940e42a6f238e1f433374, type: 3}
+  item_weight: 0.5
   item_maxcount: 99
   isGet: 0
   stackable: 1

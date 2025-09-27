@@ -16,9 +16,9 @@ MonoBehaviour:
   item_Type: 0
   item_MapType: 0
   item_name: "\uBA67\uB3FC\uC9C0\uACE0\uAE30"
-  item_requireLevel: 0
+  item_requireLevel: 1
   item_image: {fileID: 21300000, guid: a55d1420db6067342bc1dcb833d9e04a, type: 3}
-  item_weight: 0
+  item_weight: 3
   item_maxcount: 99
   isGet: 0
   stackable: 1

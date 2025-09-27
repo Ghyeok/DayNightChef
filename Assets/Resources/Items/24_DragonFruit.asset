@@ -16,8 +16,8 @@ MonoBehaviour:
   item_Type: 2
   item_MapType: 1
   item_name: "\uC6A9\uACFC"
-  item_requireLevel: 0
-  item_image: {fileID: 649992934, guid: 16f4889618ec9014c8a1eba73c0d113b, type: 3}
+  item_requireLevel: 1
+  item_image: {fileID: 21300000, guid: 5e8e989cd10888149a9e60e9f5f4d012, type: 3}
   item_weight: 1
   item_maxcount: 99
   isGet: 0
