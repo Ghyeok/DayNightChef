@@ -907,6 +907,7 @@ GameObject:
   - component: {fileID: 7254270711873079152}
   - component: {fileID: 2589515330124842441}
   - component: {fileID: 1650865576375485524}
+  - component: {fileID: 5012944655980682014}
   m_Layer: 5
   m_Name: AttackBtn
   m_TagString: Untagged
@@ -1016,6 +1017,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &5012944655980682014
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370168683097415963}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1396423359807007736
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1116,7 @@ GameObject:
   - component: {fileID: 8545685827711723934}
   - component: {fileID: 5132845478326281595}
   - component: {fileID: 5352610434604195354}
+  - component: {fileID: 5126382326788587841}
   m_Layer: 5
   m_Name: WeightBtn
   m_TagString: Untagged
@@ -1212,6 +1226,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &5126382326788587841
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430292466349122690}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1443852789968230451
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,6 +1720,7 @@ GameObject:
   - component: {fileID: 696037016031640785}
   - component: {fileID: 371750161529858336}
   - component: {fileID: 3226340668174537411}
+  - component: {fileID: 7927350880644027058}
   m_Layer: 5
   m_Name: UI_UpgradePopup
   m_TagString: Untagged
@@ -1785,6 +1812,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7927350880644027058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2842449483600824358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75cf92a89aaf2f84a9693b603ba1d592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3089083968682310290
 GameObject:
   m_ObjectHideFlags: 0
@@ -3265,6 +3304,7 @@ GameObject:
   - component: {fileID: 6161812807029455948}
   - component: {fileID: 4697048517864854036}
   - component: {fileID: 8976562387991967532}
+  - component: {fileID: 2805154361578634133}
   m_Layer: 5
   m_Name: SpeedBtn
   m_TagString: Untagged
@@ -3374,6 +3414,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &2805154361578634133
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5789550082927857395}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5941812092735565713
 GameObject:
   m_ObjectHideFlags: 0
@@ -3748,6 +3800,7 @@ GameObject:
   - component: {fileID: 7722087699785105765}
   - component: {fileID: 7660827677111152933}
   - component: {fileID: 4777684921369255898}
+  - component: {fileID: 756444164767624124}
   m_Layer: 5
   m_Name: HPBtn
   m_TagString: Untagged
@@ -3857,6 +3910,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &756444164767624124
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6642347699037723757}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7061595434850613850
 GameObject:
   m_ObjectHideFlags: 0
@@ -4103,6 +4168,7 @@ GameObject:
   - component: {fileID: 8848958078589087393}
   - component: {fileID: 7606697332553717863}
   - component: {fileID: 1161065288931872574}
+  - component: {fileID: 2787599054000721420}
   m_Layer: 5
   m_Name: FishingBtn
   m_TagString: Untagged
@@ -4212,6 +4278,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &2787599054000721420
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7482205908788454633}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7611500917276870145
 GameObject:
   m_ObjectHideFlags: 0

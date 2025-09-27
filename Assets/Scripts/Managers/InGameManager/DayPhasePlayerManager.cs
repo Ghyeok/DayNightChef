@@ -53,4 +53,5 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         playerAttack = ps.GetValue(StatType.Attack);
         playerMoveSpeed = ps.GetValue(StatType.MoveSpeed);
     }
+    
 }

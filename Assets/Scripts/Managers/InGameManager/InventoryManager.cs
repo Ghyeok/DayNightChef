@@ -27,6 +27,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     private List<Entry> _entries; // 인벤토리 항목 리스트
 
     public bool IsInitialized { get; private set; }
+    public IReadOnlyList<Entry> Entries => _entries; // 인벤토리 항목 읽기 전용 리스트
     private PlayerStats _ps;
     private PlayerStats PS
     {
@@ -38,6 +39,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
     }
 
+    private float _cacheMaxWeight = -1f; 
     public float maxWeight
     {
         get
@@ -49,16 +51,48 @@ public class InventoryManager : SingletonManager<InventoryManager>
             return defaultMaxWeight;
         }
     }
+    private void OnEnable()
+    {
+        PlayerStats.OnReady -= HandlePlayerStatsReady;
+        PlayerStats.OnReady += HandlePlayerStatsReady;
 
+        PlayerStats.OnStatChanged -= HandlePlayerStatChanged;
+        PlayerStats.OnStatChanged += HandlePlayerStatChanged;
+
+        SyncCapacity();
+    }
+
+    private void OnDisable()
+    {
+        PlayerStats.OnReady -= HandlePlayerStatsReady;
+        PlayerStats.OnStatChanged -= HandlePlayerStatChanged;
+    }
     private void OnDestroy()
     {
         PlayerStats.OnReady -= HandlePlayerStatsReady;
+        PlayerStats.OnStatChanged -= HandlePlayerStatChanged;
+    }
+
+    private void HandlePlayerStatChanged(StatType type, int oldlv, int newlv)
+    {
+        if (type != StatType.BagWeight) return;
+        SyncCapacity();
+    }
+    private void SyncCapacity()
+    {
+        float newMax = maxWeight;
+        if (!Mathf.Approximately(_cacheMaxWeight, newMax))
+        {
+            _cacheMaxWeight = newMax;
+            OnInventoryChanged?.Invoke();
+        }
     }
 
     private void HandlePlayerStatsReady()
     {
-        OnInventoryChanged?.Invoke();
+        SyncCapacity();
     }
+
 
     public void Init() // 인벤토리 초기화
     {
@@ -80,7 +114,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
         base.Awake();
         Init();
     }
-    public IReadOnlyList<Entry> Entries => _entries; // 인벤토리 항목 읽기 전용 리스트
 
     public float CurrentWeight // 현재 무게 계산
     {

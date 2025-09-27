@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 2410568963224825329}
   - component: {fileID: 7104128400004995064}
   - component: {fileID: 8648977256035703657}
+  - component: {fileID: 4646320457783266805}
   m_Layer: 5
-  m_Name: UI_SelectPopup
+  m_Name: UI_ConfirmPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,6 +104,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4646320457783266805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095890732342738064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953fbac7157cf9946ba6605b7fd30886, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1364911471049672964
 GameObject:
   m_ObjectHideFlags: 0

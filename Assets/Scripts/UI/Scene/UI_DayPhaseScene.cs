@@ -71,6 +71,9 @@ public class UI_DayPhaseScene : UI_Scene
         var TestStoreBtn = GetButton((int)Buttons.TestStoreButton).gameObject;
         AddUIEvent(TestStoreBtn, _ => UI_GroceryStorePopup.Show(), Define.UIEvent.Click);
 
+        var UpgradeBtn = GetButton((int)Buttons.UpgradeButton).gameObject;
+        AddUIEvent(UpgradeBtn, _ => UI_UpgradePopup.Show(), Define.UIEvent.Click);
+
         SetJoyStickToPlayer();
 
         _bound = true;

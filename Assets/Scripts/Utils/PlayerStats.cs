@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     public static event Action OnReady;
+    public static event Action<StatType, int, int> OnStatChanged;
     //각 스텟의 현재 레벨을 저장하는 딕셔너리
     [SerializeField]
     private Dictionary<StatType, int> levels = new()
@@ -39,6 +40,10 @@ public class PlayerStats : MonoBehaviour
 
     public float GetValue(StatType type) =>
         db != null ? db.GetValue(type, GetLevel(type)) : 0f;
+    public float GetValueAtLevel(StatType type, int level)
+    {
+        return db != null ? db.GetValue(type, level) : 0f;
+    }
 
     public int GetNextCost(StatType type)
     {
@@ -61,14 +66,21 @@ public class PlayerStats : MonoBehaviour
 
     public bool TryUpgrade(StatType type)
     {
-        if (db == null) return false;
+        if (db == null || _gm == null) return false;
 
-        int cur = GetLevel(type);
+        int oldLv = GetLevel(type);
         int max = db.GetMaxLevel(type);
-        if (cur >= max) return false;
-        int cost = db.GetGoldToNext(type, cur);
+        if (oldLv >= max) return false;
+
+        int cost = db.GetGoldToNext(type, oldLv);
         if (_gm == null || !_gm.TrySpendGold(cost)) return false;
-        levels[type] = cur + 1;
+        _gm.SpendGold(cost);
+        int newLv = oldLv + 1;
+        levels[type] = newLv;
+
+        OnStatChanged?.Invoke(type, oldLv, newLv);
         return true;
     }
+
+
 }
