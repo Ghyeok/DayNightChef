@@ -52,6 +52,11 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         playerCurHP = playerMaxHP;
         playerAttack = ps.GetValue(StatType.Attack);
         playerMoveSpeed = ps.GetValue(StatType.MoveSpeed);
+        var dp = dayPlayer.GetComponent<DayPlayer>();
+        if (dp != null)
+        {
+            dp.Initialize(playerMaxHP, playerAttack, playerMoveSpeed);
+        }
     }
     
 }

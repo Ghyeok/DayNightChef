@@ -5,13 +5,10 @@ using System.Collections;
 public class DayPlayer :  MonoBehaviour , IDamagable
 {
     [Header("플레이어 스탯")]
-    [SerializeField]
-    private float playerMaxHP;
-    [SerializeField]
-    private float playerCurHP;
-
-    private float playerAttack;
-    private float playerMoveSpeed;
+    [SerializeField] private float playerMaxHP;
+    [SerializeField] private float playerCurHP;
+    [SerializeField] private float playerAttack;
+    [SerializeField] private float playerMoveSpeed;
 
     public float CurBagWeight => InventoryManager.Instance?.CurrentWeight ?? 0f;
     public float MaxBagWeight => InventoryManager.Instance?.maxWeight ?? 0f;
@@ -25,6 +22,13 @@ public class DayPlayer :  MonoBehaviour , IDamagable
     {
         radius = 1f;
     }
+    public void Initialize(float maxHP, float attack, float moveSpeed)
+    {
+        playerMaxHP = maxHP;
+        playerCurHP = maxHP;   // 초기 한 번만 풀피
+        playerAttack = attack;
+        playerMoveSpeed = moveSpeed;
+    }
 
     private void OnDrawGizmos()
     {
@@ -34,11 +38,6 @@ public class DayPlayer :  MonoBehaviour , IDamagable
 
     void Update()
     {
-        playerMaxHP = DayPhasePlayerManager.Instance.playerMaxHP;
-        playerCurHP = DayPhasePlayerManager.Instance.playerCurHP;
-
-        playerAttack = DayPhasePlayerManager.Instance.playerAttack;
-        playerMoveSpeed = DayPhasePlayerManager.Instance.playerMoveSpeed;
 
         DetectGameObject(layerMask);
     }
@@ -46,12 +45,7 @@ public class DayPlayer :  MonoBehaviour , IDamagable
     public void TakeDamage(float damage)
     {
         //애니메이션 추가
-        playerCurHP -= damage;
-
-        if (playerCurHP < 0)
-        {
-
-        }
+        playerCurHP = Mathf.Max(0f, playerCurHP - damage);
     }
 
     public void Dead()
