@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2632e78a4a0de434891abfdecad25e81, type: 3}
-  m_Name: 8_SnakeTail
+  m_Name: 02_DeerHorn
   m_EditorClassIdentifier: 
-  item_number: 8
+  item_number: 2
   item_Type: 0
-  item_MapType: 1
-  item_name: "\uBC40\uC758 \uAF2C\uB9AC"
+  item_MapType: 0
+  item_name: "\uC0AC\uC2B4\uC758 \uBFD4"
   item_requireLevel: 1
-  item_image: {fileID: 21300000, guid: c50601d5c0f24d243a5cca1e4757c1b1, type: 3}
+  item_image: {fileID: 21300000, guid: 10a4f7ec84f2bba4d8905a8f8c069e9e, type: 3}
   item_weight: 2
   item_maxcount: 99
   isGet: 0

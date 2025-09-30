@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2632e78a4a0de434891abfdecad25e81, type: 3}
-  m_Name: 9_JaguarMeat
+  m_Name: 09_JaguarMeat
   m_EditorClassIdentifier: 
   item_number: 9
   item_Type: 0
