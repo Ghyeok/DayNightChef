@@ -46,10 +46,11 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     public int fishingLevel;
     public int bagLevel;
 
+    public MapType curMapType;
+
     public override void Awake()
     {
         base.Awake();
-
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -79,5 +80,4 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     {
         UI_DayPhaseScene _day = UIManager.Instance.ShowSceneUI<UI_DayPhaseScene>("DayPhaseScene");
     }
-
 }

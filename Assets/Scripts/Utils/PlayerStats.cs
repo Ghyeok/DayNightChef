@@ -81,6 +81,4 @@ public class PlayerStats : MonoBehaviour
         OnStatChanged?.Invoke(type, oldLv, newLv);
         return true;
     }
-
-
 }
