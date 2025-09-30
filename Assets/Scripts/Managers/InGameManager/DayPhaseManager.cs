@@ -27,6 +27,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         Hunting,
         Fishing,
         Gathering,
+        GroceryStore,
         MaxCount,
     }
 

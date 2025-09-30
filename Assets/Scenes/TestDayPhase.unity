@@ -422,6 +422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52d62021ab77b6249ba8798b8f70182e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropItems: []
 --- !u!4 &110683020
 Transform:
   m_ObjectHideFlags: 0
@@ -2189,6 +2190,7 @@ MonoBehaviour:
   knifeLevel: 0
   fishingLevel: 0
   bagLevel: 0
+  curMapType: 0
 --- !u!4 &1549417567
 Transform:
   m_ObjectHideFlags: 0

@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
-using System.Linq.Expressions;
 using System.Collections;
 public class UI_ConfirmPopup : UI_Popup
 {

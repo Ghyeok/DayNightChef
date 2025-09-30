@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
   m_Name: Recipe
   m_EditorClassIdentifier: 
-  recipeType: 0
+  recipe_number: 0
+  recipe_name: 
+  recipe_type: 0
   recipePrice: 0
-  requireItems: []
+  recipe_requireItems:
+  - item: {fileID: 0}
+    count: 0
+  - item: {fileID: 0}
+    count: 0

@@ -182,7 +182,8 @@ public class UI_FishingMiniGamePopup : UI_Popup
 
         // 성공 문구와 함께 잡은 물고기 UI 표시 후 모든 팝업 닫음
         Debug.Log("낚시 성공!");
-        Item item = ItemManager.Instance.GetFishingItem(DayPhaseManager.Instance.curMapType, ItemType.Fish, DayPhaseManager.Instance.fishingLevel); // 현재 낚싯대 레벨 가져오는 법?
+        int testLv = 1;
+        Item item = ItemManager.Instance.GetFishingItem(DayPhaseManager.Instance.curMapType, ItemType.Fish, testLv); // 현재 낚싯대 레벨 가져오는 법?
         Debug.Log($"{item.item_name} 획득!");
     }
 
