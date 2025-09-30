@@ -3,24 +3,24 @@ using UnityEngine;
 
 public class AttackRange : MonoBehaviour 
 {
-    Animals parentAnimal;
-    float damage;
-    DayPlayer player;
+    Animals owner;
 
     private void Awake()
     {
-        parentAnimal = GetComponentInParent<Animals>();
-        
-        damage = GetComponentInParent<Animals>().attack;
+        owner = GetComponentInParent<Animals>();
+        var col = GetComponent<Collider>();
+        if (col != null) col.isTrigger = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        player = other.gameObject.GetComponent<DayPlayer>();
-        if(other.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;
+
+        if (other.TryGetComponent<DayPlayer>(out var player))
         {
-            player.TakeDamage(damage);
-        }    
+            float dmg = owner != null ? owner.AttackPower : 0f;
+            player.TakeDamage(dmg);
+        }
     }
 }
     

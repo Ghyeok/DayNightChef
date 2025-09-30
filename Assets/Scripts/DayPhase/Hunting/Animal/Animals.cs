@@ -1,69 +1,140 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
+using UnityEngine.AI;
+using UnityEngine.XR;
+using AnimalOwnedStates;
 
+public enum AnimalStateType { Patrol, Chase, Attack, Die }
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))]
 public abstract class Animals : Organism , IDamagable
 
 {
-    // 주석
-    public float maxHp;
-    public float currentHp;
-    public float attack;
-    public float speed;
-    public float attackRange;
-    public bool isDead;
+    [Header("Stats")]
+    [SerializeField] protected float maxHP = 10f;
+    [SerializeField] protected float currentHP = 10f;
+    [SerializeField] protected float attack = 3f;
+    [SerializeField] protected float speed = 1f;
+    [SerializeField] protected float attackRange = 3f;
+    [SerializeField] protected bool isDead = false;
+
+    [Header("Patrol/Chase Tunings")]
+    [SerializeField] protected float patrolRadius = 20f;
+    [SerializeField] protected float waitSeconds = 2f;
+    [SerializeField] protected float moveDistance = 5f;
+    [SerializeField] protected float chaseDIstance = 25f; // 스폰으로부터 최대 추격 거리
+    [SerializeField] protected float targetUpdateMinDelta = 0.5f; // 타겟 위치 갱신 임계치
+
+    [Header("References")]
+    [SerializeField] protected Collider attackTrigger; // 하위 오브젝트의 Trigger Collider
+    [SerializeField] protected Collider mainCollider; // 본체 콜라이더
+    [SerializeField] protected Animator anim;
+    [SerializeField] protected NavMeshAgent agent;
+
+    [Header("Runtime")]
     public Vector3 spawnPoint;
-    //가지고있는 모든 상태
-    private State[] states;
-    private State currentState;
-    public BoxCollider attackcollider;
 
-    // Animals가 가지는 모든 상태
+    [Header("Combat")]
+    [SerializeField] protected float damagedChaseDuration = 5f; // 피격 후 어그로 유지 시간
+    public DayPlayer Player { get; set; }
+    public Action<Animals> OnRequestRemove; // animalist에서 제거 등 처리
+    public Transform AggroTarget { get; private set; }
+    float _aggroExpireUntil = -1f;
+    public bool HasAggro => Time.time <= _aggroExpireUntil;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected StateMachine<Animals> fsm;
+    protected readonly Dictionary<AnimalStateType, State<Animals>> states = new Dictionary<AnimalStateType, State<Animals>>();
+
+    // 외부에서 읽기용
+    public float AttackPower => attack;
+    public float Speed => speed;
+    public float AttackRange => attackRange;
+    public float PatrolRadius => patrolRadius;
+    public float WaitSeconds => waitSeconds;
+    public float ChaseDIstance => chaseDIstance;
+    public float TargetUpdateMinDeltaSqr => targetUpdateMinDelta * targetUpdateMinDelta;
+    public Collider AttackTrigger => attackTrigger;
+    public bool IsFullHp => currentHP >= maxHP - 0.01f;
+
+    public override void Init()
     {
-        spawnPoint = transform.position;
-        ChangeState(DayPhaseManager.AnimalStates.Patrol);
+        
     }
 
     public override void Setup()
     {
-        states = new State[4];
-        states[(int)DayPhaseManager.AnimalStates.Patrol] = new AnimalOwnedStates.Patrol();
-        states[(int)DayPhaseManager.AnimalStates.Attack] = new AnimalOwnedStates.Attack();
-        states[(int)DayPhaseManager.AnimalStates.Die] = new AnimalOwnedStates.Die();
-        states[(int)DayPhaseManager.AnimalStates.Chase] = new AnimalOwnedStates.Chase();
+        if (anim == null) anim = GetComponent<Animator>();
+        if (agent == null) agent = GetComponent<NavMeshAgent>();
+        if (mainCollider == null) mainCollider = GetComponent<Collider>();
 
-        //현재 상태를 Patrol 상태로 결정
-        ChangeState(DayPhaseManager.AnimalStates.Patrol);
+        if (spawnPoint == Vector3.zero) spawnPoint = transform.position;
+        if (attackTrigger != null) attackTrigger.enabled = false;
 
+        currentHP = Mathf.Clamp(currentHP, 0, maxHP);
+        isDead = currentHP <= 0f;
+
+        fsm = new StateMachine<Animals>();
+        // 상태 인스턴스 등록
+        states[AnimalStateType.Patrol] = new AnimalOwnedStates.Patrol();
+        states[AnimalStateType.Attack] = new AnimalOwnedStates.Attack();
+        states[AnimalStateType.Chase] = new AnimalOwnedStates.Chase();
+        states[AnimalStateType.Die] = new AnimalOwnedStates.Die();
+
+        ChangeState(AnimalStateType.Patrol);
     }
+
+    protected virtual void Awake()
+    {
+        Init();
+        Setup();
+    }
+
+    protected virtual void Update()
+    {
+        Updated();
+    }
+
     public override void Updated()
     {
-        if (currentState != null)
-        {
-            currentState.Execute(this);
-        }
+        fsm?.Update(this);
     }
 
-    public void ChangeState(DayPhaseManager.AnimalStates newState)
+    public void ChangeState(AnimalStateType next)
     {
-        //새로 바꾸려는 상태가 비어있으면 상태를 바꾸지 않는다.
-        if (states[(int)newState] == null) return;
-        //현재 재생중인 상태가 있으면 Exit()메소드 호출
-        if (currentState != null)
+        if (!states.TryGetValue(next, out var state)) return;
+        fsm.ChangeState(state, this);
+    }
+
+    public virtual void TakeDamage(float damage)
+    {
+        TakeDamage(damage, null);
+    }
+
+    public virtual void TakeDamage(float damage, Transform attacker)
+    {
+        if (isDead) return;
+
+        currentHP = Mathf.Clamp(currentHP - damage, 0f, maxHP);
+
+        if (attacker != null)
         {
-            currentState.Exit(this);
+            AggroTarget = attacker;
+            _aggroExpireUntil = Time.time + damagedChaseDuration;
+            if (Player == null) Player = attacker.GetComponent<DayPlayer>();
         }
 
-        //새로운 상태로 변경하고, 새로바뀐 상태의 Enter()메소드 호출
-        currentState = states[(int)newState];
-        currentState.Enter(this);
-
+        if (currentHP <= 0f)
+        {
+            Die();
+            return;
+        }
+        ChangeState(AnimalStateType.Chase);
     }
-    public void TakeDamage(float damage)
+
+    protected virtual void Die()
     {
-        currentHp -= damage;
-        if(currentHp <= 0) ChangeState(DayPhaseManager.AnimalStates.Die);
-        else ChangeState(DayPhaseManager.AnimalStates.Chase);
+        isDead = true;
+        ChangeState(AnimalStateType.Die);
     }
 }

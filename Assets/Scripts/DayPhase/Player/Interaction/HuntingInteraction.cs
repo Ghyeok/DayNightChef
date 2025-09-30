@@ -12,6 +12,6 @@ public class HuntingInteraction : MonoBehaviour, IInteract
         Animals animal = GetComponent<HuntingInteraction>().gameObject.GetComponent<Animals>();
 
         animal.TakeDamage(DayPhasePlayerManager.Instance.playerAttack);
-        Debug.Log($"Attack Success! Remain HP: {animal.currentHp}");
+        Debug.Log($"Attack Success!");
     }
 }

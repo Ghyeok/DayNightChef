@@ -702,16 +702,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80eba1244c7ec704192dcd5f100d4b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapType: 0
-  dropIngredient: {fileID: 0}
-  maxHp: 0
-  currentHp: 0
+  MapType: 0
+  DropItem: {fileID: 11400000, guid: 9348573e6d0202b449b8e4c91565e952, type: 2}
+  maxHP: 10
+  currentHP: 10
   attack: 0
   speed: 0
   attackRange: 0
   isDead: 0
+  patrolRadius: 20
+  waitSeconds: 2
+  moveDistance: 5
+  chaseDIstance: 25
+  targetUpdateMinDelta: 0.5
+  attackTrigger: {fileID: 6957528078908725205}
+  mainCollider: {fileID: 0}
+  anim: {fileID: 0}
+  agent: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
-  attackcollider: {fileID: 0}
 --- !u!65 &2666974121026256537
 BoxCollider:
   m_ObjectHideFlags: 0

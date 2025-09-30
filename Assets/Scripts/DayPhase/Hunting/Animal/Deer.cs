@@ -2,38 +2,19 @@ using UnityEngine;
 
 public class Deer : Animals//IAttack, IDamagable
 {
-    BoxCollider boxcollider;
-    private void Awake()
-    {
-        Init();
-        Setup();
-    }
-
     public override void Init()
     {
-        mapType = MapType.Warm;
-        // dropIngredient = ??
-        boxcollider=GetComponent<BoxCollider>();
-        maxHp = 10f;
-        currentHp = maxHp;
+        MapType = MapType.Warm;
+        maxHP = 10f;
+        currentHP = maxHP;
         attack = 3f;
-        speed = 1f;
-        attackRange = 3f;
+        speed = 1.5f;
+        attackRange = 2.5f;
         isDead = false;
+
+        patrolRadius = 20f;
+        waitSeconds = 2f;
+        chaseDIstance = 25f;
+        targetUpdateMinDelta = 0.5f;
     }
-
-    public void Attack()
-    {
-        Debug.Log("Deer�� �����մϴ�!");
-    }
-
-    /*public void TakeDamage(float damage)
-    {
-        currentHp -= damage;
-
-        if(currentHp < 0)
-        {
-            Die();
-        }
-    }*/
 }

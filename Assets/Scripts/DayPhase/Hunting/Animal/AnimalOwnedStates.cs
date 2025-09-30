@@ -1,154 +1,154 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.AI;
+using Unity.VisualScripting;
 
 namespace AnimalOwnedStates
 {
-    public class Patrol : State
+    public class Patrol : State<Animals>
     {
         Animator anim;
-        Transform animalTransform;
-        Vector3 targetPos;
+        Transform tr;
         NavMeshAgent agent;
-        bool isReturningToSpawn = true;
-        bool isWaiting = false;
-        Animals currentEntity;
-        MonoBehaviour coroutineHost; // Coroutine을 실행할 호스트
+
+        bool isReturningToSpawn;
+        bool isWaiting;
+        MonoBehaviour host; // 코루틴 호출할 호스트
+        Coroutine waitCo;
         public override void Enter(Animals entity)
         {
-            currentEntity = entity;
-            animalTransform = entity.transform;
+            tr = entity.transform;
             agent = entity.GetComponent<NavMeshAgent>();
-            anim = entity.GetComponent<Animator>();
-            coroutineHost = entity;
-            agent.speed = entity.speed;
-            agent.stoppingDistance = 0.2f;
+            anim = agent.GetComponent<Animator>();
+            host = entity;
+
             isWaiting = false;
-            anim.SetBool("IsWalking", false); // 처음엔 정지 상태
-            agent.SetDestination(entity.spawnPoint); // spawnPoint로 복귀
-            // spawnPoint와 너무 가까운 경우 바로 행동 결정
-            if (Vector3.Distance(animalTransform.position, entity.spawnPoint) < 0.5f)
+            anim.SetBool(AniHash.IsWalking, false);
+
+            agent.speed = entity.Speed;
+            agent.stoppingDistance = 0.2f;
+
+            if (Vector3.Distance(tr.position, entity.spawnPoint) < 0.5f)
             {
                 isReturningToSpawn = false;
-                DecideNextAction(); // ✅ 바로 행동 결정
+                DecideNextAction(entity);
             }
             else
             {
-                agent.SetDestination(entity.spawnPoint);
                 isReturningToSpawn = true;
                 agent.SetDestination(entity.spawnPoint);
             }
-            //coroutineHost.StartCoroutine(test1());
         }
-/*/- - - - - - - - - - - - - - - -- - - - - - - - Test
-        IEnumerator test1() 
-        {
-            yield return new WaitForSeconds(10f);
-            test();
-        }
-        public void test()
-        {
-            currentEntity.TakeDamage(3f);
-        }
-//- - - - - - - - - - - - - - - -- - - - - - - - Test*/
+
         public override void Execute(Animals entity)
         {
             if (agent.pathPending) return;
+
             if (isReturningToSpawn)
             {
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    isReturningToSpawn = false;
-                    DecideNextAction();
+                    isReturningToSpawn=false;
+                    DecideNextAction(entity);
                 }
             }
             else if (!isWaiting && agent.remainingDistance <= agent.stoppingDistance)
             {
-                DecideNextAction();
+                DecideNextAction(entity);
             }
         }
+
         public override void Exit(Animals entity)
         {
-            anim.SetBool("IsWalking", false);
+            anim.SetBool(AniHash.IsWalking, false);
             agent.ResetPath();
-            if (coroutineHost != null)
-                coroutineHost.StopAllCoroutines();
+
+            if (waitCo != null)
+            {
+                host.StopCoroutine(waitCo);
+                waitCo = null;
+            }
         }
-        private void DecideNextAction()
+
+        void DecideNextAction(Animals entity)
         {
             int decision = Random.Range(0, 2);
-            if (decision < 1)
+            if (decision == 0)
             {
-                anim.SetBool("IsWalking", true);
+                anim.SetBool(AniHash.IsWalking, true);
                 isWaiting = false;
-                SetNewRandomDestination(); // ✅ 이동 시도 실행
+                SetNewRandomDestination(entity);
             }
             else
             {
-                anim.SetBool("IsWalking", false);
+                anim.SetBool(AniHash.IsWalking, false);
                 isWaiting = true;
                 agent.ResetPath();
-                coroutineHost.StartCoroutine(WaitAndDecide());
+                StartWait(entity);
             }
-
         }
-        private IEnumerator WaitAndDecide()
+
+        void StartWait(Animals entity)
         {
-            yield return new WaitForSeconds(2f);
+            if (waitCo != null) host.StopCoroutine(waitCo);
+            waitCo = host.StartCoroutine(WaitAndDecide(entity));
+        }
+
+        IEnumerator WaitAndDecide(Animals entity)
+        {
+            yield return new WaitForSeconds(entity.WaitSeconds);
             isWaiting = false;
-            DecideNextAction();
+            DecideNextAction(entity);
         }
 
-        private void SetNewRandomDestination()
+        void SetNewRandomDestination(Animals entity)
         {
-            int maxAttempts = 10;
-            float moveDistance = 5f;
-            float patrolRadius = 20f;
-            for (int attempt = 0; attempt < maxAttempts; attempt++) // 10번까지 이동 시도후 안되면 정지
+            const int maxAttempts = 10;
+            for (int i = 0; i < maxAttempts; i++)
             {
-                Vector3 offset = Vector3.zero;
-                int dir = Random.Range(0, 4);
-                switch (dir)
-                {
-                    case 0: offset = Vector3.forward * moveDistance; break;
-                    case 1: offset = Vector3.back * moveDistance; break;
-                    case 2: offset = Vector3.right * moveDistance; break;
-                    case 3: offset = Vector3.left * moveDistance; break;
-                }
+                Vector2 rnd = Random.insideUnitCircle * entity.PatrolRadius;
+                Vector3 candidate = entity.spawnPoint + new Vector3(rnd.x, 0f, rnd.y);
 
-                Vector3 candidate = animalTransform.position + offset;
-                float distanceFromSpawn = Vector3.Distance(candidate, currentEntity.spawnPoint);
-                if (distanceFromSpawn <= patrolRadius)
+                if (NavMesh.SamplePosition(candidate, out var hit, 2f, NavMesh.AllAreas))
                 {
-                    targetPos = candidate;
-                    agent.SetDestination(targetPos);
-                    return;
+                    if (Vector3.Distance(hit.position, entity.spawnPoint) <= entity.PatrolRadius)
+                    {
+                        agent.SetDestination(hit.position);
+                        return;
+                    }
                 }
             }
-            //실패했을 경우
-            anim.SetBool("isWalking", false);
+
+            // 실패 : 대기 전환
+            anim.SetBool(AniHash.IsWalking, false);
             isWaiting = true;
             agent.ResetPath();
-            coroutineHost.StartCoroutine(WaitAndDecide());
+            StartWait(entity);
         }
     }
 
-    public class Attack : State
+    public class Attack : State<Animals>
     {
         Animator anim;
-        Animals currentAniaml;
-        MonoBehaviour coroutineHost;
-        BoxCollider attackrange;
+        MonoBehaviour host;
+        Collider attackTrigger;
+        Coroutine attackCo;
 
         public override void Enter(Animals entity)
         {
             anim = entity.GetComponent<Animator>();
-            currentAniaml = entity;
-            coroutineHost = entity;
-            Transform attackarea = entity.transform.Find("AttackRange");
-            attackrange = attackarea.GetComponent<BoxCollider>();
-            coroutineHost.StartCoroutine(Hit());
+            host = entity;
+            attackTrigger = entity.AttackTrigger;
+
+            if(attackTrigger == null)
+            {
+                Debug.Log("Attack Trigger가 지정 안됨");
+                entity.ChangeState(AnimalStateType.Chase);
+                return;
+            }
+
+            if (attackCo != null) host.StopCoroutine(attackCo);
+            attackCo = host.StartCoroutine(Hit(entity));
         }
         public override void Execute(Animals entity)
         {
@@ -156,107 +156,149 @@ namespace AnimalOwnedStates
         }
         public override void Exit(Animals entity)
         {
-            anim.SetBool("IsAttack", false);
-            attackrange.enabled = false;
+            anim.SetBool(AniHash.IsAttack, false);
+            if (attackTrigger != null) attackTrigger.enabled = false;
+
+            if (attackCo != null)
+            {
+                host.StopCoroutine(attackCo);
+                attackCo = null;
+            }
         }
-        IEnumerator Hit()
+        IEnumerator Hit(Animals entity)
         {
-            anim.SetBool("IsAttack", true);
-            yield return new WaitForSeconds(0.2f);
-            attackrange.enabled = true;
-            yield return new WaitForSeconds(1f);
-            attackrange.enabled = false;
-            yield return new WaitForSeconds(1f);
-            currentAniaml.ChangeState(DayPhaseManager.AnimalStates.Chase);
+            anim.SetBool(AniHash.IsAttack, true);
+            yield return new WaitForSeconds(0.2f); // 선딜
+            attackTrigger.enabled = true;
+            yield return new WaitForSeconds(1f); // 활성화 구간
+            attackTrigger.enabled = false;
+            yield return new WaitForSeconds(1f); // 후딜
+            entity.ChangeState(AnimalStateType.Chase);
 
         }
     }
 
-    public class Chase : State
+    public class Chase : State<Animals>
     {
         NavMeshAgent agent;
         Animator anim;
-        Animals currentEntity;
+        Animals owner;
+
         Transform target;
-        float attackRange;
-        float maxChaseDistance = 25f; // spawnpoint와의 최대 거리
-        bool isReturningToSpawn = false;
+        Vector3 lastTargetPos;
+        bool isReturningToSpawn;
+
+        static readonly Collider[] hits = new Collider[8];
         public override void Enter(Animals entity)
         {
-            currentEntity = entity;
-            attackRange = entity.attackRange;
+            owner = entity;
             agent = entity.GetComponent<NavMeshAgent>();
             anim = entity.GetComponent<Animator>();
-            agent.speed = entity.speed * 3;
-            anim.SetBool("IsChase", true);
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
+
+            if (!agent.enabled) agent.enabled = true;
+            agent.isStopped = false;
+            agent.speed = entity.Speed * 3f;
+            anim.SetBool(AniHash.IsChase, true);
+
+            // 플레이어 참조, 없으면 Find
+            if (entity.AggroTarget != null) target = entity.AggroTarget.transform;
+            else if (entity.Player != null) target = entity.Player.transform;
+            else
             {
-                target = player.transform;
+                var PlayerGo = GameObject.FindGameObjectWithTag("Player");
+                if (PlayerGo != null) target = PlayerGo.transform;
             }
+
+            if (target != null) lastTargetPos = target.position;
+            isReturningToSpawn = false;
 
         }
         public override void Execute(Animals entity)
         {
             if (isReturningToSpawn == false)
             {
-                if (target == null) return;
-                //추적
-                if (agent.destination != target.position)
-                    agent.SetDestination(target.position);
-                Targeting();
-                //멀어진지 확인
-                float distanceFromSpawn = Vector3.Distance(entity.spawnPoint, entity.transform.position);
-                if (distanceFromSpawn > maxChaseDistance)
+                if (target == null)
                 {
-                    agent.speed = entity.speed * 3;
+                    if (!entity.HasAggro)
+                    {
+                        agent.SetDestination(entity.spawnPoint);
+                        isReturningToSpawn= true;
+                    }
+                    return;
+                }
+
+                //목적지 갱신 : 일정거리 이상 움직일때마다
+                Vector3 tp = target.position;
+                if ((tp - lastTargetPos).sqrMagnitude > entity.TargetUpdateMinDeltaSqr)
+                {
+                    if (NavMesh.SamplePosition(tp, out var hit, 2f, NavMesh.AllAreas))
+                        agent.SetDestination(hit.position);
+                    else agent.SetDestination(tp);
+                    lastTargetPos = tp;
+                }
+
+                //추적 거리 검사
+                if ((entity.transform.position - entity.spawnPoint).sqrMagnitude > entity.ChaseDIstance * entity.ChaseDIstance)
+                {
                     agent.SetDestination(entity.spawnPoint);
-                    entity.currentHp = entity.maxHp;
                     isReturningToSpawn = true;
+                    return;
+                }
+
+                // 타겟팅 (공격 사거리 감지)
+                int count = Physics.OverlapSphereNonAlloc(
+                    entity.transform.position,
+                    entity.AttackRange,
+                    hits,
+                    LayerMask.GetMask("Player"));
+                if (count > 0)
+                {
+                    entity.ChangeState(AnimalStateType.Attack);
                 }
             }
             else
             {
+                // 스폰 복귀 중: 스폰 근처에서 체력 회복 후 다시 Patrol
                 if (Vector3.Distance(entity.transform.position, entity.spawnPoint) < 3f)
                 {
-                    isReturningToSpawn = false;
-                    entity.ChangeState(DayPhaseManager.AnimalStates.Patrol);
+                    entity.TakeDamage(-Time.deltaTime * 5f); // 자연 회복
+                    if (entity.IsFullHp)
+                    {
+                        isReturningToSpawn = false;
+                        entity.ChangeState(AnimalStateType.Patrol);
+                    }
                 }
             }
-
-
         }
         public override void Exit(Animals entity)
         {
-            if (anim != null) anim.SetBool("IsChase", false);
-            if (agent != null) agent.ResetPath();
-        }
-
-        void Targeting()
-        {
-            Collider[] rayHits = Physics.OverlapSphere(currentEntity.transform.position, attackRange, LayerMask.GetMask("Player"));
-            if (rayHits.Length > 0) currentEntity.ChangeState(DayPhaseManager.AnimalStates.Attack);
+            anim.SetBool(AniHash.IsChase, false);
+            agent.ResetPath();
         }
     }
 
-    public class Die : State
+    public class Die : State<Animals>
     {
         Animator anim;
-        Animals currentEntity;
-        BoxCollider col;
-        HuntingInteraction hi;
-        MonoBehaviour coroutineHost;
+        Collider mainCol;
+        MonoBehaviour host;
+        Coroutine dieCo;
         public override void Enter(Animals entity)
         {
-            currentEntity=entity;
             anim = entity.GetComponent<Animator>();
-            col = entity.GetComponent<BoxCollider>();
-            hi = entity.GetComponent<HuntingInteraction>();
-            coroutineHost = entity;
-            anim.SetTrigger("DoDie");
-            if(col!=null) col.enabled = false;
-            if(hi!=null) hi.enabled = false;
-            coroutineHost.StartCoroutine(WaitDie());
+            host = entity;
+
+            // 본체 콜라이더 비활성
+            mainCol = entity.GetComponent<Collider>();
+            if (mainCol != null) mainCol.enabled = false;
+
+            // 공격 트리거 비활성
+            if (entity.AttackTrigger != null) entity.AttackTrigger.enabled = false;
+
+            anim.SetTrigger(AniHash.DoDie);
+
+            if (dieCo != null) host.StopCoroutine(dieCo);
+            dieCo = host.StartCoroutine(WaitDie(entity));
         }
         public override void Execute(Animals entity)
         {
@@ -267,11 +309,16 @@ namespace AnimalOwnedStates
 
         }
 
-        IEnumerator WaitDie()
+        IEnumerator WaitDie(Animals entity)
         {
-            yield return new WaitForSeconds(2f);
-            DayPhaseManager.Instance.animalList.Remove(currentEntity);
-            GameObject.Destroy(currentEntity.gameObject);
+            float wait = 2f; // 죽는 애니메이션 길이
+            var info = anim.GetCurrentAnimatorStateInfo(0);
+            if (info.length > 0.1f) wait = info.length;
+
+            yield return new WaitForSeconds(wait);
+            if (InventoryManager.Instance != null) InventoryManager.Instance.TryAdd(entity.DropItem, 1);
+            entity.OnRequestRemove?.Invoke(entity);
+            Object.Destroy(entity.gameObject);
         }
     }
 }
