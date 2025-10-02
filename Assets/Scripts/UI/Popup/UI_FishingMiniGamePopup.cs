@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,6 +19,7 @@ public class UI_FishingMiniGamePopup : UI_Popup
     [SerializeField] private RectTransform ring; // 외곽 링
     [SerializeField] private Image progressBar; // 진행률 바
     [SerializeField] private Button exitButton;
+    [SerializeField] private Image cooldownImage;
     
     [Header("회전")]
     public float rotateSpeed = 240f; // 도/초
@@ -43,12 +45,18 @@ public class UI_FishingMiniGamePopup : UI_Popup
     [Range(1f, 100f)][SerializeField] private float gainBonusPerHit = 25f;
     [Range(1f, 100f)][SerializeField] private float missPenalty = 10f;
 
+    [SerializeField] private float inputCooldown = 1f;
+    private bool isPressCooldown = false;
+    private float cooldownRemain = 0f;
+    private Coroutine cooldownCo;
+    public event Action OnPress; // 낚시 버튼이 눌리면 Invoke
     public event Action OnSuccess; // 진행률이 100이 되면 Invoke
     public event Action OnHit; // 성공 범위면 Invoke
     public event Action OnMiss; // 성공 범위 밖이면 Invoke
 
     public enum Buttons
     {
+        FishingButton,
         ExitButton,
     }
 
@@ -72,27 +80,55 @@ public class UI_FishingMiniGamePopup : UI_Popup
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
         AddUIEvent(exit, ExitButtonOnClicked, Define.UIEvent.Click);
 
+        GameObject fish = GetButton((int)Buttons.FishingButton).gameObject;
+        AddUIEvent(fish, FishingButtonOnClicked);
+
         curRotation = ring ? ring.localEulerAngles.z : 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float dt = useUnScaled? Time.unscaledDeltaTime : Time.deltaTime;
-
         UpdateProgressUI();
+
+        if(cooldownRemain > 0f)
+        {
+            cooldownRemain -= Time.deltaTime;
+            UpdateCooldownUI();
+        }
 
         if (ring != null)
         {
+            float dt = useUnScaled ? Time.unscaledDeltaTime : Time.deltaTime;
             curRotation = NormalizeDegrees(curRotation - rotateSpeed * dt);
             ring.localRotation = Quaternion.Euler(0f, 0f, curRotation);
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            RandomRotationSpeed();
-            Judge(curRotation);
-        }
+    private void FishingButtonOnClicked(PointerEventData data)
+    {
+        OnPress?.Invoke();
+    }
+
+    private void HandlePress()
+    {
+        if (isPressCooldown) return;
+        isPressCooldown = true;
+
+        RandomRotationSpeed();
+        Judge(curRotation);
+
+        if(cooldownCo != null) StopCoroutine(cooldownCo);
+        cooldownCo = StartCoroutine(CooldownRoutine());
+    }
+
+    private IEnumerator CooldownRoutine()
+    {
+        cooldownRemain =inputCooldown;
+
+        if (useUnScaled) yield return new WaitForSecondsRealtime(inputCooldown);
+        else yield return new WaitForSeconds(inputCooldown);
+        isPressCooldown = false;
     }
 
     /// <summary>
@@ -170,10 +206,27 @@ public class UI_FishingMiniGamePopup : UI_Popup
         }
     }
 
+    private void UpdateCooldownUI()
+    {
+        if (cooldownImage != null)
+        {
+            float ratio = Mathf.Clamp01(cooldownRemain / inputCooldown);
+            cooldownImage.fillAmount = ratio;
+        }
+    }
+
     private void RandomRotationSpeed()
     {
-        float rand = UnityEngine.Random.Range(120f, 360f);
-        rotateSpeed = rand;
+        rotateSpeed = UnityEngine.Random.Range(120f, 360f);
+    }
+
+    private void RandomRingRotation()
+    {
+        curRotation = UnityEngine.Random.Range(0f, 360f);
+        if (ring != null)
+        {
+            ring.localRotation = Quaternion.Euler(0f, 0f, curRotation);
+        }
     }
 
     private void SuccessFishing()
@@ -181,10 +234,11 @@ public class UI_FishingMiniGamePopup : UI_Popup
         rotateSpeed = 0f;
 
         // 성공 문구와 함께 잡은 물고기 UI 표시 후 모든 팝업 닫음
-        Debug.Log("낚시 성공!");
         int testLv = 1;
         Item item = ItemManager.Instance.GetFishingItem(DayPhaseManager.Instance.curMapType, ItemType.Fish, testLv); // 현재 낚싯대 레벨 가져오는 법?
         Debug.Log($"{item.item_name} 획득!");
+
+        UIManager.Instance.ClosePopupUI(this);
     }
 
     private void ExitButtonOnClicked(PointerEventData data)
@@ -197,10 +251,18 @@ public class UI_FishingMiniGamePopup : UI_Popup
     {
         OnSuccess -= SuccessFishing;
         OnSuccess += SuccessFishing;
+
+        OnHit -= RandomRingRotation;
+        OnHit += RandomRingRotation;
+
+        OnPress -= HandlePress;
+        OnPress += HandlePress;
     }
 
     private void OnDisable()
     {
         OnSuccess -= SuccessFishing;
+        OnHit -= RandomRingRotation;
+        OnPress -= HandlePress;
     }
 }
