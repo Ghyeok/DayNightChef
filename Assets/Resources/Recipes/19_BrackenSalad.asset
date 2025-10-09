@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
+  m_Name: 19_BrackenSalad
+  m_EditorClassIdentifier: 
+  recipe_number: 19
+  recipe_name: "\uACE0\uC0AC\uB9AC \uC0D0\uB7EC\uB4DC"
+  recipe_image: {fileID: 21300000, guid: 34cf1f37438df74469339f6203f31175, type: 3}
+  recipe_type: 0
+  recipePrice: 0
+  recipe_requireItems:
+  - item: {fileID: 11400000, guid: 91e269738e458544a9952068c2bade14, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 04cb5c38891b0a14aa98a5032a2a6853, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 163eff3b5e981fb4eb100af8e4b27c9b, type: 2}
+    count: 1

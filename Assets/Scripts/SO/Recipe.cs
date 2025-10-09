@@ -21,6 +21,7 @@ public class Recipe : ScriptableObject
 {
     public int recipe_number; // 레시피 번호
     public string recipe_name; // 레시피 이름
+    public Sprite recipe_image;// 레시피 이미지
     public RecipeType recipe_type; // 레시피 타입
     public int recipePrice; // 레시피 가격
     public List<ItemRequirement> recipe_requireItems; // 레시피에 필요한 아이템 종류

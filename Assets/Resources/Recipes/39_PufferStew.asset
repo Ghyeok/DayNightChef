@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
+  m_Name: 39_PufferStew
+  m_EditorClassIdentifier: 
+  recipe_number: 39
+  recipe_name: "\uBCF5\uC5B4 \uC2A4\uD29C"
+  recipe_image: {fileID: 0}
+  recipe_type: 1
+  recipePrice: 0
+  recipe_requireItems:
+  - item: {fileID: 11400000, guid: b0cff7d573adfe449b8c35e96a51ff01, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 8415c9507470cc64db4cc072228617bb, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: a1914664c40dbb44baedcdb8bd3d05cd, type: 2}
+    count: 1

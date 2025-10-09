@@ -18,7 +18,7 @@ MonoBehaviour:
   item_Grade: 0
   item_name: "\uBE59\uB839\uD638\uC758 \uC2EC\uC7A5"
   item_requireLevel: 1
-  item_image: {fileID: 21300000, guid: 994185292910e564fb6d858af90cff0c, type: 3}
+  item_image: {fileID: 21300000, guid: e09343ad0d0c16647836c724b1a09462, type: 3}
   item_weight: 2
   item_maxcount: 99
   isGet: 0

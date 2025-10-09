@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
+  m_Name: 30_AncientRootSoup
+  m_EditorClassIdentifier: 
+  recipe_number: 30
+  recipe_name: "\uACE0\uB300 \uBFCC\uB9AC \uC218\uD504"
+  recipe_image: {fileID: 0}
+  recipe_type: 1
+  recipePrice: 0
+  recipe_requireItems:
+  - item: {fileID: 11400000, guid: 32493d659be1f46419178fa548bba07d, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 375feff73ac5fc74ba99a73489ca95c8, type: 2}
+    count: 1

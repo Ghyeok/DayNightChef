@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
+  m_Name: 03_WolfMeatRoast
+  m_EditorClassIdentifier: 
+  recipe_number: 3
+  recipe_name: "\uB291\uB300 \uACE0\uAE30 \uAD6C\uC774"
+  recipe_image: {fileID: 21300000, guid: 4a01658d7c5eea747be231836e576429, type: 3}
+  recipe_type: 0
+  recipePrice: 0
+  recipe_requireItems:
+  - item: {fileID: 11400000, guid: f3914e98e28a25e4c994d79e8ba3d6b2, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 04cb5c38891b0a14aa98a5032a2a6853, type: 2}
+    count: 1

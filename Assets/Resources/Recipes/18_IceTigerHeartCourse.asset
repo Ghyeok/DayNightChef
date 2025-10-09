@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
-  m_Name: 01_Recipe
+  m_Name: 18_IceTigerHeartCourse
   m_EditorClassIdentifier: 
-  recipe_number: 0
-  recipe_name: 
+  recipe_number: 18
+  recipe_name: "\uBE59\uB839\uD638 \uC2EC\uC7A5 \uC815\uC2DD"
+  recipe_image: {fileID: 21300000, guid: 04be7e51b7cc701459f88c501b84118f, type: 3}
   recipe_type: 0
   recipePrice: 0
   recipe_requireItems:
-  - item: {fileID: 0}
-    count: 0
-  - item: {fileID: 0}
-    count: 0
+  - item: {fileID: 11400000, guid: 8af10e3550d53734d8faae8f75409fb0, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 4c43b819b223b73428efc63b497224f7, type: 2}
+    count: 1

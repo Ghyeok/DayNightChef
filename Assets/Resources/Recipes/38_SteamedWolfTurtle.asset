@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
+  m_Name: 38_SteamedWolfTurtle
+  m_EditorClassIdentifier: 
+  recipe_number: 38
+  recipe_name: "\uB291\uB300\uAC70\uBD81 \uCC1C"
+  recipe_image: {fileID: 0}
+  recipe_type: 0
+  recipePrice: 0
+  recipe_requireItems:
+  - item: {fileID: 11400000, guid: f9f4028877d37e848a38b747148a00fd, type: 2}
+    count: 1
+  - item: {fileID: 11400000, guid: 91e269738e458544a9952068c2bade14, type: 2}
+    count: 1
