@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipe_number: 31
   recipe_name: "\uB18D\uC5B4 \uAD6C\uC774"
-  recipe_image: {fileID: 0}
+  recipe_image: {fileID: 21300000, guid: fc6477c5786ebd440a1cde37eee9a10d, type: 3}
   recipe_type: 0
   recipePrice: 0
   recipe_requireItems:

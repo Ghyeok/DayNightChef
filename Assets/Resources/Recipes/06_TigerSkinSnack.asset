@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
-  m_Name: 06_
+  m_Name: 06_TigerSkinSnack
   m_EditorClassIdentifier: 
   recipe_number: 6
-  recipe_name: "\uC0AC\uC2B4 \uC2A4\uD14C\uC774\uD06C"
+  recipe_name: "\uD638\uB791\uC774 \uAC00\uC8FD \uC721\uD3EC"
+  recipe_image: {fileID: 21300000, guid: ca7251a2d543b3442a615cf966e0427c, type: 3}
   recipe_type: 0
   recipePrice: 0
   recipe_requireItems:
-  - item: {fileID: 11400000, guid: 9348573e6d0202b449b8e4c91565e952, type: 2}
-    count: 1
-  - item: {fileID: 11400000, guid: 981572205a17bf243adb5776a4b82a33, type: 2}
+  - item: {fileID: 11400000, guid: f2ae42be9af44594aac43f1f5fb63f57, type: 2}
     count: 1

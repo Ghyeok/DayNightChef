@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipe_number: 32
   recipe_name: "\uACE0\uB4F1\uC5B4 \uC870\uB9BC"
-  recipe_image: {fileID: 0}
+  recipe_image: {fileID: 21300000, guid: 0d1c8dd5cc08ea64da785b943e16fe96, type: 3}
   recipe_type: 0
   recipePrice: 0
   recipe_requireItems:
-  - item: {fileID: 11400000, guid: 9348573e6d0202b449b8e4c91565e952, type: 2}
+  - item: {fileID: 11400000, guid: 821f5a0998528ae49a6c43c61140da73, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: 375feff73ac5fc74ba99a73489ca95c8, type: 2}
     count: 1
