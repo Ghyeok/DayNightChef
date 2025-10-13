@@ -19,4 +19,4 @@ MonoBehaviour:
   recipePrice: 0
   recipe_requireItems:
   - item: {fileID: 11400000, guid: f2ae42be9af44594aac43f1f5fb63f57, type: 2}
-    count: 1
+    count: 2
