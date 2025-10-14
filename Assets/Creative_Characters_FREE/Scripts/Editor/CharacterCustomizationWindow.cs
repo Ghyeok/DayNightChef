@@ -122,7 +122,7 @@ namespace CharacterCustomizationTool.Editor
         {
             var controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(AssetsPath.AnimationController);
             var animator = character.GetComponent<Animator>();
-            animator.runtimeAnimatorController = controller;
+            //animator.runtimeAnimatorController = controller;
             animator.applyRootMotion = false;
         }
 

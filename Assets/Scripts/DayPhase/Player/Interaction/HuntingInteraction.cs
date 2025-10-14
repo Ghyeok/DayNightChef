@@ -9,9 +9,9 @@ public class HuntingInteraction : MonoBehaviour, IInteract
 
     public void Interact(GameObject interactor)
     {
-        Animals animal = GetComponent<HuntingInteraction>().gameObject.GetComponent<Animals>();
+        //Animals animal = GetComponent<HuntingInteraction>().gameObject.GetComponent<Animals>();
 
-        animal.TakeDamage(DayPhasePlayerManager.Instance.playerAttack);
+        //animal.TakeDamage(DayPhasePlayerManager.Instance.playerAttack);
         Debug.Log($"Attack Success!");
     }
 }

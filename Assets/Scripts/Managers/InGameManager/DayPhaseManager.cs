@@ -6,7 +6,7 @@ using System;
 public class DayPhaseManager : SingletonManager<DayPhaseManager>
 {
     //현재 존재하는 animals
-    public List<Animals> animalList = new List<Animals>();
+    public List<Animal> animalList = new List<Animal>();
 
     public enum PlayerState
     {
@@ -61,7 +61,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
             InitGame();
 
         if(animalList == null)
-            animalList = new List<Animals>();
+            animalList = new List<Animal>();
     }
 
     // Update is called once per frame

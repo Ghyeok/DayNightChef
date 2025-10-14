@@ -1,68 +1,55 @@
-using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class AnimalSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject animalPrefab;
-    public int maxCount;
-    public float respawntime;
-    private bool isReSpawning = false;
-    List<Animals> animallist = new List<Animals>();
+    [Header("Spawn Settings")]
+    public Animal animalPrefab;
 
-    public void SpawnAnimal(Vector3 spawnPosition)
-    {
-        GameObject animalObj = Instantiate(animalPrefab, GetRandomPoint(spawnPosition, 5f), Quaternion.identity);
-        Animals animal = animalObj.GetComponent<Animals>();
+    [Header("스폰 개체 수")]
+    public int count = 3;
 
-        if (animal != null)
-        {
-            DayPhaseManager.Instance.animalList.Add(animal);
-            animallist.Add(animal);
-        }
-        else
-        {
-            Debug.LogWarning("스폰된 오브젝트에 Animals 스크립트가 없습니다.");
-        }
-    }
+    [Tooltip("스포너 중심으로 랜덤 배치할 반경")]
+    public float radius = 5f;
 
-    private void Awake()
-    {
-    }
+    [Header("Target")]
+    [Tooltip("모든 스폰 개체가 추적할 대상(플레이어)")]
+    public Transform target;
+
+    readonly List<Animal> _spawned = new List<Animal>();
+
     private void Start()
     {
-        for (int i = 0; i < maxCount; i++)
+        if (target == null)
         {
-            SpawnAnimal(gameObject.transform.position);
+            var player = GameObject.FindGameObjectWithTag("Player");
+            if (player) target = player.transform;
         }
+
+        SpawnAll();
     }
 
-    private void Update()
+    public void SpawnAll()
     {
-        for (int i = animallist.Count - 1; i >= 0; i--)
+        if (animalPrefab == null)
         {
-            if (animallist[i] == null)
+            return;
+        }
+
+        for (int i=0; i < count; i++)
+        {
+            Vector2 offset = Random.insideUnitCircle * radius;
+            Vector3 spawnPos = transform.position + new Vector3(offset.x, offset.y, 0f);
+
+            Animal a = Instantiate(animalPrefab, spawnPos, Quaternion.identity);
+            if (target != null) a.target = target;
+
+            if (DayPhaseManager.Instance != null)
             {
-                animallist.RemoveAt(i);
+                DayPhaseManager.Instance.animalList.Add(a);
             }
-        }
-        while (animallist.Count < maxCount && !isReSpawning)
-        {
-            StartCoroutine(ReSpawn());
-        }
-    }
 
-    Vector3 GetRandomPoint(Vector3 center, float radius)
-    {
-        Vector2 randomPos = Random.insideUnitCircle * radius;
-        return new Vector3(center.x + randomPos.x, center.y, center.z + randomPos.y);
-    }
-
-    IEnumerator ReSpawn()
-    {
-        isReSpawning = true;
-        yield return new WaitForSeconds(respawntime);
-        SpawnAnimal(transform.position);
-        isReSpawning = false;
+            _spawned.Add(a);
+        }
     }
 }
