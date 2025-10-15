@@ -5,34 +5,50 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Input")]
-    public VariableJoystick joystick; // 없으면 키보드로 폴백
+    public VariableJoystick joystick;   // 조이스틱만 사용
+    [SerializeField] float deadZone = 0.15f;   // 드리프트 억제
+    [SerializeField] bool useEightDirections = true; // 8방향 스냅(해제 시 4방향)
 
     private Rigidbody2D rb;
     private Animator anim;
 
-    // 캐시된 입력 벡터(정규화)
-    private Vector2 inputDir = Vector2.zero;
+    private Vector2 inputDir = Vector2.zero; // 정규화된 이동 입력
+    private Vector2 lookDir = Vector2.up; // 마지막 바라봄(정지 시 유지)
 
-    // 애니메이터 파라미터 유무 캐시
+    // 애니메이터 파라미터
     private int hashIsWalk, hashIsAttack, hashSpeed, hashMoveX, hashMoveY;
     private bool hasIsWalk, hasIsAttack, hasSpeed, hasMoveX, hasMoveY;
+
+    private bool isAttacking = false;
+
+    private static readonly Vector2[] Octant = new Vector2[]
+    {
+        new Vector2( 1f,  0f),    // 동 (0)
+        new Vector2( 0.7071f,  0.7071f), // 북동 (1)
+        new Vector2( 0f,  1f),    // 북 (2)
+        new Vector2(-0.7071f,  0.7071f), // 북서 (3)
+        new Vector2(-1f,  0f),    // 서 (4)
+        new Vector2(-0.7071f, -0.7071f), // 남서 (5)
+        new Vector2( 0f, -1f),    // 남 (6)
+        new Vector2( 0.7071f, -0.7071f), // 남동 (7)
+    };
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
-        // 2D 탑다운 기본 세팅
         rb.gravityScale = 0f;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        // 파라미터 해시 & 존재 여부 캐시
+        // 해쉬 값으로 가져와서 빠름
         hashIsWalk = Animator.StringToHash("isWalk");
         hashIsAttack = Animator.StringToHash("isAttack");
         hashSpeed = Animator.StringToHash("Speed");
         hashMoveX = Animator.StringToHash("MoveX");
         hashMoveY = Animator.StringToHash("MoveY");
 
+        // parameter로 존재하는지?
         hasIsWalk = HasParam(anim, hashIsWalk);
         hasIsAttack = HasParam(anim, hashIsAttack);
         hasSpeed = HasParam(anim, hashSpeed);
@@ -42,9 +58,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        ReadInput();
+        ReadJoystick();
+        UpdateFacing();
         UpdateAnimator();
-        HandleAttack();
     }
 
     private void FixedUpdate()
@@ -52,46 +68,72 @@ public class PlayerController : MonoBehaviour
         float speed = GetMoveSpeed();
         Vector2 next = rb.position + inputDir * speed * Time.fixedDeltaTime;
         rb.MovePosition(next);
+
+        Debug.Log($"Move X: {anim.GetFloat(hashMoveX):F2},Move Y: {anim.GetFloat(hashMoveY):F2}");
     }
 
-    private void ReadInput()
+    private void ReadJoystick()
     {
-        if (joystick != null)
-        {
-            float h = joystick.Horizontal;
-            float v = joystick.Vertical;
-            inputDir = new Vector2(h, v).normalized;
-        }
-        else // 조이스틱 없으면 키보드로
-        {
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
-            inputDir = new Vector2(h, v).normalized;
-        }
+        if (joystick == null) { inputDir = Vector2.zero; return; }
+
+        float h = joystick.Horizontal;
+        float v = joystick.Vertical;
+
+        Vector2 raw = new Vector2(h, v);
+        // 데드존 처리, 일정 범위 이하의 입력은 0으로 간주하여 미세한 움직임을 방지한다
+        if (raw.sqrMagnitude < deadZone * deadZone) { inputDir = Vector2.zero; return; }
+
+        inputDir = raw.normalized;
     }
 
     private float GetMoveSpeed()
     {
-        // DayPhasePlayerManager를 우선 사용, 없거나 아직 초기화 전이면 fallback
         var mgr = DayPhasePlayerManager.Instance;
-        return mgr.playerMoveSpeed;
+        return (mgr != null) ? mgr.playerMoveSpeed : 3.5f; // 안전 폴백
+    }
+
+    private void UpdateFacing()
+    {
+        if (inputDir.sqrMagnitude > 1e-6f)
+        {
+            lookDir = useEightDirections ? Quantize8(inputDir) : Quantize4(inputDir);
+        }
+        // 정지 시: 기존 lookDir 유지
+    }
+
+    private Vector2 Quantize8(Vector2 v)
+    {
+        float ang = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        if (ang < 0f) ang += 360f;
+        int idx = Mathf.RoundToInt(ang / 45f) & 0x111;
+        return Octant[idx];
+    }
+
+    private Vector2 Quantize4(Vector2 v)
+    {
+        if (Mathf.Abs(v.x) >= Mathf.Abs(v.y))
+            return new Vector2(Mathf.Sign(v.x), 0f);
+        else
+            return new Vector2(0f, Mathf.Sign(v.y));
     }
 
     private void UpdateAnimator()
     {
         float speedVal = inputDir.magnitude * GetMoveSpeed();
+        Vector2 animDir = (speedVal > 0.01f)
+            ? (useEightDirections ? Quantize8(inputDir) : Quantize4(inputDir))
+            : lookDir;
 
         if (hasIsWalk) anim.SetBool(hashIsWalk, speedVal > 0.01f);
         if (hasSpeed) anim.SetFloat(hashSpeed, speedVal);
-        if (hasMoveX) anim.SetFloat(hashMoveX, inputDir.x);
-        if (hasMoveY) anim.SetFloat(hashMoveY, inputDir.y);
+        if (hasMoveX) anim.SetFloat(hashMoveX, animDir.x);
+        if (hasMoveY) anim.SetFloat(hashMoveY, animDir.y);
+        if (hasIsAttack) anim.SetBool(hashIsAttack, isAttacking);
     }
 
-    private void HandleAttack()
-    {
-        bool attacking = Input.GetKey(KeyCode.E);
-        if (hasIsAttack) anim.SetBool(hashIsAttack, attacking);
-    }
+    // UI 버튼(누름/뗌)에서 호출
+    public void BeginAttack() { isAttacking = true; }
+    public void EndAttack() { isAttacking = false; }
 
     private bool HasParam(Animator a, int hash)
     {
