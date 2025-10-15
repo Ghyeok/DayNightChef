@@ -1,3 +1,5 @@
+using System.Buffers;
+using System.Collections;
 using UnityEngine;
 
 public class Patrol : IState<Animal>
@@ -12,6 +14,7 @@ public class Patrol : IState<Animal>
         waitUntil = Time.time + Random.Range(a.IdleMin, a.IdleMax);
         a.SetRunning(false);
         a.StopMove();
+        a.StartCoroutine(Testdmg(a));
     }
 
     public void Execute(Animal a, float dt)
@@ -39,6 +42,13 @@ public class Patrol : IState<Animal>
     }
 
     public void Exit(Animal a) { }
+
+    IEnumerator Testdmg(Animal a)
+    {
+        yield return new WaitForSeconds(5f);
+        a.TakeDamage(1);
+        
+    }
 }
 
 public class Chase : IState<Animal>
@@ -53,7 +63,7 @@ public class Chase : IState<Animal>
         if (a.IsPlayerBeyondLeash()) { a.ChangeState(new Return()); return;}
 
         // 사거리 안이면 공격
-        if (a.InAttackRange()) { a.ChangeState(new Attack()); return;}
+        if (a.InAttackRange() && a.CanAttackNow()) { a.ChangeState(new Attack()); return;}
 
         // 추격
         a.SetRunning(true);
@@ -82,8 +92,9 @@ public class  Attack : IState<Animal>
         bool cont = a.attackBehavior != null && a.attackBehavior.OnUpdate(dt);
         if (!cont)
         {
-            if (a.InAttackRange()) a.ChangeState(new Attack()); // 사거리 안이면 재공격
-            else a.ChangeState(new Chase()); // 사거리 밖이면 추격
+            a.SetAttackCooldown();
+            a.ChangeState(new Chase()); // 사거리 밖이면 추격
+            return;
         }
     }
 

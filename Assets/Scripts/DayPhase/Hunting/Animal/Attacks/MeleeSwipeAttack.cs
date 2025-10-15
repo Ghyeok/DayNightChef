@@ -12,11 +12,14 @@ public class MeleeSwipeAttack : AttackBehavior
     [SerializeField] int damage = 8;
     [SerializeField] float hitRadius = 0.6f;
     [SerializeField] LayerMask playerMask;
+    private bool _busy;
 
     Coroutine co;
 
     public override void OnEnter()
     {
+        if(_busy) return;
+        _busy = true;
         if (co != null) owner.StopCoroutine(co);
         co = owner.StartCoroutine(CoAttack());
     }
@@ -27,6 +30,7 @@ public class MeleeSwipeAttack : AttackBehavior
     {
         if (co != null) owner.StopCoroutine(co);
         co = null;
+        _busy = false;
     }
 
     IEnumerator CoAttack()

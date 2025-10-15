@@ -28,6 +28,10 @@ public class Animal : Organism
     public Transform target;
     public AttackBehavior attackBehavior; // 공격 패턴
 
+    [Header("Attack Cooldown")]
+    [SerializeField] public float attackCooldown = 1f; // 쿨타임
+    float nextAttackAllowedAt = 0f;
+
     public float HP { get; private set; }
     public bool IsDead { get; private set; }
     public Vector2 SpawnPoint { get; private set; }
@@ -40,6 +44,11 @@ public class Animal : Organism
 
     Vector2 _desiredVelocity; // 현재 animal의 속도
     bool _isRunning;
+
+    public float AttackCooldown => attackCooldown;
+    public bool CanAttackNow() => Time.time >= nextAttackAllowedAt;
+    public void SetAttackCooldown(float seconds) => nextAttackAllowedAt = Time.time + seconds;
+    public void SetAttackCooldown() => nextAttackAllowedAt = Time.time + attackCooldown;
 
     // Organism
     public override void Init()
