@@ -25,7 +25,7 @@ public class AnimatorController : MonoBehaviour
 
     static readonly int HashAttack = Animator.StringToHash("Attack");
     static readonly int HashHit = Animator.StringToHash("Hit");
-    static readonly int HashDie = Animator.StringToHash("DIe");
+    static readonly int HashDie = Animator.StringToHash("Die");
 
     public void Setup(Animator anim) { animator = anim; }
 
@@ -63,7 +63,7 @@ public class AnimatorController : MonoBehaviour
         Vector2 dir = aim.normalized;
         _lastDir = dir;
         animator.SetFloat(HashMoveX, dir.x);
-        animator.SetFloat(HashDie, dir.y);
+        animator.SetFloat(HashMoveY, dir.y);
     }
 
     // 단발 액션 트리거

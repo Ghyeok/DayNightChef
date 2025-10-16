@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1120403320132296432}
   - component: {fileID: 5427345158764214230}
   - component: {fileID: 5311011624007702518}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wolf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.529907, y: 1.4348366, z: -4.9852967}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3.5, y: 3.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -204,13 +204,13 @@ MonoBehaviour:
   DropItem: {fileID: 0}
   maxHP: 50
   attackPower: 8
-  walkSpeed: 1.8
-  runSpeed: 3.2
-  leashDIstance: 6
+  walkSpeed: 10
+  runSpeed: 15
+  leashDIstance: 10
   returnArriveRadius: 9
   regenPerSec: 8
-  attackRange: 1.2
-  patrolRadius: 3.5
+  attackRange: 5
+  patrolRadius: 5
   idleMin: 1
   idleMax: 2
   target: {fileID: 0}
@@ -247,11 +247,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preDelay: 0.23
   attackDuration: 0.43
-  chargeSpeed: 6
+  chargeSpeed: 20
   stopOnHit: 1
   damage: 10
-  hitRadius: 0.5
-  hitForwardOffset: 0.45
+  hitRadius: 3
+  hitForwardOffset: 1.5
   playerMask:
     serializedVersion: 2
     m_Bits: 0
