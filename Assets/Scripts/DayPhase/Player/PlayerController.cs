@@ -68,8 +68,6 @@ public class PlayerController : MonoBehaviour
         float speed = GetMoveSpeed();
         Vector2 next = rb.position + inputDir * speed * Time.fixedDeltaTime;
         rb.MovePosition(next);
-
-        Debug.Log($"Move X: {anim.GetFloat(hashMoveX):F2},Move Y: {anim.GetFloat(hashMoveY):F2}");
     }
 
     private void ReadJoystick()
@@ -94,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateFacing()
     {
-        if (inputDir.sqrMagnitude > 1e-6f)
+        if (inputDir.sqrMagnitude > 1e-6f) // 앱실론 보정
         {
             lookDir = useEightDirections ? Quantize8(inputDir) : Quantize4(inputDir);
         }
@@ -105,7 +103,7 @@ public class PlayerController : MonoBehaviour
     {
         float ang = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
         if (ang < 0f) ang += 360f;
-        int idx = Mathf.RoundToInt(ang / 45f) & 0x111;
+        int idx = Mathf.RoundToInt(ang / 45f) % 7;
         return Octant[idx];
     }
 
