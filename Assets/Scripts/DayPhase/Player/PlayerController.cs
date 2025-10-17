@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), GetComponentsInChildren<BoxCollider2D>()[1]); // 충돌 방지
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 

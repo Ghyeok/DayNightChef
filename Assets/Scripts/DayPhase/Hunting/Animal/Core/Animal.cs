@@ -35,7 +35,7 @@ public class Animal : Organism
     float nextAttackAllowedAt = 0f;
 
     [Header("경직 시간")]
-    [SerializeField] float hitStunDuration = 0.35f;
+    [SerializeField] float hitStunDuration = 1.25f;
     float hitStunUntil = 0f;
 
     public float HP { get; private set; }
@@ -118,6 +118,7 @@ public class Animal : Organism
 
     private void Awake()
     {
+        Physics2D.IgnoreCollision(GetComponent<BoxCollider2D>(), GetComponentsInChildren<BoxCollider2D>()[1]);// 충돌 방지
         Init();
     }
 
