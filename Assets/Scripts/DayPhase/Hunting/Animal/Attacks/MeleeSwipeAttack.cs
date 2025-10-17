@@ -1,5 +1,5 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// 근접 단발 공격
@@ -12,13 +12,12 @@ public class MeleeSwipeAttack : AttackBehavior
     [SerializeField] int damage = 8;
     [SerializeField] float hitRadius = 0.6f;
     [SerializeField] LayerMask playerMask;
-    private bool _busy;
-
     Coroutine co;
 
     public override void OnEnter()
     {
-        if(_busy) return;
+        if (_busy) return;
+
         _busy = true;
         if (co != null) owner.StopCoroutine(co);
         co = owner.StartCoroutine(CoAttack());
@@ -35,29 +34,73 @@ public class MeleeSwipeAttack : AttackBehavior
 
     IEnumerator CoAttack()
     {
-        // 조준(정지 공격 시 방향 고정)
-        Vector2 aim = owner.target ? (Vector2)owner.target.position - owner.rb.position : Vector2.right;
-        owner.FaceTo(aim);
+        var anim = owner.GetComponent<AnimatorController>();
 
-        // 애니메이션 트리거
-        owner.GetComponent<AnimatorController>().TriggerAttack();
+        // 0) 이동/러닝 비활성
+        owner.StopMove();
+        owner.SetRunning(false);
 
-        // 선딜
-        yield return new WaitForSeconds(preDelay);
+        // 1) 초기 조준(0벡터 안전 처리)
+        Vector2 initAim = (owner && owner.target)
+            ? (Vector2)owner.target.position - owner.rb.position
+            : anim.LastDir;
+        if (initAim.sqrMagnitude <= 1e-6f) initAim = anim.LastDir;
+        Vector2 face = initAim.normalized;
 
-        // 히트박스
-        Vector2 hitPos = owner.rb.position + owner.GetComponent<AnimatorController>().LastDir * 0.5f;
+        // 2) 선딜~후딜 내내 방향 락 + 즉시 바라보기
+        anim.LockFacingFor(preDelay + postDelay + 0.1f, face);
+        owner.FaceTo(face);
+
+        // 3) 공격 트리거
+        anim.TriggerAttack();
+
+        // 4) 선딜: 타깃을 계속 따라보게 갱신
+        float t = 0f;
+        while (t < preDelay)
+        {
+            if (owner && owner.target)
+            {
+                Vector2 aim = (Vector2)owner.target.position - owner.rb.position;
+                if (aim.sqrMagnitude > 1e-6f)
+                    owner.FaceDir(aim); // 락 중에는 _lockedDir도 갱신됨
+            }
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        // 5) 히트박스 (락이 있으므로 LastDir이 곧 현재 바라보는 방향)
+        Vector2 hitPos = owner.rb.position + anim.LastDir * 0.5f;
         var hit = Physics2D.OverlapCircle(hitPos, hitRadius, playerMask);
         if (hit && hit.CompareTag("Player"))
         {
-            // 데미지 입히기
             var h = hit.GetComponent<DayPlayer>();
             if (h != null) h.TakeDamage(damage);
         }
 
-        // 후딜
+        // 6) 후딜
         yield return new WaitForSeconds(postDelay);
+
+        // 7) 쿨타임 시작
+        owner.SetAttackCooldown();
+
         co = null;
+        _busy = false;
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (!owner) return;
+        var animCtrl = owner.GetComponent<AnimatorController>();
+        Vector2 dir = animCtrl ? animCtrl.LastDir.normalized : Vector2.right;
+        Vector2 hitPos = owner.rb
+            ? (Vector2)owner.rb.position + dir * 0.5f
+            : (Vector2)owner.transform.position + dir * 0.5f;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(hitPos, hitRadius);
+    }
+#endif
 }
+
 

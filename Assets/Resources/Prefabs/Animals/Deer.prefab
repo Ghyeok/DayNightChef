@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4784, y: -2.2807, z: -0.066297084}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -203,6 +203,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   idleStickEps: 0.0001
   clampUnit: 1
+  debugLogs: 0
 --- !u!114 &3866760132905959415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,17 +220,19 @@ MonoBehaviour:
   DropItem: {fileID: 0}
   maxHP: 50
   attackPower: 8
-  walkSpeed: 1.8
-  runSpeed: 3.2
-  leashDIstance: 6
-  returnArriveRadius: 9
+  walkSpeed: 5
+  runSpeed: 10
+  leashDIstance: 10
+  returnArriveRadius: 3
   regenPerSec: 8
-  attackRange: 1.2
+  attackRange: 1.5
   patrolRadius: 3.5
   idleMin: 1
   idleMax: 2
   target: {fileID: 0}
   attackBehavior: {fileID: 1548005980562770934}
+  debugLogs: 1
+  attackCooldown: 5
   rb: {fileID: 0}
   animator: {fileID: 0}
 --- !u!114 &1548005980562770934
@@ -245,9 +248,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preDelay: 0.12
-  postDelay: 0.35
+  postDelay: 0.5
   damage: 8
-  hitRadius: 0.6
+  hitRadius: 0.4
   playerMask:
     serializedVersion: 2
     m_Bits: 0

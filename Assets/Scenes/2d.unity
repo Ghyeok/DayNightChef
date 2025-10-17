@@ -385,6 +385,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1195256317}
+    - target: {fileID: 6919040780071958906, guid: 7aed927b62c30df49af19e5558ea2019, type: 3}
+      propertyPath: animalPrefab
+      value: 
+      objectReference: {fileID: 3866760132905959415, guid: a6b53a51daab13b478088395df1f7234, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

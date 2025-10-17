@@ -77,6 +77,12 @@ public class  Attack : IState<Animal>
 {
     public void Enter(Animal a)
     {
+        if (!a.CanAttackNow())
+        {
+            a.ChangeState(new Chase());
+            return;
+        }
+        a.SetMovementLock(true);
         a.StopMove();
         a.SetRunning(false);
         a.attackBehavior?.OnEnter();
@@ -86,19 +92,22 @@ public class  Attack : IState<Animal>
     {
         if(!a || !a.target) { a.ChangeState(new Return()); return; }
 
+        bool cont = a.attackBehavior != null && a.attackBehavior.OnUpdate(dt);
+        if (cont) return;
+
         // 공격 중에도 플레이어가 리쉬 초과하면 귀환
         if (a.IsPlayerBeyondLeash()) { a.ChangeState(new Return()); return; }
 
-        bool cont = a.attackBehavior != null && a.attackBehavior.OnUpdate(dt);
-        if (!cont)
-        {
-            a.SetAttackCooldown();
-            a.ChangeState(new Chase()); // 사거리 밖이면 추격
-            return;
-        }
+        if(a.InAttackRange() && a.CanAttackNow()) a.ChangeState(new Attack());
+        else a.ChangeState(new Chase());
+
     }
 
-    public void Exit(Animal a) { a.attackBehavior?.OnExit(); }
+    public void Exit(Animal a) {
+        a.attackBehavior?.OnExit();
+        a.EnsureAttackCooldown(a.AttackCooldown);
+        a.SetMovementLock(false);
+    }
 }
 
 public class Return : IState<Animal>

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 /// <summary>
 /// 지속 애니메이션 : Speed/MoveX/MoveY/IsRunning (Blend Tree)
@@ -27,10 +28,15 @@ public class Animal : Organism
     [Header("Reference")]
     public Transform target;
     public AttackBehavior attackBehavior; // 공격 패턴
+    [SerializeField] bool debugLogs = false;
 
     [Header("Attack Cooldown")]
     [SerializeField] public float attackCooldown = 1f; // 쿨타임
     float nextAttackAllowedAt = 0f;
+
+    [Header("경직 시간")]
+    [SerializeField] float hitStunDuration = 0.35f;
+    float hitStunUntil = 0f;
 
     public float HP { get; private set; }
     public bool IsDead { get; private set; }
@@ -38,6 +44,7 @@ public class Animal : Organism
 
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Animator animator;
+    bool _movementLocked;
 
     AnimatorController animCtrl;
     StateMachine<Animal> fsm;
@@ -75,7 +82,38 @@ public class Animal : Organism
     {
         if (IsDead) return;
         fsm.Update(Time.deltaTime);
+        if (_movementLocked)
+        {
+            _desiredVelocity = Vector2.zero;
+            _isRunning = false;
+        }
         animCtrl.ApplyMovement(_desiredVelocity, _isRunning);
+    }
+
+    public void SetMovementLock(bool v)
+    {
+        _movementLocked = v;
+        if (v)
+        {
+            _desiredVelocity = Vector2.zero;
+            _isRunning = false;
+            if (rb) rb.linearVelocity = Vector2.zero;        //  물리 속도도 즉시 0
+            if (debugLogs) Debug.Log($"[Animal] lock move ON t={Time.time:F3}");
+        }
+        else
+        {
+            if (debugLogs) Debug.Log($"[Animal] lock move OFF t={Time.time:F3}");
+        }
+    }
+
+    public void EnsureAttackCooldown(float seconds)
+    {
+        float target = Time.time + seconds;
+        // nextAttackAllowedAt은 private이므로 SetAttackCooldown(float)로 덮어쓰기
+        // 더 긴 쿨이 이미 잡혀있을 수도 있으니, "더 늦은 시각"으로만 연장
+        if (!CanAttackNow()) return; // 이미 쿨다운 중이면 그대로 두고 종료
+        SetAttackCooldown(seconds);
+        if (debugLogs) Debug.Log($"[Animal] cooldown set {seconds:F2}s until t={target:F2}");
     }
 
     private void Awake()
@@ -93,6 +131,11 @@ public class Animal : Organism
 
     public void MoveToWards(Vector2 dest, float speed)
     {
+        if (_movementLocked)
+        {
+            _desiredVelocity = Vector2.zero;
+            return;
+        }
         Vector2 dir = dest - rb.position;
         _desiredVelocity = (dir.sqrMagnitude > 0.0001f) ? dir.normalized * speed : Vector2.zero;
         rb.MovePosition(rb.position + _desiredVelocity * Time.deltaTime);
@@ -100,6 +143,7 @@ public class Animal : Organism
     public void StopMove() => _desiredVelocity = Vector2.zero;
     public void SetRunning(bool v) => _isRunning = v;
     public void FaceTo(Vector2 worldPos) => animCtrl.FaceTo(worldPos - rb.position);
+    public void FaceDir(Vector2 dir) => animCtrl.FaceTo(dir);
 
     // 사거리/ 리쉬 판단
     public bool InAttackRange()
@@ -123,6 +167,9 @@ public class Animal : Organism
         HP = Mathf.Max(0f, HP - dmg);
         animCtrl.TriggerHit();
 
+        hitStunUntil = Time.time + hitStunDuration;
+        SetMovementLock(true);
+        
         if (HP <= 0f)
         {
             IsDead = true;
@@ -131,7 +178,14 @@ public class Animal : Organism
             Invoke(nameof(DestroySelf), 2f);
             return;
         }
+        StopCoroutine(CoStun());
+        StartCoroutine(CoStun());
+    }
 
+    IEnumerator CoStun()
+    {
+        while (Time.time < hitStunUntil) yield return null;
+        SetMovementLock(false);
         ChangeState(new Chase());
     }
 

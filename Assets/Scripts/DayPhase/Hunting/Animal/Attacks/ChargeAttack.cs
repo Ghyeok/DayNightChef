@@ -13,6 +13,7 @@ public class ChargeAttack : AttackBehavior
     [Header("Timings")]
     [SerializeField] float preDelay = 0.23f; // 선딜 시간
     [SerializeField] float attackDuration = 0.43f; // 돌진 시간
+    [SerializeField] float postDelay = 0f; // 후딜 시간
 
     [Header("Motion")]
     [SerializeField] float chargeSpeed = 20.0f; // 돌진 속도
@@ -29,7 +30,6 @@ public class ChargeAttack : AttackBehavior
     private Vector2 startPos;
     private Vector2 targetPos;
     private Tween moveTw;
-    private bool _busy;
 
     public override void OnEnter()
     {
@@ -72,9 +72,12 @@ public class ChargeAttack : AttackBehavior
         {
             TryHit(startPos, targetPos, animCtrl);
         });
+        // 후딜
+        yield return new WaitForSeconds(postDelay);
         moveTw = null;
         owner.StopMove();
         owner.SetRunning(false);
+        owner.SetAttackCooldown();
         co = null;
     }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class AttackBehavior : MonoBehaviour
 {
-    private bool _busy;
+    protected bool _busy;
     protected Animal owner;
     public virtual void Setup(Animal a) => owner = a;
 
