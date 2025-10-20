@@ -1,8 +1,14 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class GatheringInteraciton : MonoBehaviour, IInteract
 {
+    [SerializeField] private Item dropItem;
+    public event Action<GatheringInteraciton> OnCollected;
+
+    public void SetItem(Item item) => dropItem = item;
+
     public DayPhaseManager.PlayerBehavior GetBehaviorType()
     {
         return DayPhaseManager.PlayerBehavior.Gathering;
@@ -10,18 +16,13 @@ public class GatheringInteraciton : MonoBehaviour, IInteract
 
     public void Interact(GameObject interactor)
     {
-        StartCoroutine(Gathering());
-    }
+        if (dropItem == null) return;
 
-    IEnumerator Gathering()
-    {
-        Animator anim = DayPhasePlayerManager.Instance.dayPlayer.GetComponent<Animator>();
-        anim.SetTrigger("Gathering");
+        var map = DayPhaseManager.Instance.curMapType;
+        ItemManager.Instance.GetGatherItem(map, ItemType.Gather, dropItem);
 
-        yield return new WaitForSeconds(2f);
-
-        GameObject gather = GetComponent<GatheringInteraciton>().gameObject;
-        Destroy(gather);
-        Debug.Log($"Gathering Success! name : {gather.gameObject.name}");
+        OnCollected?.Invoke(this);
+        Destroy(gameObject);
+        Debug.Log($"{dropItem.item_name} 획득!");
     }
 }

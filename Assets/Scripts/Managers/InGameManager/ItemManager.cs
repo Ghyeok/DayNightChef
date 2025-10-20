@@ -19,6 +19,22 @@ public class ItemManager : SingletonManager<ItemManager>
             dropItems = Resources.LoadAll<Item>("Items").ToList();
     }
 
+    // 아이템의 타입, 맵 타입, 티어가 일치하는 아이템들의 리스트를 반환한다
+    public Item[] GetItemList(ItemType itemType, MapType mapType, int tier)
+    {
+        List<Item> list = new List<Item>();
+        foreach(Item item in dropItems)
+        {
+            if(item.item_Type == itemType &&
+               item.item_MapType == mapType &&
+               item.item_tier == tier)
+            {
+                list.Add(item);
+            }
+        }
+        return list.ToArray();
+    }
+
     private void GetItem(Item item)
     {
         int count = Random.Range(minItemCount, maxItemCount); // 1 ~ 3개 랜덤 드랍
