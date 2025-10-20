@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7610515380900330812}
   - component: {fileID: 8525659389293311261}
   - component: {fileID: 2943039429187683752}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Kinematic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 2562931678793079557}
   - component: {fileID: 6083139923061992678}
   - component: {fileID: 1208389740455098303}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tiger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,7 +332,7 @@ MonoBehaviour:
   leashDIstance: 10
   returnArriveRadius: 3
   regenPerSec: 8
-  attackRange: 3
+  attackRange: 5
   patrolRadius: 1.5
   idleMin: 10
   idleMax: 20

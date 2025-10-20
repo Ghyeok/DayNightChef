@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8175269307574762051}
   - component: {fileID: 7862494012313538601}
   - component: {fileID: 8834448496026632792}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DayPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 772523929437492173}
   - component: {fileID: 7944918622922660785}
   - component: {fileID: 1023968697144833578}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Kinematic
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -511332,6 +511332,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: DayPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3592427519804802080, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661943034512936706, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

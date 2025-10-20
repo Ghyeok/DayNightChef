@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3577125878951884134}
   - component: {fileID: 3050305185337367863}
   - component: {fileID: 7424268204241441298}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Boar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   - component: {fileID: 9191401444887443533}
   - component: {fileID: 1088655038332364782}
   - component: {fileID: 5116967467420187529}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Kinematic
   m_TagString: Untagged
   m_Icon: {fileID: 0}

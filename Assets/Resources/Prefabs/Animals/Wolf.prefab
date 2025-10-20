@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2556781059836034488}
   - component: {fileID: 1975127780139738870}
   - component: {fileID: 8907487517225242512}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: Kinematic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 1120403320132296432}
   - component: {fileID: 5427345158764214230}
   - component: {fileID: 5311011624007702518}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Wolf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
