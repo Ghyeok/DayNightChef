@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 /// <summary>
 /// 지속 애니메이션 : Speed/MoveX/MoveY/IsRunning (Blend Tree)
@@ -97,7 +98,11 @@ public class Animal : Organism
         {
             _desiredVelocity = Vector2.zero;
             _isRunning = false;
-            if (rb) rb.linearVelocity = Vector2.zero;        //  물리 속도도 즉시 0
+            if (rb)
+            {
+                rb.linearVelocity = Vector2.zero;
+                rb.angularVelocity = 0f;
+            }//  물리 속도도 즉시 0
             if (debugLogs) Debug.Log($"[Animal] lock move ON t={Time.time:F3}");
         }
         else
@@ -205,4 +210,48 @@ public class Animal : Organism
     public float WalkSpeed => walkSpeed;
     public float RunSpeed => runSpeed;
     public float ReturnArriveRadius => returnArriveRadius;
+#if UNITY_EDITOR
+    [Header("Gizmos")]
+    [SerializeField] bool drawGizmos = true;
+    [SerializeField] Color attackRangeColor = new Color(1f, 0.92f, 0.016f, 0.8f); // 노랑
+    [SerializeField] Color leashColor = new Color(0f, 0.75f, 1f, 0.5f);      // 하늘
+    [SerializeField] Color patrolColor = new Color(0.5f, 1f, 0.5f, 0.35f);    // 연두
+    [SerializeField] Color returnColor = new Color(1f, 1f, 1f, 0.35f);        // 흰색
+
+    private void OnDrawGizmos()
+    {
+        if (!drawGizmos) return;
+
+        // 기준 위치
+        Vector2 pos = rb ? rb.position : (Vector2)transform.position;
+
+        // 1) attackRange (현재 위치 기준)
+        Gizmos.color = attackRangeColor;
+        Gizmos.DrawWireSphere(pos, attackRange);
+#if UNITY_EDITOR
+        Handles.color = attackRangeColor;
+        Handles.Label(pos + Vector2.up * (attackRange + 0.15f), $"attackRange: {attackRange:F2}");
+#endif
+
+        // 2) SpawnPoint가 초기화 전이면 현재 위치 대체
+        Vector2 spawn = (SpawnPoint.sqrMagnitude > 0.0001f) ? SpawnPoint : pos;
+
+        // (선택) Leash, Patrol, Return 범위도 함께 확인하고 싶으면 유지
+        // Leash Distance
+        Gizmos.color = leashColor;
+        Gizmos.DrawWireSphere(spawn, leashDIstance);
+#if UNITY_EDITOR
+        Handles.color = leashColor;
+        Handles.Label(spawn + Vector2.right * (leashDIstance + 0.15f), $"leash: {leashDIstance:F2}");
+#endif
+
+        // Patrol Radius
+        Gizmos.color = patrolColor;
+        Gizmos.DrawWireSphere(spawn, patrolRadius);
+
+        // Return Arrive Radius
+        Gizmos.color = returnColor;
+        Gizmos.DrawWireSphere(spawn, returnArriveRadius);
+    }
+#endif
 }

@@ -77,7 +77,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.47, y: 0.25}
+  m_Size: {x: 0.4, y: 0.4}
   m_EdgeRadius: 0
 --- !u!50 &2943039429187683752
 Rigidbody2D:
@@ -271,7 +271,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.47, y: 0.25}
+  m_Size: {x: 0.4, y: 0.4}
   m_EdgeRadius: 0
 --- !u!95 &7767198806671412256
 Animator:
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c85a54db3b1937489c72bf5588d6758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 7767198806671412256}
   idleStickEps: 0.0001
   clampUnit: 1
   debugLogs: 0
@@ -329,11 +329,11 @@ MonoBehaviour:
   attackPower: 8
   walkSpeed: 8
   runSpeed: 15
-  leashDIstance: 10
+  leashDIstance: 15
   returnArriveRadius: 3
   regenPerSec: 8
-  attackRange: 5
-  patrolRadius: 1.5
+  attackRange: 4.3
+  patrolRadius: 10
   idleMin: 10
   idleMax: 20
   target: {fileID: 0}
@@ -343,6 +343,11 @@ MonoBehaviour:
   hitStunDuration: 0.35
   rb: {fileID: 0}
   animator: {fileID: 0}
+  drawGizmos: 1
+  attackRangeColor: {r: 1, g: 0.92, b: 0.016, a: 0.8}
+  leashColor: {r: 0, g: 0.75, b: 1, a: 0.5}
+  patrolColor: {r: 0.5, g: 1, b: 0.5, a: 0.35}
+  returnColor: {r: 1, g: 1, b: 1, a: 0.35}
 --- !u!114 &1208389740455098303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +363,7 @@ MonoBehaviour:
   preDelay: 0.3
   postDelay: 0.24
   damage: 8
-  hitRadius: 3.3
+  hitRadius: 4.1
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64

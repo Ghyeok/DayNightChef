@@ -113,9 +113,12 @@ public class AnimatorController : MonoBehaviour
     // 단발 액션 트리거
     public void TriggerAttack()
     {
+        Vector2 d = Snap8(_lastDir);
+        animator.SetFloat(HashMoveX, d.x);
+        animator.SetFloat(HashMoveY, d.y);
+
         animator.ResetTrigger(HashAttack);
         animator.SetTrigger(HashAttack);
-        if (debugLogs) LogParams("[TriggerAttack]");
     }
 
     public void TriggerHit()

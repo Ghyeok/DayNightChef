@@ -153,7 +153,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 500
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 0
@@ -264,9 +264,9 @@ GameObject:
   - component: {fileID: 772523929437492173}
   - component: {fileID: 7944918622922660785}
   - component: {fileID: 1023968697144833578}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Kinematic
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

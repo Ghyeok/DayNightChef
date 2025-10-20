@@ -527337,7 +527337,7 @@ PrefabInstance:
     - target: {fileID: 6919040780071958906, guid: 7aed927b62c30df49af19e5558ea2019, type: 3}
       propertyPath: animalPrefab
       value: 
-      objectReference: {fileID: 6083139923061992678, guid: 1c14daf3efc548e41b5b3f37b5c537cf, type: 3}
+      objectReference: {fileID: 1800889578}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -529527,14 +529527,6 @@ PrefabInstance:
     - target: {fileID: 3592427519804802080, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
       propertyPath: m_Name
       value: DayPlayer
-      objectReference: {fileID: 0}
-    - target: {fileID: 3592427519804802080, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5661943034512936706, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

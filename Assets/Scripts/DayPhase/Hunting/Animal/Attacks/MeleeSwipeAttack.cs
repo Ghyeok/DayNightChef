@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -71,11 +72,8 @@ public class MeleeSwipeAttack : AttackBehavior
         // 5) 히트박스 (락이 있으므로 LastDir이 곧 현재 바라보는 방향)
         Vector2 hitPos = owner.rb.position + anim.LastDir * 0.5f;
         var hit = Physics2D.OverlapCircle(hitPos, hitRadius, playerMask);
-        if (hit && hit.CompareTag("Player"))
-        {
-            var h = hit.GetComponent<DayPlayer>();
-            if (h != null) h.TakeDamage(damage);
-        }
+        var dp = hit ? hit.GetComponentInParent<DayPlayer>() : null;
+        if (dp != null) dp.TakeDamage(damage);
 
         // 6) 후딜
         yield return new WaitForSeconds(postDelay);
@@ -86,9 +84,8 @@ public class MeleeSwipeAttack : AttackBehavior
         co = null;
         _busy = false;
     }
-
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if (!owner) return;
         var animCtrl = owner.GetComponent<AnimatorController>();
@@ -99,6 +96,11 @@ public class MeleeSwipeAttack : AttackBehavior
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(hitPos, hitRadius);
+
+#if UNITY_EDITOR
+        Handles.color = Color.red;
+        Handles.Label(hitPos + Vector2.up * (hitRadius + 0.1f), $"hitRadius: {hitRadius:F2}");
+#endif
     }
 #endif
 }

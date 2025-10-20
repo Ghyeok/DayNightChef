@@ -17,7 +17,7 @@ public class ChargeAttack : AttackBehavior
 
     [Header("Motion")]
     [SerializeField] float chargeSpeed = 20.0f; // 돌진 속도
-    [SerializeField] private bool stopOnHit = true; // 타격 시 돌진 멈춤 여부
+    [SerializeField] private bool stopOnHit = false; // 타격 시 돌진 멈춤 여부
 
     [Header("Hit Settings")]
     [SerializeField] private float damage = 10f;
@@ -30,6 +30,9 @@ public class ChargeAttack : AttackBehavior
     private Vector2 startPos;
     private Vector2 targetPos;
     private Tween moveTw;
+    private bool _chargeArmed;
+
+    private RigidbodyConstraints2D _prevConstraints;
 
     public override void OnEnter()
     {
@@ -49,38 +52,121 @@ public class ChargeAttack : AttackBehavior
         co = null;
         owner.StopMove();
         owner.SetRunning(false);
+        if (owner && owner.rb) owner.rb.constraints = _prevConstraints;
         _busy = false;
+        _chargeArmed = false;
     }
 
     private IEnumerator CoCharge()
     {
-        Vector2 aim = owner.target ? (Vector2)owner.target.position - owner.rb.position : Vector2.right;
+        if (moveTw != null && moveTw.IsActive()) moveTw.Kill();
+        moveTw = null;
+        DOTween.Kill(owner.rb, complete: false);
+        DOTween.Kill(owner.transform, complete: false);
+
+        hitApplied = false;
+
+        owner.SetMovementLock(true);
+        owner.StopMove();
+        owner.SetRunning(false);
+        owner.rb.linearVelocity = Vector2.zero;
+        owner.rb.angularVelocity = 0f;
+
+        _prevConstraints = owner.rb.constraints;
+        owner.rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        
+        var animCtrl = owner.GetComponent<AnimatorController>();
+        Vector2 aim = owner.target ? (Vector2)owner.target.position - owner.rb.position : animCtrl.LastDir;
+        if (aim.sqrMagnitude <= 1e-6f) aim = animCtrl.LastDir;
 
         owner.FaceTo(aim);
-        owner.StopMove();
-        owner.SetRunning(false);
-
-        startPos = owner.rb.position;
-        targetPos = owner.target ? (Vector2)owner.target.position : startPos + aim.normalized;
-
-        // 선딜
-        var animCtrl = owner.GetComponent<AnimatorController>();
+        _chargeArmed = true;
         animCtrl.TriggerAttack();
-        yield return new WaitForSeconds(preDelay);
-        hitApplied = false;
-        moveTw = owner.rb.DOMove(targetPos, attackDuration).SetEase(Ease.InQuart).SetUpdate(UpdateType.Fixed).OnComplete(() =>
+        animCtrl.LockFacingFor(preDelay + attackDuration + postDelay + 0.05f, aim.normalized);
+
+        float timeout = Mathf.Max(0.05f, preDelay + 0.35f);
+        float t0 = Time.time;
+        while (_chargeArmed && (Time.time - t0) < timeout) yield return null;
+
+        if (_chargeArmed)
         {
-            TryHit(startPos, targetPos, animCtrl);
-        });
-        // 후딜
-        yield return new WaitForSeconds(postDelay);
-        moveTw = null;
+            _chargeArmed = false;
+            StartChargeTween();
+        }
+
+        yield return new WaitForSeconds(attackDuration);
+        if (postDelay > 0f)
+            yield return new WaitForSeconds(postDelay);
+
         owner.StopMove();
+        owner.SetMovementLock(false);
         owner.SetRunning(false);
+        owner.rb.constraints = _prevConstraints;
         owner.SetAttackCooldown();
+        moveTw = null;
         co = null;
     }
 
+    public void AnimEvent_ChargeStart()
+    {
+        if (!_chargeArmed) return;
+        _chargeArmed = false;
+        StartChargeTween();
+    }
+    private void StartChargeTween()
+    {
+        owner.rb.constraints = _prevConstraints;
+        owner.rb.linearVelocity = Vector2.zero;
+        owner.rb.angularVelocity = 0f;
+        owner.StartCoroutine(CoStartChargeTweenAfterFixed());
+
+    }
+
+    private IEnumerator CoStartChargeTweenAfterFixed()
+    {
+        yield return new WaitForFixedUpdate();
+        var animCtrl = owner.GetComponent<AnimatorController>();
+        startPos = owner.rb.position;
+
+        Vector2 curAim = owner.target
+            ? (Vector2)owner.target.position - startPos
+            : animCtrl.LastDir;
+        if (curAim.sqrMagnitude <= 1e-6f) curAim = animCtrl.LastDir;
+
+        targetPos = owner.target
+            ? (Vector2)owner.target.position
+            : startPos + curAim.normalized;
+
+
+        moveTw = owner.rb.DOMove(targetPos, attackDuration)
+           .SetEase(Ease.InQuart)
+           .SetUpdate(UpdateType.Fixed)
+           .OnUpdate(() =>
+           {
+               if (!hitApplied)
+               {
+                   Vector2 dir = (targetPos - startPos).sqrMagnitude > 1e-4f
+                       ? (targetPos - startPos).normalized
+                       : animCtrl.LastDir.normalized;
+
+                   Vector2 hitPos = owner.rb.position + dir * hitForwardOffset;
+                   var hit = Physics2D.OverlapCircle(hitPos, hitRadius, playerMask);
+                   var dp = hit ? hit.GetComponentInParent<DayPlayer>() : null;
+                   if (dp != null)
+                   {
+                       dp.TakeDamage(damage);
+                       hitApplied = true;
+
+                       if (stopOnHit && moveTw != null && moveTw.IsActive())
+                           moveTw.Kill(); // 옵션: 히트 즉시 돌진 중단
+                   }
+               }
+           })
+           .OnComplete(() =>
+           {
+               if (!hitApplied) TryHit(startPos, targetPos, animCtrl);
+           });
+    }
     private void TryHit(Vector2 startPos, Vector2 targetPos, AnimatorController animCtrl)
     {
         if (hitApplied) return;
@@ -90,15 +176,12 @@ public class ChargeAttack : AttackBehavior
 
         Vector2 hitPos = targetPos - dir * (hitForwardOffset * 0.2f); // 약간 뒤로 보정
         var hit = Physics2D.OverlapCircle(hitPos, hitRadius, playerMask);
-        if (hit && hit.CompareTag("Player"))
-        {
-            var h = hit.GetComponent<DayPlayer>();
-            if (h != null) h.TakeDamage(damage);
-        }
+        var dp = hit ? hit.GetComponentInParent<DayPlayer>() : null;
+        if (dp != null) dp.TakeDamage(damage);
         hitApplied = true;
     }
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if (owner == null) return;
         var animCtrl = owner.GetComponent<AnimatorController>();
