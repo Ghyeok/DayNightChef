@@ -15,7 +15,7 @@ public class DayPlayer :  MonoBehaviour , IDamagable
 
     [Header("주변 오브젝트 탐지")]
     public float radius;
-    public Collider[] colliders;
+    public Collider2D[] colliders;
     int layerMask = 1 << 10;
 
     void Awake()
@@ -33,12 +33,11 @@ public class DayPlayer :  MonoBehaviour , IDamagable
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 
     void Update()
     {
-
         DetectGameObject(layerMask);
     }
 
@@ -55,17 +54,17 @@ public class DayPlayer :  MonoBehaviour , IDamagable
 
     private void DetectGameObject(LayerMask layer)
     {
-        colliders = Physics.OverlapSphere(transform.position, radius, layer);
+        colliders = Physics2D.OverlapCircleAll(transform.position, radius, layerMask);
 
-        float closestDistance = float.MaxValue;
+        float closestDistance = float.PositiveInfinity;
         IInteract closestInteract = null;
 
-        foreach (Collider collider in colliders)
+        foreach (Collider2D collider in colliders)
         {   
             IInteract interact = collider.gameObject.GetComponentInParent<IInteract>();
             if (interact != null)
             {
-                float distance = Vector3.Distance(transform.position, collider.transform.position);
+                float distance = (collider.transform.position - transform.position).sqrMagnitude;
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
@@ -74,12 +73,10 @@ public class DayPlayer :  MonoBehaviour , IDamagable
             }
             
         }
-
         if (colliders.Length == 0)
         {
             DayPhasePlayerManager.Instance.currentInteract = null;
         }
-
         if (closestInteract != null)
         {
             DayPhasePlayerManager.Instance.currentInteract = closestInteract;
