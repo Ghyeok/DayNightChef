@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 772523929437492173}
   - component: {fileID: 7944918622922660785}
   - component: {fileID: 1023968697144833578}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Kinematic
   m_TagString: Player
   m_Icon: {fileID: 0}
