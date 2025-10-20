@@ -32,6 +32,7 @@ public class Item : ScriptableObject
     public ItemGrade item_Grade; // 아이템 등급
     public string item_name; // 아이템 이름
     public int item_requireLevel; // 요구 레벨
+    public int item_tier; // 아이템 티어 1 -> 4
     public Sprite item_image; // 아이템 이미지
     public float item_weight; // 아이템 무게
     public int item_maxcount; // 아이템 최대소지갯수

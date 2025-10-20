@@ -15,8 +15,10 @@ MonoBehaviour:
   item_number: 38
   item_Type: 1
   item_MapType: 0
+  item_Grade: 0
   item_name: "\uCC38\uCE58"
   item_requireLevel: 3
+  item_tier: 4
   item_image: {fileID: 21300000, guid: 20cce7bf23d31894aa079c3d927c3218, type: 3}
   item_weight: 4
   item_maxcount: 99

@@ -15,8 +15,10 @@ MonoBehaviour:
   item_number: 16
   item_Type: 0
   item_MapType: 2
+  item_Grade: 0
   item_name: "\uBD81\uADF9\uACF0\uACE0\uAE30"
   item_requireLevel: 1
+  item_tier: 3
   item_image: {fileID: 21300000, guid: e983424a99176b34994bdb2091f3f1ee, type: 3}
   item_weight: 3
   item_maxcount: 99

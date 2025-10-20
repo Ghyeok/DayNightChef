@@ -18,6 +18,7 @@ MonoBehaviour:
   item_Grade: 1
   item_name: "\uC7AC\uADDC\uC5B4\uC758 \uBC1C\uD1B1"
   item_requireLevel: 1
+  item_tier: 3
   item_image: {fileID: 21300000, guid: f57eeba42b95ded4aab375fefbbc81d1, type: 3}
   item_weight: 2
   item_maxcount: 99

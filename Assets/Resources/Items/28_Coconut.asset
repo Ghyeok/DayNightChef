@@ -15,8 +15,10 @@ MonoBehaviour:
   item_number: 28
   item_Type: 2
   item_MapType: 1
+  item_Grade: 0
   item_name: "\uCF54\uCF54\uB11B"
   item_requireLevel: 1
+  item_tier: 4
   item_image: {fileID: 21300000, guid: a7d6be6478d216048815f80d40b9e682, type: 3}
   item_weight: 1
   item_maxcount: 99

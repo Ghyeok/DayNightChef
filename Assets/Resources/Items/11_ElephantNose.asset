@@ -18,6 +18,7 @@ MonoBehaviour:
   item_Grade: 0
   item_name: "\uCF54\uB07C\uB9AC \uCF54"
   item_requireLevel: 1
+  item_tier: 4
   item_image: {fileID: 21300000, guid: a4acfb7e0080bd8438ca1850d716410a, type: 3}
   item_weight: 2
   item_maxcount: 99
