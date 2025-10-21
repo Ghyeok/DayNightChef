@@ -184,9 +184,9 @@ MonoBehaviour:
   deadZone: 0.15
   useEightDirections: 0
   curTime: 0
-  coolTime: 0
-  attackRange: 0
-  attackRadius: 0
+  coolTime: 0.5
+  attackRange: 0.5
+  attackRadius: 0.5
   damage: 0
   enemyMask: 2048
 --- !u!95 &1910449200430976251

@@ -32,19 +32,6 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 
     private IEnumerator InitRoutine()
     {
-        spawnPoint = GameObject.Find("PlayerSpawner").transform;
-        GameObject go = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
-        if (go == null)
-        {
-            dayPlayer = Instantiate(dayPlayerPrefab, spawnPoint.position, spawnPoint.rotation);
-        }
-        else
-        {
-            dayPlayer = go;
-            dayPlayer.transform.position = spawnPoint.position;
-            dayPlayer.transform.rotation = spawnPoint.rotation;
-        }
-
         PlayerStats ps = null;
         while ((ps = FindFirstObjectByType<PlayerStats>()) == null || !ps.IsReady)
                 yield return null;
@@ -57,6 +44,5 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         {
             dp.Initialize(playerMaxHP, playerAttack, playerMoveSpeed);
         }
-    }
-    
+    } 
 }

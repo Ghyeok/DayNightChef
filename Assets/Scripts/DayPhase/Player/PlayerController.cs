@@ -19,9 +19,9 @@ public class PlayerController : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private float curTime;
     [SerializeField] private float coolTime = 0.5f;
-    [SerializeField] private float attackRange = 0.7f;
-    [SerializeField] private float attackRadius = 1.5f;
-    [SerializeField] private float damage = 10f;
+    [SerializeField] private float attackRange = 0.5f;
+    [SerializeField] private float attackRadius = 0.5f;
+    [SerializeField] private float damage;
     [SerializeField] private int enemyMask = 1 << 11;
     private bool isAttacking = false;
 
@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
         if (hasIsAttack) anim.SetBool(hashIsAttack, true);
 
         // 선딜 대기 시간
-        yield return null;
+        yield return new WaitForSeconds(0.2f);
 
         Vector2 dir = (lookDir.sqrMagnitude > 1e-6f) ? lookDir.normalized : Vector2.up;
         Vector2 hitPos = (Vector2)transform.position + dir * attackRange;
@@ -109,7 +109,9 @@ public class PlayerController : MonoBehaviour
                 animal.TakeDamage(damage);
             else if (hit.GetComponentInParent<Animal>() is Animal a)
                 a.TakeDamage(damage);
+            Debug.Log($"공격 성공! {animal.name} 남은 HP:{animal.HP}");
         }
+
         // 후딜 대기 시간
         yield return new WaitForSeconds(0.05f);
 
@@ -190,9 +192,9 @@ public class PlayerController : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        // 공격 히트박스 확인용
+        if (!Application.isPlaying) return; // 실행 중일 때만 표시
         Gizmos.color = Color.red;
         Vector2 dir = (lookDir.sqrMagnitude > 1e-6f) ? lookDir.normalized : Vector2.up;
         Vector2 hitPos = (Vector2)transform.position + dir * attackRange;
