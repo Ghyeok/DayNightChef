@@ -18,6 +18,10 @@ public class DayPlayer :  MonoBehaviour , IDamagable
     public Collider2D[] colliders;
     int layerMask = 1 << 10;
 
+    private IInteract lastInteract;
+    private float revertGrace = 0.2f; // 상호작용이 사라진 뒤 Hunting으로 돌아가는 유예 시간
+    private float revertTimer = 0f;
+
     void Awake()
     {
         radius = 1f;
@@ -73,13 +77,21 @@ public class DayPlayer :  MonoBehaviour , IDamagable
             }
             
         }
-        if (colliders.Length == 0)
-        {
-            DayPhasePlayerManager.Instance.currentInteract = null;
-        }
-        if (closestInteract != null)
+        if (closestInteract != null) // 채집, 사냥을 감지
         {
             DayPhasePlayerManager.Instance.currentInteract = closestInteract;
+            lastInteract = closestInteract;
+            revertTimer = 0f;
+        }
+        else // 아무것도 감지 못함
+        {
+            revertTimer += Time.deltaTime;
+            if (revertTimer > revertGrace)
+            {
+                revertTimer = 0f;
+                lastInteract = null;
+                DayPhasePlayerManager.Instance.currentInteract = null;
+            }
         }
     }
 }

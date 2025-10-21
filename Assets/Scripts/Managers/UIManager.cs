@@ -185,7 +185,6 @@ public class UIManager : SingletonManager<UIManager>
             {DayPhaseManager.PlayerBehavior.Hunting, ResourceManager.Instance.Load<Sprite>("Arts/UI/Hunting") },
             {DayPhaseManager.PlayerBehavior.Fishing, ResourceManager.Instance.Load<Sprite>("Arts/UI/Fishing") },
             {DayPhaseManager.PlayerBehavior.Gathering, ResourceManager.Instance.Load<Sprite>("Arts/UI/Gathering") },
-            {DayPhaseManager.PlayerBehavior.GroceryStore, ResourceManager.Instance.Load<Sprite>("Arts/UI/Grocery") },
         };
     }
 

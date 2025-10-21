@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -17,10 +18,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Attack")]
     [SerializeField] private float curTime;
-    [SerializeField] private float coolTime;
-    [SerializeField] private float attackRange;
-    [SerializeField] private float attackRadius;
-    [SerializeField] private float damage;
+    [SerializeField] private float coolTime = 0.5f;
+    [SerializeField] private float attackRange = 0.7f;
+    [SerializeField] private float attackRadius = 1.5f;
+    [SerializeField] private float damage = 10f;
     [SerializeField] private int enemyMask = 1 << 11;
     private bool isAttacking = false;
 
@@ -70,17 +71,7 @@ public class PlayerController : MonoBehaviour
         UpdateFacing();
         UpdateAnimator();
 
-        if(curTime <= 0 && !isAttacking)
-        {
-            isAttacking = true;
-            if (hasIsAttack) anim.SetBool("isAttack", true);
-            curTime = coolTime;
-        }
-        else
-        {
-            isAttacking = false;
-            curTime -= Time.deltaTime;
-        }
+        if (curTime > 0) curTime -= Time.deltaTime;
     }
 
     private void FixedUpdate()
@@ -88,6 +79,44 @@ public class PlayerController : MonoBehaviour
         float speed = GetMoveSpeed();
         Vector2 next = rb.position + inputDir * speed * Time.fixedDeltaTime;
         rb.MovePosition(next);
+    }
+
+    public void TryHunt()
+    {
+        if (isAttacking) return;
+        if (curTime > 0f) return;
+        StartCoroutine(CoHuntAttack());
+    }
+
+    private IEnumerator CoHuntAttack()
+    {
+        DayPhasePlayerManager dpm = DayPhasePlayerManager.Instance;
+        damage = dpm.playerAttack;
+
+        isAttacking = true;
+        if (hasIsAttack) anim.SetBool(hashIsAttack, true);
+
+        // 선딜 대기 시간
+        yield return null;
+
+        Vector2 dir = (lookDir.sqrMagnitude > 1e-6f) ? lookDir.normalized : Vector2.up;
+        Vector2 hitPos = (Vector2)transform.position + dir * attackRange;
+
+        var hit = Physics2D.OverlapCircle(hitPos, attackRadius, enemyMask);
+        if (hit)
+        {
+            if (hit.TryGetComponent(out Animal animal))
+                animal.TakeDamage(damage);
+            else if (hit.GetComponentInParent<Animal>() is Animal a)
+                a.TakeDamage(damage);
+        }
+        // 후딜 대기 시간
+        yield return new WaitForSeconds(0.05f);
+
+        isAttacking = false;
+        if (hasIsAttack) anim.SetBool(hashIsAttack, false);
+
+        curTime = coolTime; // 쿨타임 시작
     }
 
     private void ReadJoystick()
@@ -150,8 +179,8 @@ public class PlayerController : MonoBehaviour
     }
 
     // UI 버튼(누름/뗌)에서 호출
-    public void BeginAttack() { isAttacking = true; }
-    public void EndAttack() { isAttacking = false; }
+    public void BeginAttack() { TryHunt(); }
+    public void EndAttack() { }
 
     private bool HasParam(Animator a, int hash)
     {
@@ -159,4 +188,15 @@ public class PlayerController : MonoBehaviour
             if (p.nameHash == hash) return true;
         return false;
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        // 공격 히트박스 확인용
+        Gizmos.color = Color.red;
+        Vector2 dir = (lookDir.sqrMagnitude > 1e-6f) ? lookDir.normalized : Vector2.up;
+        Vector2 hitPos = (Vector2)transform.position + dir * attackRange;
+        Gizmos.DrawWireSphere(hitPos, attackRadius);
+    }
+#endif
 }

@@ -187,8 +187,8 @@ public class UI_DayPhaseScene : UI_Scene
         var interact = DayPhasePlayerManager.Instance.currentInteract;
         if (interact == null)
         {
-            button.image.sprite = null;
-            button.image.enabled = false;
+            button.image.sprite = UIManager.Instance.SetInteractionButton(DayPhaseManager.PlayerBehavior.Hunting);
+            button.image.enabled = true;
             return;
         }
         button.image.enabled = true;
@@ -197,8 +197,15 @@ public class UI_DayPhaseScene : UI_Scene
     public void InteractionButtonOnclicked(PointerEventData data)
     {
         var dpm = DayPhasePlayerManager.Instance;
-        if (dpm?.currentInteract == null || dpm.dayPlayer == null) return;
-
-        dpm.currentInteract.Interact(dpm.dayPlayer);
+        if (dpm.dayPlayer == null) return;
+        if (dpm.currentInteract == null)
+        {
+            var pc = dpm.dayPlayer.GetComponent<PlayerController>();
+            if (pc != null) pc.TryHunt();
+        }
+        else
+        {
+            dpm.currentInteract.Interact(dpm.dayPlayer);
+        }
     }
 }
