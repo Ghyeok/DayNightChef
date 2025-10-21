@@ -15,11 +15,18 @@ public class PlayerController : MonoBehaviour
     private Vector2 inputDir = Vector2.zero; // 정규화된 이동 입력
     private Vector2 lookDir = Vector2.up; // 마지막 바라봄(정지 시 유지)
 
+    [Header("Attack")]
+    [SerializeField] private float curTime;
+    [SerializeField] private float coolTime;
+    [SerializeField] private float attackRange;
+    [SerializeField] private float attackRadius;
+    [SerializeField] private float damage;
+    [SerializeField] private int enemyMask = 1 << 11;
+    private bool isAttacking = false;
+
     // 애니메이터 파라미터
     private int hashIsWalk, hashIsAttack, hashSpeed, hashMoveX, hashMoveY;
     private bool hasIsWalk, hasIsAttack, hasSpeed, hasMoveX, hasMoveY;
-
-    private bool isAttacking = false;
 
     private static readonly Vector2[] Octant = new Vector2[]
     {
@@ -62,6 +69,18 @@ public class PlayerController : MonoBehaviour
         ReadJoystick();
         UpdateFacing();
         UpdateAnimator();
+
+        if(curTime <= 0 && !isAttacking)
+        {
+            isAttacking = true;
+            if (hasIsAttack) anim.SetBool("isAttack", true);
+            curTime = coolTime;
+        }
+        else
+        {
+            isAttacking = false;
+            curTime -= Time.deltaTime;
+        }
     }
 
     private void FixedUpdate()

@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class GatherSpawner : MonoBehaviour
 {
-    [SerializeField] private float range = 5f; // 10 x 10 범위 내에서 생성
     [SerializeField] private float respawnDelay = 5f;
     [SerializeField] private int curTier; // 어떤 티어의 스포너인지
     [SerializeField] Item[] spawnItems;
     [SerializeField] private Transform[] spawnPoints = new Transform[5];
     [SerializeField] private GatheringInteraciton gatherPrefab;
     [SerializeField] private Transform rootSpawnPoint;
-    private float spawnRange = 2.5f;
+    [SerializeField] private float spawnRange = 2.5f;
     [SerializeField] int curCount = 5; // 현재 스폰되어 있는 채집류 개수
 
     private readonly int[] dx = {0,1,-1,1,-1};
