@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System;
+using System.Collections;
+using NUnit.Framework;
 
 public class DayPhaseManager : SingletonManager<DayPhaseManager>
 {
@@ -47,10 +49,18 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     public int bagLevel;
 
     public MapType curMapType;
+    private AsyncOperation currentMapOp;
+
+    private readonly string[] mapSceneNames = {
+        "GrassLand",
+        "SwampLand",
+        "SnowLand"
+    };
 
     public override void Awake()
     {
         base.Awake();
+        StartCoroutine(LoadMap(curMapType));
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -79,5 +89,28 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     private void InitGame()
     {
         UI_DayPhaseScene _day = UIManager.Instance.ShowSceneUI<UI_DayPhaseScene>("DayPhaseScene");
+    }
+
+    public IEnumerator LoadMap(MapType mapType)
+    {
+        // 기존 맵 언로드
+        if (currentMapOp != null)
+        {
+            string curScene = mapSceneNames[(int)curMapType];
+            yield return SceneManager.UnloadSceneAsync(curScene);
+        }
+
+        // 새로운 맵 로드
+        string newScene = mapSceneNames[(int)mapType];
+        currentMapOp = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
+        curMapType = mapType;
+
+        yield return currentMapOp;
+        Debug.Log($"[DayPhaseManager] Loaded {newScene}");
+    }
+
+    public void OnMapChangeButton(MapType nextMap) // 항구 트리거로 사용
+    {
+        StartCoroutine(DayPhaseManager.Instance.LoadMap(nextMap));
     }
 }
