@@ -374,30 +374,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1167943629}
-    - target: {fileID: 782771795663634264, guid: 067b51d71b933c94f897071c12972080, type: 3}
-      propertyPath: m_Name
-      value: GatherSpawner_2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2214739200124753476, guid: 067b51d71b933c94f897071c12972080, type: 3}
-      propertyPath: m_Name
-      value: Spawner_3
-      objectReference: {fileID: 0}
     - target: {fileID: 2352593900299383040, guid: 067b51d71b933c94f897071c12972080, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 1167943629}
-    - target: {fileID: 2530718908578113242, guid: 067b51d71b933c94f897071c12972080, type: 3}
-      propertyPath: m_Name
-      value: GatherSpawner_3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2802174018782898121, guid: 067b51d71b933c94f897071c12972080, type: 3}
-      propertyPath: m_Name
-      value: GatherSpawner_1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3170130419163643096, guid: 067b51d71b933c94f897071c12972080, type: 3}
-      propertyPath: m_Name
-      value: Spawner_2
-      objectReference: {fileID: 0}
     - target: {fileID: 3421403883646978716, guid: 067b51d71b933c94f897071c12972080, type: 3}
       propertyPath: m_Name
       value: GrassLand
@@ -410,14 +390,6 @@ PrefabInstance:
       propertyPath: playerPrefab
       value: 
       objectReference: {fileID: 1167943630}
-    - target: {fileID: 5586390001704420939, guid: 067b51d71b933c94f897071c12972080, type: 3}
-      propertyPath: m_Name
-      value: GatherSpawner_4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6333341531548064501, guid: 067b51d71b933c94f897071c12972080, type: 3}
-      propertyPath: m_Name
-      value: Spawner_1
-      objectReference: {fileID: 0}
     - target: {fileID: 7015256725068060397, guid: 067b51d71b933c94f897071c12972080, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -462,10 +434,6 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1167943629}
-    - target: {fileID: 9095135840708474331, guid: 067b51d71b933c94f897071c12972080, type: 3}
-      propertyPath: m_Name
-      value: Spawner_4
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
