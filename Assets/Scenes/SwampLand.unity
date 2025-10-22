@@ -134,7 +134,7 @@ PrefabInstance:
     - target: {fileID: 442111541657119494, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: animalPrefab
       value: 
-      objectReference: {fileID: 1120403320132296432, guid: 286a428f59c0df0469beb5b3ceed7f87, type: 3}
+      objectReference: {fileID: 6083139923061992678, guid: 6a7ad08e028169a4e967a6b543aecbe7, type: 3}
     - target: {fileID: 2372512931523514949, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: playerPrefab
       value: 

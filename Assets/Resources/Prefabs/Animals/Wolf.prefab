@@ -309,10 +309,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapType: 0
   DropItem: {fileID: 0}
-  maxHP: 50
-  attackPower: 8
-  walkSpeed: 10
-  runSpeed: 15
+  maxHP: 40
+  attackPower: 2
+  walkSpeed: 7
+  runSpeed: 11
   leashDIstance: 15
   returnArriveRadius: 3
   regenPerSec: 8
@@ -323,7 +323,7 @@ MonoBehaviour:
   target: {fileID: 0}
   attackBehavior: {fileID: 5311011624007702518}
   debugLogs: 0
-  attackCooldown: 5
+  attackCooldown: 1
   hitStunDuration: 1.24
   rb: {fileID: 0}
   animator: {fileID: 0}
@@ -363,9 +363,9 @@ MonoBehaviour:
   preDelay: 0.23
   attackDuration: 0.43
   postDelay: 0
-  chargeSpeed: 20
+  chargeSpeed: 15
   stopOnHit: 1
-  damage: 10
+  damage: 2
   hitRadius: 0.8
   hitForwardOffset: 1
   playerMask:

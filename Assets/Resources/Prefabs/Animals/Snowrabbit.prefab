@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 3866760132905959415}
   - component: {fileID: 1548005980562770934}
   m_Layer: 11
-  m_Name: Deer
+  m_Name: Snowrabbit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325,10 +325,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapType: 0
   DropItem: {fileID: 0}
-  maxHP: 30
-  attackPower: 1
+  maxHP: 50
+  attackPower: 8
   walkSpeed: 5
-  runSpeed: 13
+  runSpeed: 10
   leashDIstance: 15
   returnArriveRadius: 3
   regenPerSec: 8
@@ -339,7 +339,7 @@ MonoBehaviour:
   target: {fileID: 0}
   attackBehavior: {fileID: 1548005980562770934}
   debugLogs: 1
-  attackCooldown: 0.01
+  attackCooldown: 5
   hitStunDuration: 1.25
   rb: {fileID: 0}
   animator: {fileID: 0}
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preDelay: 0.12
   postDelay: 0.5
-  damage: 1
+  damage: 8
   hitRadius: 0.8
   playerMask:
     serializedVersion: 2

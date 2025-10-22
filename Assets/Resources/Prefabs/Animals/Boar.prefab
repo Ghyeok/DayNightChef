@@ -203,10 +203,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapType: 0
   DropItem: {fileID: 0}
-  maxHP: 50
-  attackPower: 8
-  walkSpeed: 5
-  runSpeed: 10
+  maxHP: 80
+  attackPower: 3
+  walkSpeed: 4
+  runSpeed: 8
   leashDIstance: 10
   returnArriveRadius: 3
   regenPerSec: 8
@@ -217,10 +217,15 @@ MonoBehaviour:
   target: {fileID: 0}
   attackBehavior: {fileID: 7424268204241441298}
   debugLogs: 0
-  attackCooldown: 5
+  attackCooldown: 0.3
   hitStunDuration: 0.35
   rb: {fileID: 0}
   animator: {fileID: 0}
+  drawGizmos: 1
+  attackRangeColor: {r: 1, g: 0.92, b: 0.016, a: 0.8}
+  leashColor: {r: 0, g: 0.75, b: 1, a: 0.5}
+  patrolColor: {r: 0.5, g: 1, b: 0.5, a: 0.35}
+  returnColor: {r: 1, g: 1, b: 1, a: 0.35}
 --- !u!114 &3050305185337367863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,7 +256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preDelay: 0.35
   postDelay: 0.4
-  damage: 8
+  damage: 3
   hitRadius: 3
   playerMask:
     serializedVersion: 2

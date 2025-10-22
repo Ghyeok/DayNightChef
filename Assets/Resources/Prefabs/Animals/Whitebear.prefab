@@ -67,17 +67,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.03, y: -0.03}
+  m_Offset: {x: 0.05, y: -0.03}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.64, y: 0.64}
+    oldSize: {x: 0.96, y: 0.96}
     newSize: {x: 0.64, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.23, y: 0.23}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &3404005409824245840
 Rigidbody2D:
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 3866760132905959415}
   - component: {fileID: 1548005980562770934}
   m_Layer: 11
-  m_Name: Deer
+  m_Name: Whitebear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,8 +138,8 @@ Transform:
   m_GameObject: {fileID: 2402494889502950895}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4784, y: -2.2807, z: -0.066297084}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 7, y: 7, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4951516966474563755}
@@ -189,7 +189,7 @@ SpriteRenderer:
   m_SortingLayerID: 1088124823
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 368746673022191736, guid: f6efef4b833cfa045a1f07a31b998228, type: 3}
+  m_Sprite: {fileID: 368746673022191736, guid: e8e5bdc779227504987d45fa52faecf3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -261,17 +261,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.03, y: -0.03}
+  m_Offset: {x: 0.05, y: -0.03}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.64, y: 0.64}
+    oldSize: {x: 0.96, y: 0.96}
     newSize: {x: 0.64, y: 0.64}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.23, y: 0.23}
+  m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
 --- !u!95 &4793560112562788745
 Animator:
@@ -283,7 +283,7 @@ Animator:
   m_GameObject: {fileID: 2402494889502950895}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eaf7e58350c428e40a9faa9a80d4a1fe, type: 2}
+  m_Controller: {fileID: 9100000, guid: 34578992b8fce1b498df14e994896dd4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -325,10 +325,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MapType: 0
   DropItem: {fileID: 0}
-  maxHP: 30
-  attackPower: 1
+  maxHP: 50
+  attackPower: 8
   walkSpeed: 5
-  runSpeed: 13
+  runSpeed: 10
   leashDIstance: 15
   returnArriveRadius: 3
   regenPerSec: 8
@@ -339,7 +339,7 @@ MonoBehaviour:
   target: {fileID: 0}
   attackBehavior: {fileID: 1548005980562770934}
   debugLogs: 1
-  attackCooldown: 0.01
+  attackCooldown: 5
   hitStunDuration: 1.25
   rb: {fileID: 0}
   animator: {fileID: 0}
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   preDelay: 0.12
   postDelay: 0.5
-  damage: 1
+  damage: 8
   hitRadius: 0.8
   playerMask:
     serializedVersion: 2
