@@ -1,28 +1,34 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class GatheringInteraciton : MonoBehaviour, IInteract
 {
-    [SerializeField] private Item dropItem;
+    [Header("Drop Context")]
+    [SerializeField] private ItemType itemType = ItemType.Gather;
+    [SerializeField] private int tier = 1;
+
     public event Action<GatheringInteraciton> OnCollected;
 
-    public void SetItem(Item item) => dropItem = item;
+    // (선택) 스포너가 런타임으로 세팅할 때 사용
+    public void SetContext(ItemType type, int t) { itemType = type; tier = t; }
 
     public DayPhaseManager.PlayerBehavior GetBehaviorType()
-    {
-        return DayPhaseManager.PlayerBehavior.Gathering;
-    }
+        => DayPhaseManager.PlayerBehavior.Gathering;
 
     public void Interact(GameObject interactor)
     {
-        if (dropItem == null) return;
-
         var map = DayPhaseManager.Instance.curMapType;
-        ItemManager.Instance.GetGatherItem(map, ItemType.Gather, dropItem);
+        Item[] candidates = ItemManager.Instance.GetItemList(itemType, map, tier);
+
+        Item result = null;
+        if (candidates != null && candidates.Length > 0)
+            result = ItemManager.Instance.GetGatherItem(map, itemType, candidates);
+        else
+            Debug.LogWarning($"[Gathering] 후보가 없습니다. (map:{map}, type:{itemType}, tier:{tier})");
 
         OnCollected?.Invoke(this);
         Destroy(gameObject);
-        Debug.Log($"{dropItem.item_name} 획득!");
+
+        if (result != null) Debug.Log($"{result.item_name} 획득!");
     }
 }

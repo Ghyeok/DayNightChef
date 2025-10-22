@@ -55,23 +55,20 @@ public class GatherSpawner : MonoBehaviour
     private void SpawnAt(int index)
     {
         if (gatherPrefab == null || slots[index].point == null) return;
-        if (spawnItems == null || spawnItems.Length == 0) return;
 
-        // 랜덤 아이템 하나 선택
-        Item pick = spawnItems[UnityEngine.Random.Range(0, spawnItems.Length)];
         var node = Instantiate(gatherPrefab, slots[index].point.position, Quaternion.identity);
-        node.name = $"Gatherable_{index}";
-        node.SetItem(pick); // 채집 시 드롭할 아이템 지정
+        node.name = $"GatherNode_{index}";
 
-        // 기존 이벤트 구독 해제 후 재구독
+        // 아이템을 정하지 않고, 컨텍스트만 전달
+        node.SetContext(ItemType.Gather, curTier);
+
         node.OnCollected -= HandleCollected;
         node.OnCollected += HandleCollected;
 
-        // 슬롯 갱신
-        //  - 기존 코루틴이 돌고 있었다면 정지(중복 방지)
         if (slots[index].co != null) { StopCoroutine(slots[index].co); slots[index].co = null; }
         slots[index].current = node;
     }
+
     /// <summary>
     /// 채집물이 수거되면 호출되는 콜백.
     /// 그 포인트에 대해 respawnDelay 후 재스폰 코루틴 시작.
