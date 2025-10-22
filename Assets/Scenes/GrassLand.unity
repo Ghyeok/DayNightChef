@@ -374,6 +374,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: GrassLand
       objectReference: {fileID: 0}
+    - target: {fileID: 6061919703922147016, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061919703922147016, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061919703922147016, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061919703922147016, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061919703922147016, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061919703922147016, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061919703922147016, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6061919703922147016, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7015256725068060397, guid: 067b51d71b933c94f897071c12972080, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
