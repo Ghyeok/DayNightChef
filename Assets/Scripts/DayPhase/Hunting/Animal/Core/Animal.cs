@@ -16,7 +16,7 @@ public class Animal : Organism
     [SerializeField] int attackPower = 8;
     [SerializeField] float walkSpeed = 1.8f;
     [SerializeField] float runSpeed = 3.2f;
-    [SerializeField] float leashDIstance = 6f; // 스폰기준 리쉬
+    [SerializeField] public float leashDIstance = 6f; // 스폰기준 리쉬
     [SerializeField] float returnArriveRadius = 9f;//스폰포인트 근처 구역, 복귀완료로 판단할 거리
     [SerializeField] float regenPerSec = 8f; // 복귀시 초당 체력 회복
     [SerializeField] float attackRange = 1.2f; //공격 범위
@@ -133,7 +133,14 @@ public class Animal : Organism
     }
 
     // FSM 연동
-    public void ChangeState(IState<Animal> next) => fsm.ChangeState(next);
+    public void ChangeState(IState<Animal> next)
+    {
+        string prev = fsm.current?.GetType().Name ?? "None";
+        string nextName = next?.GetType().Name ?? "Null";
+        Debug.Log($"[FSM] {name} : {prev} → {nextName} (t={Time.time:F2})");
+
+        fsm.ChangeState(next);
+    }
 
     public void MoveToWards(Vector2 dest, float speed)
     {
@@ -184,7 +191,7 @@ public class Animal : Organism
             Invoke(nameof(DestroySelf), 2f);
             return;
         }
-        StopCoroutine(CoStun());
+        StopAllCoroutines();
         StartCoroutine(CoStun());
     }
 
@@ -192,7 +199,17 @@ public class Animal : Organism
     {
         while (Time.time < hitStunUntil) yield return null;
         SetMovementLock(false);
-        ChangeState(new Chase());
+
+        if (InAttackRange())
+        {
+            Debug.Log($"[{name}] 스턴 해제 → HoldAndStrike 전이 (거리={Vector2.Distance(rb.position, target.position):F2})");
+            ChangeState(new HoldAndStrike());
+        }
+        else
+        {
+            Debug.Log($"[{name}] 스턴 해제 → Chase 전이 (거리={Vector2.Distance(rb.position, target.position):F2})");
+            ChangeState(new Chase());
+        }
     }
 
     public int AttackPower => attackPower;

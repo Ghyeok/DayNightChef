@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SwampLand.unity
     guid: 0f541abcff46a4c4b9301a488c486f03
   - enabled: 1
-    path: Assets/Scenes/GrassLand.unity
+    path: Assets/Scenes/q.unity
     guid: 47c08273439638d4bab6df35a0f61514
   - enabled: 1
     path: Assets/Scenes/TestNightPhase.unity

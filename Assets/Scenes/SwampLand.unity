@@ -127,6 +127,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 442111541657119494, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1379675703}
+    - target: {fileID: 442111541657119494, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
+      propertyPath: animalPrefab
+      value: 
+      objectReference: {fileID: 1120403320132296432, guid: 286a428f59c0df0469beb5b3ceed7f87, type: 3}
+    - target: {fileID: 2372512931523514949, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 3592427519804802080, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
     - target: {fileID: 3421403883646978716, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: m_Name
       value: SwampLand
@@ -134,7 +146,7 @@ PrefabInstance:
     - target: {fileID: 5593863553170192672, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: playerPrefab
       value: 
-      objectReference: {fileID: 1933595419}
+      objectReference: {fileID: 0}
     - target: {fileID: 7015256725068060397, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -237,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a9c6910fcf9bb9469857e03d8aa00e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1933595418}
+  target: {fileID: 1379675703}
 --- !u!114 &1032279540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,7 +368,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1933595417
+--- !u!1001 &1379675702
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -413,15 +425,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
---- !u!4 &1933595418 stripped
+--- !u!4 &1379675703 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-  m_PrefabInstance: {fileID: 1933595417}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1933595419 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3592427519804802080, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-  m_PrefabInstance: {fileID: 1933595417}
+  m_PrefabInstance: {fileID: 1379675702}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -429,4 +436,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 1032279543}
   - {fileID: 105325025}
-  - {fileID: 1933595417}
+  - {fileID: 1379675702}

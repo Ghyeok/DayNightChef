@@ -14,7 +14,6 @@ public class Patrol : IState<Animal>
         waitUntil = Time.time + Random.Range(a.IdleMin, a.IdleMax);
         a.SetRunning(false);
         a.StopMove();
-        a.StartCoroutine(Testdmg(a));
     }
 
     public void Execute(Animal a, float dt)
@@ -42,30 +41,42 @@ public class Patrol : IState<Animal>
     }
 
     public void Exit(Animal a) { }
-
-    IEnumerator Testdmg(Animal a)
-    {
-        yield return new WaitForSeconds(5f);
-        a.TakeDamage(1);
-        
-    }
 }
 
 public class Chase : IState<Animal>
 {
-    public void Enter(Animal a) { a.SetRunning(true);}
+    float enterTime;
+    const float MinChaseDuration = 0.5f;
+    public void Enter(Animal a)
+    {
+        a.SetRunning(true);
+        enterTime = Time.time;
+        Debug.Log($"[{a.name}] Entered Chase | target={(a.target ? a.target.name : "null")} | leash={a.leashDIstance}");
+    }
 
     public void Execute(Animal a, float dt)
     {
-        if (!a.target) { a.ChangeState(new Return()); return; }
+        if (!a.target)
+        {
+            Debug.Log($"[{a.name}] target null → Return");
+            a.ChangeState(new Return());
+            return;
+        }
 
-        // 사정거리 밖으로 나가면 추적 중지
-        if (a.IsPlayerBeyondLeash()) { a.ChangeState(new Return()); return;}
+        if (a.IsPlayerBeyondLeash())
+        {
+            Debug.Log($"[{a.name}] 리쉬 초과 (거리={Vector2.Distance(a.target.position, a.SpawnPoint):F2}) → Return");
+            a.ChangeState(new Return());
+            return;
+        }
 
-        // 사거리 안이면 공격
-        if (a.InAttackRange() && a.CanAttackNow()) { a.ChangeState(new Attack()); return;}
+        if (Time.time - enterTime >= MinChaseDuration && a.InAttackRange())
+        {
+            Debug.Log($"[{a.name}] 공격 범위 진입 → HoldAndStrike");
+            a.ChangeState(new HoldAndStrike());
+            return;
+        }
 
-        // 추격
         a.SetRunning(true);
         a.MoveToWards(a.target.position, a.RunSpeed);
     }
@@ -79,7 +90,7 @@ public class  Attack : IState<Animal>
     {
         if (!a.CanAttackNow())
         {
-            a.ChangeState(new Chase());
+            a.ChangeState(new HoldAndStrike());
             return;
         }
         a.SetMovementLock(true);
@@ -96,10 +107,15 @@ public class  Attack : IState<Animal>
         if (cont) return;
 
         // 공격 중에도 플레이어가 리쉬 초과하면 귀환
-        if (a.IsPlayerBeyondLeash()) { a.ChangeState(new Return()); return; }
+        if (a.IsPlayerBeyondLeash()) 
+        {
+            Debug.Log("Return due to leash"); 
+            a.ChangeState(new Return());
+            return; 
+        }
 
         if(a.InAttackRange() && a.CanAttackNow()) a.ChangeState(new Attack());
-        else a.ChangeState(new Chase());
+        else a.ChangeState(new HoldAndStrike());
 
     }
 
@@ -133,4 +149,39 @@ public class Return : IState<Animal>
     public void Exit(Animal a) { a.SetRunning(false); }
 }
 
+public class  HoldAndStrike : IState<Animal>
+{
+    public void Enter(Animal a)
+    {
+        a.StopMove();
+        a.SetRunning(false);
+    }
+
+    public void Execute(Animal a, float dt)
+    {
+        if (!a.target) { a.ChangeState(new Return()); return; }
+        if (a.IsPlayerBeyondLeash()) {
+            a.ChangeState(new Return());
+            return;
+        }
+
+        if (!a.InAttackRange())
+        {
+            a.ChangeState(new Chase());
+            return;
+        }
+
+        a.FaceTo(a.target.position);
+
+        if (a.CanAttackNow())
+        {
+            a.ChangeState(new Attack());
+            return;
+        }
+
+        a.StopMove();
+    }
+
+    public void Exit(Animal a) { }
+}
 

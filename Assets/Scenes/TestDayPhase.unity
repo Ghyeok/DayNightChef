@@ -1412,7 +1412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
-  dayPlayerPrefab: {fileID: 6260861146594801975, guid: f26cd9033c9356f4e95d7007eb06ad92, type: 3}
+  dayPlayerPrefab: {fileID: 3592427519804802080, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
   dayPlayer: {fileID: 0}
 --- !u!4 &1321273207
 Transform:

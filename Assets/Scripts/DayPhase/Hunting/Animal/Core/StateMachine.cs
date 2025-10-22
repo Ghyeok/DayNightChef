@@ -8,7 +8,7 @@ public interface IState<T>
 public sealed class StateMachine<T>
 {
     readonly T owner;
-    IState<T> current;
+    public IState<T> current;
 
     public StateMachine(T owner)
     {
