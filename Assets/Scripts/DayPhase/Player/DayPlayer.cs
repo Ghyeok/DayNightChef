@@ -22,6 +22,36 @@ public class DayPlayer :  MonoBehaviour , IDamagable
     private float revertGrace = 0.2f; // 상호작용이 사라진 뒤 Hunting으로 돌아가는 유예 시간
     private float revertTimer = 0f;
 
+    private void OnEnable()
+    {
+        var pm = DayPhasePlayerManager.Instance;
+        if (pm != null)
+        {
+            pm.BindPlayer(this);
+            pm.OnSnapshotUpdated -= SyncFromManager;
+            pm.OnSnapshotUpdated += SyncFromManager;
+
+            SyncFromManager(pm.Snapshot);
+        }
+    }
+
+    private void OnDisable()
+    {
+        var pm = DayPhasePlayerManager.Instance;
+        if (pm != null)
+            pm.OnSnapshotUpdated -= SyncFromManager;
+    }
+
+    /// <summary>
+    /// 매니저가 브로드캐스트하는 스텟 스냅샷으로 동기화
+    /// </summary>
+    public void SyncFromManager(PlayerRuntimeSnapshot s)
+    {
+        playerMaxHP = s.MaxHP;
+        playerCurHP = s.CurHP;
+        playerAttack = s.Attack;
+        playerMoveSpeed = s.MoveSpeed;
+    }
     void Awake()
     {
         radius = 1f;
@@ -48,12 +78,12 @@ public class DayPlayer :  MonoBehaviour , IDamagable
     public void TakeDamage(float damage)
     {
         //애니메이션 추가
-        playerCurHP = Mathf.Max(0f, playerCurHP - damage);
+        DayPhasePlayerManager.Instance?.ApplyDamage(damage);
     }
 
     public void Dead()
     {
-
+        // 연출만 담당
     }
 
     private void DetectGameObject(LayerMask layer)
