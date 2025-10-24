@@ -11,7 +11,6 @@ public class GatherSpawner : MonoBehaviour
     [SerializeField] private GatheringInteraciton gatherPrefab;
     [SerializeField] private Transform rootSpawnPoint;
     [SerializeField] private float spawnRange = 2.5f;
-    [SerializeField] int curCount = 5; // 현재 스폰되어 있는 채집류 개수
 
     private readonly int[] dx = {0,1,-1,1,-1};
     private readonly int[] dy = {0,1,1,-1,-1};

@@ -423,6 +423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropItems: []
+  specialItemProb: 0.01
 --- !u!4 &110683020
 Transform:
   m_ObjectHideFlags: 0
