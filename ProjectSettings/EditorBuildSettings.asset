@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestNightPhase.unity
     guid: 953c18c4550c64fa290d8c0dbd598361
+  - enabled: 1
+    path: Assets/Scenes/WinterLand.unity
+    guid: 4e56116cfe7cadd43b937e8795ae5b7a
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

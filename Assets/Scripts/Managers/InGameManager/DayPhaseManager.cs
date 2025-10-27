@@ -54,7 +54,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     private readonly string[] mapSceneNames = {
         "GrassLand",
         "SwampLand",
-        "SnowLand"
+        "WinterLand"
     };
 
     public override void Awake()

@@ -1613,7 +1613,7 @@ MonoBehaviour:
   knifeLevel: 0
   fishingLevel: 0
   bagLevel: 0
-  curMapType: 1
+  curMapType: 2
 --- !u!4 &1549417567
 Transform:
   m_ObjectHideFlags: 0
