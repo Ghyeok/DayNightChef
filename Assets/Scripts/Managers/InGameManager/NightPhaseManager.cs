@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/* ¹ã ÆäÀÌÁî¿¡¼­ »ç¿ëµÉ ±â´ÉÀ» ¸ğ¾Æ³õ´Â ¸Å´ÏÀú
+/* ë°¤ í˜ì´ì¦ˆì—ì„œ ì‚¬ìš©ë  ê¸°ëŠ¥ì„ ëª¨ì•„ë†“ëŠ” ë§¤ë‹ˆì €
  * 
  */
 
@@ -19,13 +19,14 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
         Special,
     }
 
+    public RestaurantState state;
     public int reputation;
     public int customerNum;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        state = RestaurantState.Ready;
     }
 
     // Update is called once per frame
