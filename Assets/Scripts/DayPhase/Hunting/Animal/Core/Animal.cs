@@ -188,6 +188,7 @@ public class Animal : Organism
             IsDead = true;
             StopMove();
             animCtrl.TriggerDie();
+            ItemManager.Instance.GetHuntingItem(base.MapType, ItemType.Animal, DropItem);
             Invoke(nameof(DestroySelf), 2f);
             return;
         }

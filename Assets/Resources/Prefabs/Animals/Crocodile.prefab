@@ -324,7 +324,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapType: 1
-  DropItem: {fileID: 0}
+  DropItem:
+  - {fileID: 11400000, guid: d2a151e17540a5c4c99ba8d75d6b652c, type: 2}
   maxHP: 50
   attackPower: 8
   walkSpeed: 5
