@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -77,8 +78,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
         if (state != RestaurantState.Ready) return;
         OnServiceStarted?.Invoke();
         state = RestaurantState.Open;
-        // List<MenuPlan> menus = TODO 영업준비매니저에서 메뉴 받아오기
-        //SalesManager.Instance.SetMenus(menus);
+        List<MenuPlan> menus = SalesManager.Instance.TodayMenus;
         SalesManager.Instance.StartService(_serviceTime, _maxSeat, SeatPointsByLevel[RestaurantLevel - 1]);
     }
 }

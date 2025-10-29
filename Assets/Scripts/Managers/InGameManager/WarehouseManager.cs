@@ -187,6 +187,29 @@ public class WarehouseManager : SingletonManager<WarehouseManager>
 
         return true;
     }
+
+    public int GetMaxCookableCount(Recipe recipe)
+    {
+        if (recipe == null || recipe.recipe_requireItems.Count == 0) return 0;
+
+        int maxCookable = int.MaxValue;
+
+        foreach (var need in recipe.recipe_requireItems)
+        {
+            int currentStock = GetCount(need.item); // 현재 재고
+            int needPerUnit = need.count; // 필요 개수
+
+            if (needPerUnit <= 0) continue;
+
+            int possibleCount = currentStock / needPerUnit;
+            if (possibleCount < maxCookable) // 가장 적게 만들 수 있는 개수가 만들 수 있는 최대치
+            {
+                maxCookable = possibleCount;
+            }
+            if (maxCookable == 0) return 0; // 하나라도 재료가 부족하면 0을 반환
+        }
+        return maxCookable;
+    }
     #endregion
 
     #region 저장/로드(프로토타입)

@@ -22,6 +22,7 @@ public class ItemManager : SingletonManager<ItemManager>
             dropItems = Resources.LoadAll<Item>("Items").ToList();
     }
 
+    public List<Item> DropItems => dropItems;
     // 아이템의 타입, 맵 타입, 티어가 일치하는 아이템들의 리스트를 반환한다
     public Item[] GetItemList(ItemType itemType, MapType mapType, int tier)
     {

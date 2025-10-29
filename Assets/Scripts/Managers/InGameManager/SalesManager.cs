@@ -15,7 +15,8 @@ public class MenuPlan
 public class SalesManager : SingletonManager<SalesManager>
 {
     [Header("오늘의 영업 메뉴")]
-    [SerializeField] private List<MenuPlan> menus = new(); // TODO 준비단계에서 채움
+    [SerializeField] private List<MenuPlan> menus = new();
+    public List<MenuPlan> TodayMenus { get { return menus; } }
 
     [Header("손님")]
     [SerializeField] private GameObject[] customerPrefabs; // 손님 프리팹
