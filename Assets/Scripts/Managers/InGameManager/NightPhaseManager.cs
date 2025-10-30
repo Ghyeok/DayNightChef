@@ -75,9 +75,8 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     // 영업준비 매니저 에서 오늘의 메뉴 받아오기 -> SalesManager에 세팅 -> 영업 시작
     public void StartService()
     {
-        if (state != RestaurantState.Ready) return;
+        if (state != RestaurantState.Open) return;
         OnServiceStarted?.Invoke();
-        state = RestaurantState.Open;
         List<MenuPlan> menus = SalesManager.Instance.TodayMenus;
         SalesManager.Instance.StartService(_serviceTime, _maxSeat, SeatPointsByLevel[RestaurantLevel - 1]);
     }

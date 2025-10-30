@@ -60,7 +60,18 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     public override void Awake()
     {
         base.Awake();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
         StartCoroutine(LoadMap(curMapType));
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        string sceneName = "TestDayPhaseScene";
+        if(scene.name == sceneName)
+        {
+            UIManager.Instance.ShowPopupUI<UI_MapSelectPopup>("UI_MapSelectPopup");
+        }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

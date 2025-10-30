@@ -209,7 +209,7 @@ public class UI_RestaurantPreparePopup : UI_Popup
         UpdateRequiredItemsUI(currentSelectedRecipe);
     }
 
-    private void OnClickedOperationStartButton()
+    private void OnClickedOperationStartButton() // 영업 시작 버튼
     {
         var menuList = RestaurantPrepareManager.Instance.TodayMenu;
 
