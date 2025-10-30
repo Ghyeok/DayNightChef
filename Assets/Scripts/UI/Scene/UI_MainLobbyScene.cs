@@ -14,9 +14,9 @@ public class UI_MainLobbyScene : UI_Scene
         startButton.onClick.AddListener(OnClickedStartButton);
     }
 
-    void OnClickedStartButton()
+    void OnClickedStartButton() // 메인 로비 -> 낮 페이즈 Base 씬
     {
-        string sceneName = "TestDayPhase";
-        SceneManager.LoadScene(sceneName);
+        string sceneName = "DayPhaseScene";
+        SceneManager.LoadSceneAsync(sceneName);
     }
 }

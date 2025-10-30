@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
-using NUnit.Framework;
 
 public class DayPhaseManager : SingletonManager<DayPhaseManager>
 {
-    //현재 존재하는 animals
-    public List<Animal> animalList = new List<Animal>();
-
     public enum PlayerState
     {
         Alive,
         Dead,
     }
-
     public enum AnimalStates
     {
         Patrol = 0,
@@ -23,7 +18,6 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         Chase,
         Die
     }
-
     public enum PlayerBehavior
     {
         Hunting,
@@ -31,7 +25,6 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         Gathering,
         MaxCount,
     }
-
     public enum UpgradeType
     {
         Hp,
@@ -42,6 +35,9 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         MaxCount,
     }
 
+    //현재 존재하는 animals
+    public List<Animal> animalList = new List<Animal>();
+
     public int hpLevel;
     public int moveSpeedLevel;
     public int knifeLevel;
@@ -49,7 +45,9 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     public int bagLevel;
 
     public MapType curMapType;
-    private AsyncOperation currentMapOp;
+    public MapType? currentLoadedMap = null;
+    public AsyncOperation currentMapOp;
+    public static event Action OnMapLoadComplete;
 
     private readonly string[] mapSceneNames = {
         "GrassLand",
@@ -62,12 +60,20 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         base.Awake();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
-        StartCoroutine(LoadMap(curMapType));
+        UI_MapSelectPopup.OnMapSelected += HandleMapSelection;
+        OnMapLoadComplete += ShowDayPhaseSceneUI;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UI_MapSelectPopup.OnMapSelected -= HandleMapSelection;
+        OnMapLoadComplete -= ShowDayPhaseSceneUI;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        string sceneName = "TestDayPhaseScene";
+        string sceneName = "DayPhaseScene";
         if(scene.name == sceneName)
         {
             UIManager.Instance.ShowPopupUI<UI_MapSelectPopup>("UI_MapSelectPopup");
@@ -77,9 +83,6 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (SceneManager.GetActiveScene().name == "TestDayPhase")
-            InitGame();
-
         if(animalList == null)
             animalList = new List<Animal>();
     }
@@ -97,31 +100,32 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         }
     }
 
-    private void InitGame()
-    {
-        UI_DayPhaseScene _day = UIManager.Instance.ShowSceneUI<UI_DayPhaseScene>("DayPhaseScene");
-    }
-
+    private void HandleMapSelection(MapType type) { StartCoroutine(LoadMap(type)); }
     public IEnumerator LoadMap(MapType mapType)
     {
-        // 기존 맵 언로드
-        if (currentMapOp != null)
+        if (currentLoadedMap.HasValue) // currentLoadedMap이 null이 아니면
         {
-            string curScene = mapSceneNames[(int)curMapType];
-            yield return SceneManager.UnloadSceneAsync(curScene);
+            string oldScene = mapSceneNames[(int)currentLoadedMap.Value];
+            yield return SceneManager.UnloadSceneAsync(oldScene);
         }
 
-        // 새로운 맵 로드
         string newScene = mapSceneNames[(int)mapType];
         currentMapOp = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
-        curMapType = mapType;
 
         yield return currentMapOp;
+        currentLoadedMap = mapType;
+
         Debug.Log($"[DayPhaseManager] Loaded {newScene}");
+        OnMapLoadComplete?.Invoke();
     }
 
     public void OnMapChangeButton(MapType nextMap) // 항구 트리거로 사용
     {
         StartCoroutine(DayPhaseManager.Instance.LoadMap(nextMap));
+    }
+
+    private void ShowDayPhaseSceneUI()
+    {
+        UIManager.Instance.ShowSceneUI<UI_DayPhaseScene>("UI_DayPhaseScene");
     }
 }

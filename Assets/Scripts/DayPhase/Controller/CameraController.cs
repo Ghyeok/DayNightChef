@@ -14,6 +14,27 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        transform.position = offset + target.position;
+        if (target != null)
+        {
+            transform.position = offset + target.position;
+        }
+    }
+
+    void SetTarget()
+    {
+        CameraController cc = FindFirstObjectByType<Camera>().GetComponent<CameraController>();
+        if (DayPhasePlayerManager.Instance.dayPlayer != null)
+        {
+            cc.target = DayPhasePlayerManager.Instance.dayPlayer.transform;
+        }
+    }
+
+    private void OnEnable()
+    {
+        DayPhaseManager.OnMapLoadComplete += SetTarget;
+    }
+    private void OnDisable()
+    {
+        DayPhaseManager.OnMapLoadComplete -= SetTarget;
     }
 }

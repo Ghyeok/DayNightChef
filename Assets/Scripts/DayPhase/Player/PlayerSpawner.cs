@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
@@ -5,7 +6,7 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject playerPrefab;
 
-    private void Start()
+    private void SpawnPlayer()
     {
         DayPhasePlayerManager dpm = DayPhasePlayerManager.Instance;
         GameObject go = GameObject.FindAnyObjectByType<PlayerController>().gameObject;
@@ -23,6 +24,16 @@ public class PlayerSpawner : MonoBehaviour
             dpm.dayPlayer.transform.position = spawnPoint.position;
             dpm.dayPlayer.transform.rotation = spawnPoint.rotation;
         }
+    }
+
+    private void OnEnable()
+    {
+        DayPhaseManager.OnMapLoadComplete += SpawnPlayer;
+    }
+
+    private void OnDisable()
+    {
+        DayPhaseManager.OnMapLoadComplete -= SpawnPlayer;
     }
 }
 

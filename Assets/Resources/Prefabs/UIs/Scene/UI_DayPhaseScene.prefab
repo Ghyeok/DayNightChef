@@ -803,7 +803,7 @@ GameObject:
   - component: {fileID: 2494597619258278114}
   - component: {fileID: 7702148345769912819}
   m_Layer: 5
-  m_Name: DayPhaseScene
+  m_Name: UI_DayPhaseScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
