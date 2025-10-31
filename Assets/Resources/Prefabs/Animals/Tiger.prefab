@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 2562931678793079557}
   - component: {fileID: 6083139923061992678}
   - component: {fileID: 1208389740455098303}
+  - component: {fileID: 3621852883458024045}
   m_Layer: 11
   m_Name: Tiger
   m_TagString: Untagged
@@ -327,6 +328,7 @@ MonoBehaviour:
   DropItem:
   - {fileID: 11400000, guid: f2ae42be9af44594aac43f1f5fb63f57, type: 2}
   - {fileID: 11400000, guid: 519ca3f0fdaa1ef469c6bbd7204c982e, type: 2}
+  mapType: 0
   maxHP: 250
   attackPower: 8
   walkSpeed: 8
@@ -369,3 +371,16 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &3621852883458024045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6939716711091375351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c36d1e0cb2bc014393f73b5bc8a5ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapType: 0

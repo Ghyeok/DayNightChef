@@ -20,6 +20,7 @@ public class Animal : Organism
     [SerializeField] float returnArriveRadius = 9f;//스폰포인트 근처 구역, 복귀완료로 판단할 거리
     [SerializeField] float regenPerSec = 8f; // 복귀시 초당 체력 회복
     [SerializeField] float attackRange = 1.2f; //공격 범위
+    private Boss boss;
 
     [Header("Patrol")]
     [SerializeField] float patrolRadius = 3.5f;
@@ -61,6 +62,7 @@ public class Animal : Organism
     // Organism
     public override void Init()
     {
+        boss = GetComponent<Boss>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         animCtrl = GetComponent<AnimatorController>();
@@ -190,6 +192,7 @@ public class Animal : Organism
             animCtrl.TriggerDie();
             ItemManager.Instance.GetHuntingItem(base.MapType, ItemType.Animal, DropItem);
             Invoke(nameof(DestroySelf), 2f);
+            boss.UnlockedMap(MapType);
             return;
         }
         StopAllCoroutines();
