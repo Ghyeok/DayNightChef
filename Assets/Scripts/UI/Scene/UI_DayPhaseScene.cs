@@ -123,8 +123,12 @@ public class UI_DayPhaseScene : UI_Scene
             yield return null;
 
         // 이벤트 구독
+        InventoryManager.Instance.OnInventoryChanged -= RefreshWeightText;
+        GameManager.Instance.OnGoldChanged -= RefreshGoldText;
+        DayPhaseManager.OnMapLoadComplete -= SetJoyStickToPlayer;
         InventoryManager.Instance.OnInventoryChanged += RefreshWeightText;
         GameManager.Instance.OnGoldChanged += RefreshGoldText;
+        DayPhaseManager.OnMapLoadComplete += SetJoyStickToPlayer;
 
         // UI 초기 갱신
         RefreshWeightText();
@@ -138,6 +142,7 @@ public class UI_DayPhaseScene : UI_Scene
         PlayerController pc = DayPhasePlayerManager.Instance.dayPlayer.GetComponent<PlayerController>();
         var joystick = Get<GameObject>((int)GameObjects.Joystick);
         pc.joystick = joystick.GetComponent<VariableJoystick>();
+        pc.joystick.Init();
     }
 
     public void RefreshWeightText()

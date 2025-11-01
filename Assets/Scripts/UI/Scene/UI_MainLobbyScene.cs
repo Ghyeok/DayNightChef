@@ -11,6 +11,7 @@ public class UI_MainLobbyScene : UI_Scene
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Init();
         startButton.onClick.AddListener(OnClickedStartButton);
     }
 

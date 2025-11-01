@@ -48,6 +48,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     public MapType? currentLoadedMap = null;
     public AsyncOperation currentMapOp;
     public static event Action OnMapLoadComplete;
+    private UI_DayPhaseScene UI_DayPhaseScene;
 
     public const string swampLandUnlocked = "swampLandUnlocked";
     public const string winterLandUnlocked = "winterLandUnlocked";
@@ -119,6 +120,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         curMapType = mapType;
         currentLoadedMap = mapType;
 
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(newScene));
         Debug.Log($"[DayPhaseManager] Loaded {newScene}");
         OnMapLoadComplete?.Invoke();
     }
@@ -130,7 +132,14 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
 
     private void ShowDayPhaseSceneUI()
     {
-        UIManager.Instance.ShowSceneUI<UI_DayPhaseScene>("UI_DayPhaseScene");
+        if (UI_DayPhaseScene == null)
+        {
+            UI_DayPhaseScene = UIManager.Instance.ShowSceneUI<UI_DayPhaseScene>("UI_DayPhaseScene");
+        }
+        else
+        {
+            UI_DayPhaseScene.Init();
+        }
     }
 
     public void UnlockSwampLand()

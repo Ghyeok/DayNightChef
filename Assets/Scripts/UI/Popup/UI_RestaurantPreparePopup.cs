@@ -34,6 +34,7 @@ public class UI_RestaurantPreparePopup : UI_Popup
 
     private void Start()
     {
+        Init();
         InstantiateRecipeSlot();
 
         plus.onClick.AddListener(OnClickedPlusButton);
