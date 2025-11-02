@@ -2,6 +2,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Customer : MonoBehaviour
 {
@@ -10,10 +11,8 @@ public class Customer : MonoBehaviour
     [Min(1f)] public float patienceSeconds = 25f;
     // 인내심 그래프 추가 필요
 
-    [Header("좌석 & 입구")]
+    [Header("좌석")]
     [SerializeField] private Transform seatTarget;
-    [SerializeField] private Transform entryPoint;
-
     [Header("머리 위 UI")]
     [SerializeField] private Canvas headCanvas;
     [SerializeField] private Image wantIcon;
@@ -30,27 +29,22 @@ public class Customer : MonoBehaviour
 
     // SalesManager에서 생성 직후 호출
 
-    public void Begin(SalesManager sales, int seatIndex, Recipe want, Transform entry, Transform seat)
+    public void Begin(SalesManager sales, int seatIndex, Recipe want, Transform seat, Vector2 spawnPos)
     {
         _sales = sales;
         _seatIndex = seatIndex;
         Want = want;
-        entryPoint = entry;
         seatTarget = seat;
+        transform.position = new Vector3(spawnPos.x, spawnPos.y, transform.position.z);
 
-        // 시작 위치
-        if (entryPoint != null) transform.position = entryPoint.position;
-
-        // 머리 UI
         if (headCanvas != null) headCanvas.enabled = true;
-        if (bubbleGroup != null) bubbleGroup.SetActive(false); // 앉은 뒤에 활성화 예정
+        if (bubbleGroup != null) bubbleGroup.SetActive(false);
         UpdatePatienceUI();
 
         if (wantIcon != null)
         {
-            var icon = (Want != null) ? Want.recipe_image : null;
-            wantIcon.sprite = icon;
-            wantIcon.enabled = false; // 앉은 뒤에 활성화 예정
+            wantIcon.sprite = (Want != null) ? Want.recipe_image : null;
+            wantIcon.enabled = false; // 착석 후 표시
         }
 
         StopAllCoroutines();
@@ -87,7 +81,27 @@ public class Customer : MonoBehaviour
 
     private IEnumerator Co_MoveTo(Transform target)
     {
-        yield return null;
+        if (target == null) yield break;
+
+        // 현재 z 보존
+        float zNow = transform.position.z;
+        Vector3 startPos3 = transform.position;
+        Vector3 endPos3 = new Vector3(target.position.x, target.position.y, zNow);
+
+        float dist = Vector2.Distance(startPos3, endPos3);
+        float duration = Mathf.Max(dist / moveSpeed, 0.01f); // 0초 이동 방지
+
+        // 기존 이동 Tween 중지
+        transform.DOKill();
+
+        // Tween 생성 → 파괴/비활성 시 자동 정리
+        Tweener tw = transform.DOMove(endPos3, duration)
+                              .SetEase(Ease.OutSine)
+                              .SetLink(gameObject);
+
+        // 완료까지 대기
+        yield return tw.WaitForCompletion();
+
     }
 
     private void UpdatePatienceUI()
@@ -125,12 +139,12 @@ public class Customer : MonoBehaviour
     {
         if (_leaving) return;
         _leaving = true;
-        if (success)
-        {
-            // 평판 상승
-            NightPhaseManager.Instance.Reputation += 2; // 원하는 요리 서빙 시 평판 상승
-        }
-        else NightPhaseManager.Instance.Reputation -= 1; //인내심 다 달거나 ,다른 요리 서빙 시 평판 하락
+
+        if (success) NightPhaseManager.Instance.Reputation += 2;
+        else NightPhaseManager.Instance.Reputation -= 1;
+
+        _sales?.OnCustomerLeave(_seatIndex, success, Want, served);
+
         Destroy(gameObject);
     }
 
