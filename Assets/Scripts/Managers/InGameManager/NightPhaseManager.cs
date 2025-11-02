@@ -10,6 +10,12 @@ using UnityEngine;
 
 public class NightPhaseManager : SingletonManager<NightPhaseManager>
 {
+    private const string TAG = "[Night]";
+    private const bool VERBOSE = true;
+    private static void Log(string msg)
+    {
+        if (VERBOSE) Debug.Log($"{TAG} {msg}");
+    }
     [Header("레스토랑 정보")]
     public int RestaurantLevel = 1; // 현재 레스토랑 레벨
     public int Reputation = 0; // 현재 레스토랑 평판
@@ -100,7 +106,9 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     {
         if (seatGroup == null) return Array.Empty<SalesManager.SeatSlot>();
         var all = seatGroup.BuildSlots();
-        return all.Where(s => IsSideUnlocked(RestaurantLevel, s.side)).ToArray();
+        var unlocked = all.Where(s => IsSideUnlocked(RestaurantLevel, s.side)).ToArray();
+        Log($"좌석 해제: L{RestaurantLevel} → {unlocked.Length}좌석 사용 가능");
+        return unlocked;
     }
 
     public void TickService(float timeLeft)
@@ -111,7 +119,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     public void EndService()
     {
         if (state != RestaurantState.Open) return;
-
+        Log("EndService() 호출 → 상태 Close");
         OnServiceEnded?.Invoke();
         state = RestaurantState.Close;
         // TODO 결과 팝업 , 낮페이지 돌입
@@ -119,14 +127,20 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     // 영업준비 매니저 에서 오늘의 메뉴 받아오기 -> SalesManager에 세팅 -> 영업 시작
     public void StartService()
     {
-        if (state != RestaurantState.Open) return;
+        if (state == RestaurantState.Open)
+        {
+            Log("StartService 호출 무시: 이미 Open 상태");
+            return;
+        }
+        state = RestaurantState.Open;
+        Log("StartService → 상태 Open, OnServiceStarted 이벤트");
         OnServiceStarted?.Invoke();
 
         var unlocked = GetUnlockedSeatSlots();
-        List<MenuPlan> menus = SalesManager.Instance.TodayMenus;
-        //SalesManager.Instance.StartService(_serviceTime, _maxSeat, SeatPointsByLevel[RestaurantLevel - 1]);
         int allowedMaxSeat = Mathf.Min(_maxSeat, unlocked.Length);
+        SalesManager.Instance.SetMenus(RestaurantPrepareManager.Instance.TodayMenu);
 
+        Log($"영업 시작 위임: serviceTime={_serviceTime}s, maxSeat={allowedMaxSeat}");
         SalesManager.Instance.StartService(_serviceTime, allowedMaxSeat, unlocked);
     }
 }

@@ -219,10 +219,10 @@ public class UI_RestaurantPreparePopup : UI_Popup
             Debug.LogWarning("메뉴를 하나 이상 등록해야 합니다!");
             return;
         }
-        NightPhaseManager.Instance.state = NightPhaseManager.RestaurantState.Open;
         // 1. 데이터 전달
         Debug.Log("--- 영업 시작! ---");
         SalesManager.Instance.SetMenus(menuList);
+        NightPhaseManager.Instance.StartService();
         UIManager.Instance.ClosePopupUI(this);
     }
 }

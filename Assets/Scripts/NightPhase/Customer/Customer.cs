@@ -6,6 +6,15 @@ using DG.Tweening;
 
 public class Customer : MonoBehaviour
 {
+    /// <summary>
+    /// 로그용
+    /// </summary>
+    private const string TAG = "[Customer]";
+    private const bool VERBOSE = true;
+    private static void Log(string msg)
+    {
+        if (VERBOSE) Debug.Log($"{TAG} {msg}");
+    }
     [Header("이동/인내심")]
     [Min(0.5f)] public float moveSpeed = 2f;
     [Min(1f)] public float patienceSeconds = 25f;
@@ -46,7 +55,7 @@ public class Customer : MonoBehaviour
             wantIcon.sprite = (Want != null) ? Want.recipe_image : null;
             wantIcon.enabled = false; // 착석 후 표시
         }
-
+        Log($"입장: seatIndex={_seatIndex}, want={(Want != null ? Want.recipe_name : "NULL")}, spawn={spawnPos}");
         StopAllCoroutines();
         StartCoroutine(Co_RunLife());
     }
@@ -56,6 +65,7 @@ public class Customer : MonoBehaviour
         // 좌석으로 이동
         yield return StartCoroutine(Co_MoveTo(seatTarget));
         _isSeated = true;
+        Log($"착석 완료: seatIndex={_seatIndex}");
 
         // 앉은 뒤 UI 활성화
         if (bubbleGroup != null) bubbleGroup.SetActive(true);
@@ -71,6 +81,7 @@ public class Customer : MonoBehaviour
 
             if (_patience01 <= 0f)
             {
+                Log("인내심 0 → 퇴장(실패)");
                 Leave(success: false, served: null);
                 yield break;
             }
@@ -83,25 +94,21 @@ public class Customer : MonoBehaviour
     {
         if (target == null) yield break;
 
-        // 현재 z 보존
         float zNow = transform.position.z;
-        Vector3 startPos3 = transform.position;
-        Vector3 endPos3 = new Vector3(target.position.x, target.position.y, zNow);
+        Vector3 endPos = new Vector3(target.position.x, target.position.y, zNow);
 
-        float dist = Vector2.Distance(startPos3, endPos3);
-        float duration = Mathf.Max(dist / moveSpeed, 0.01f); // 0초 이동 방지
+        float dist = Vector2.Distance(transform.position, endPos);
+        float duration = Mathf.Max(dist / moveSpeed, 0.01f);
 
-        // 기존 이동 Tween 중지
+        // 이전 이동 트윈 정리
         transform.DOKill();
 
-        // Tween 생성 → 파괴/비활성 시 자동 정리
-        Tweener tw = transform.DOMove(endPos3, duration)
+        Tweener tw = transform.DOMove(endPos, duration)
                               .SetEase(Ease.OutSine)
                               .SetLink(gameObject);
-
-        // 완료까지 대기
+        Log($"이동 시작 → {endPos} (dur:{duration:F2}s)");
         yield return tw.WaitForCompletion();
-
+        Log("이동 완료");
     }
 
     private void UpdatePatienceUI()
@@ -122,6 +129,7 @@ public class Customer : MonoBehaviour
             {
                 GameManager.Instance.AddGold(served.recipe_price);              
             }
+            Log($"서빙 성공: {served?.recipe_name}");
             Leave(success: true, served: served);
         }
         else
@@ -131,6 +139,7 @@ public class Customer : MonoBehaviour
             {
                 GameManager.Instance.AddGold(served.recipe_price / 2); // 다른 요리 서빙 시 절반 금액 지급
             }
+            Log($"오서빙(다른 요리): {served?.recipe_name} (원함:{Want?.recipe_name})");
             Leave(success: false, served: served);
         }
     }
@@ -142,7 +151,7 @@ public class Customer : MonoBehaviour
 
         if (success) NightPhaseManager.Instance.Reputation += 2;
         else NightPhaseManager.Instance.Reputation -= 1;
-
+        Log($"퇴장: success={success}, served={served?.recipe_name}, rep={NightPhaseManager.Instance.Reputation}");
         _sales?.OnCustomerLeave(_seatIndex, success, Want, served);
 
         Destroy(gameObject);
