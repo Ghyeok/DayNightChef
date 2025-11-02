@@ -782,6 +782,9 @@ MonoBehaviour:
   fishingLevel: 0
   bagLevel: 0
   curMapType: 2
+  loadingCanvas: {fileID: 0}
+  progressBar: {fileID: 0}
+  progressText: {fileID: 0}
 --- !u!4 &1549417567
 Transform:
   m_ObjectHideFlags: 0

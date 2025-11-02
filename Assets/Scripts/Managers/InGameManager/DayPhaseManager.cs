@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
+using UnityEngine.UI;
+using TMPro;
 
 public class DayPhaseManager : SingletonManager<DayPhaseManager>
 {
@@ -53,6 +55,10 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     public const string swampLandUnlocked = "swampLandUnlocked";
     public const string winterLandUnlocked = "winterLandUnlocked";
 
+    [SerializeField] private GameObject loadingCanvas;
+    [SerializeField] private Slider progressBar;
+    [SerializeField] private TextMeshProUGUI progressText;
+
     private readonly string[] mapSceneNames = {
         "GrassLand",
         "SwampLand",
@@ -64,14 +70,14 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         base.Awake();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
-        UI_MapSelectPopup.OnMapSelected += HandleMapSelection;
+        UI_MapSelectPopup.OnMapSelected += LoadMap;
         OnMapLoadComplete += ShowDayPhaseSceneUI;
     }
 
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        UI_MapSelectPopup.OnMapSelected -= HandleMapSelection;
+        UI_MapSelectPopup.OnMapSelected -= LoadMap;
         OnMapLoadComplete -= ShowDayPhaseSceneUI;
     }
 
@@ -104,30 +110,29 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         }
     }
 
-    private void HandleMapSelection(MapType type) { StartCoroutine(LoadMap(type)); }
-    public IEnumerator LoadMap(MapType mapType)
+    public IEnumerator UnloadOldScene()
     {
         if (currentLoadedMap.HasValue) // currentLoadedMap이 null이 아니면
         {
             string oldScene = mapSceneNames[(int)currentLoadedMap.Value];
             yield return SceneManager.UnloadSceneAsync(oldScene);
         }
-
-        string newScene = mapSceneNames[(int)mapType];
-        currentMapOp = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
-
-        yield return currentMapOp;
-        curMapType = mapType;
-        currentLoadedMap = mapType;
-
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(newScene));
-        Debug.Log($"[DayPhaseManager] Loaded {newScene}");
-        OnMapLoadComplete?.Invoke();
     }
 
-    public void OnMapChangeButton(MapType nextMap) // 항구 트리거로 사용
+    public void LoadMap(MapType mapType)
     {
-        StartCoroutine(DayPhaseManager.Instance.LoadMap(nextMap));
+        string newScene = mapSceneNames[(int)mapType];
+
+        Action sceneLoadedCallBack = () =>
+        {
+            curMapType = mapType;
+            currentLoadedMap = mapType;
+
+            Debug.Log($"[DayPhaseManager] Loaded {newScene}");
+            OnMapLoadComplete?.Invoke();
+        };
+
+        SceneLoader.Instance.LoadSceneAdditive(newScene, sceneLoadedCallBack);
     }
 
     private void ShowDayPhaseSceneUI()
