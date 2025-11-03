@@ -9,6 +9,9 @@ public class UI_MapSelectPopup : UI_Popup
     [SerializeField] private Button swampLandSelect;
     [SerializeField] private Button winterLandSelect;
 
+    [SerializeField] private GameObject swampPanel;
+    [SerializeField] private GameObject winterPanel;
+
     public static event Action<MapType> OnMapSelected;
 
     private int unlockSwampLand;
@@ -29,7 +32,9 @@ public class UI_MapSelectPopup : UI_Popup
         unlockWinterLand = PlayerPrefs.GetInt(DayPhaseManager.winterLandUnlocked, 0);
 
         swampLandSelect.interactable = unlockSwampLand > 0;
+        swampPanel.SetActive(unlockSwampLand <= 0);
         winterLandSelect.interactable = unlockWinterLand > 0;
+        winterPanel.SetActive(unlockWinterLand <= 0);
     }
 
     private void OnClickedGrassLandSelect()
