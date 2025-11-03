@@ -8,6 +8,7 @@ using UnityEngine;
  * 
  */
 
+[DefaultExecutionOrder(-100)]
 public class NightPhaseManager : SingletonManager<NightPhaseManager>
 {
     private const string TAG = "[Night]";

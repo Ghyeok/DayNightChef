@@ -17,6 +17,7 @@ public class MenuPlan
     // 재고(목표) 소진 여부: 더 이상 주문 받을 수 없음
     public bool IsExhausted => RemainingToOrder <= 0;
 }
+[DefaultExecutionOrder(-200)]
 public class SalesManager : SingletonManager<SalesManager>
 {
     /// <summary>
@@ -52,6 +53,7 @@ public class SalesManager : SingletonManager<SalesManager>
     public event Action<Order> OnOrderStarted;
     public event Action<Order> OnOrderReady;
     public event Action<Order> OnOrderRemoved;
+    public event Action<Order> OnReadyDequeued; // 완료 큐에서 꺼낼때
 
     private int _orderSeq = 0;
 
@@ -176,6 +178,7 @@ public class SalesManager : SingletonManager<SalesManager>
         {
             order = _readyQueue.Dequeue();
             Log($"완료 요리 수령: #{order.orderId} {order.recipe.recipe_name}");
+            OnReadyDequeued?.Invoke(order); // UI에 제거하라고 알림
             return true;
         }
         order = null;
@@ -200,11 +203,8 @@ public class SalesManager : SingletonManager<SalesManager>
         _timeLeft = Mathf.Max(1f, serviceTime);
         _maxSeat = Mathf.Max(1, maxSeats);
         _seatSlots = seatSlots ?? Array.Empty<SeatSlot>();
-        if (_seatSlots.Length == 0)
-        {
-            Log("경고: 좌석 미설정");
-            return;
-        }
+
+        if (!ValidateServiceConfig()) return; // ✅ 조기 종료
 
         seatOccupied = new bool[_seatSlots.Length];
         customerCount = 0;
@@ -246,21 +246,78 @@ public class SalesManager : SingletonManager<SalesManager>
     }
 
     // 손님 생성
+    private bool ValidateServiceConfig()
+    {
+        if (customerPrefabs == null || customerPrefabs.Length == 0)
+        {
+            Debug.LogError("[Sales] 고객 프리팹이 비어 있습니다. SalesManager.customerPrefabs를 인스펙터에 지정하세요.");
+            return false;
+        }
+
+        if (_seatSlots == null || _seatSlots.Length == 0)
+        {
+            Debug.LogError("[Sales] 좌석 슬롯이 비어 있습니다. NightPhaseManager의 seatGroup을 확인하세요.");
+            return false;
+        }
+
+        // 메뉴에 recipe null이 섞여 있는지 점검
+        int nullRecipe = menus.Count(m => m.recipe == null);
+        if (nullRecipe > 0)
+        {
+            Debug.LogError($"[Sales] recipe가 null인 메뉴가 {nullRecipe}개 있습니다. RestaurantPrepareManager.TodayMenu 항목을 점검하세요.");
+            // 계속 진행은 가능하지만, 스폰 시점에 다시 걸러냅니다.
+        }
+
+        return true;
+    }
     private void TrySpawnCustomer()
     {
+        // 1) 빈 좌석 확인
         int seatIdx = FindFreeSeat();
         if (seatIdx < 0) { Log("스폰 취소: 빈 좌석 없음"); return; }
 
-        var candidates = menus.Where(m => m.RemainingToOrder > 0).ToList();
-        if (candidates.Count == 0) { Log("스폰 취소: 주문 가능 메뉴 없음(품절)"); return; }
+        // 2) 주문 가능한 메뉴 찾기 (recipe null 제거)
+        var candidates = menus.Where(m => m.RemainingToOrder > 0 && m.recipe != null).ToList();
+        if (candidates.Count == 0) { Log("스폰 취소: 주문 가능 메뉴 없음(품절 or recipe null)"); return; }
 
+        // 3) 고객 프리팹 확인
+        if (customerPrefabs == null || customerPrefabs.Length == 0)
+        {
+            Debug.LogError("[Sales] 스폰 취소: customerPrefabs가 비었습니다.");
+            return;
+        }
+
+        // 4) 후보 선택 및 예약(allocated++)
         var chosen = candidates[UnityEngine.Random.Range(0, candidates.Count)];
         chosen.allocated++;
-        Log($"손님 스폰 준비: seat={seatIdx}, menu={chosen.recipe?.recipe_name}, allocated={chosen.allocated}/{chosen.planned}");
+        Log($"손님 스폰 준비: seat={seatIdx}, menu={chosen.recipe.recipe_name}, allocated={chosen.allocated}/{chosen.planned}");
 
+        // 5) 좌석 슬롯/좌표 확인
+        if (_seatSlots == null || (uint)seatIdx >= _seatSlots.Length)
+        {
+            Debug.LogError("[Sales] 스폰 취소: seat index가 유효하지 않습니다.");
+            chosen.allocated = Mathf.Max(0, chosen.allocated - 1);
+            return;
+        }
+
+        var slot = _seatSlots[seatIdx];
+        if (slot.point == null)
+        {
+            Debug.LogError("[Sales] 스폰 취소: seatSlot.point가 null입니다. 좌석 Transform을 지정하세요.");
+            chosen.allocated = Mathf.Max(0, chosen.allocated - 1);
+            return;
+        }
+
+        // 6) 프리팹 인스턴스
         var prefab = customerPrefabs[UnityEngine.Random.Range(0, customerPrefabs.Length)];
-        var go = Instantiate(prefab);
+        if (prefab == null)
+        {
+            Debug.LogError("[Sales] 스폰 취소: customerPrefabs에 null 항목이 있습니다.");
+            chosen.allocated = Mathf.Max(0, chosen.allocated - 1);
+            return;
+        }
 
+        var go = Instantiate(prefab);
         var customer = go.GetComponent<Customer>();
         if (customer == null)
         {
@@ -270,23 +327,41 @@ public class SalesManager : SingletonManager<SalesManager>
             return;
         }
 
-        var slot = _seatSlots[seatIdx];
+        // 7) 스폰 위치 계산 및 투입
         Vector2 spawnPos = ComputeSpawnPos(slot);
-
         customer.Begin(this, seatIdx, chosen.recipe, slot.point, spawnPos);
 
         seatOccupied[seatIdx] = true;
         customerCount++;
 
+        // 8) 주문 큐 등록
         PlaceOrder(customer, chosen.recipe);
     }
     // 빈 좌석 찾기
     private int FindFreeSeat()
     {
         int limit = Mathf.Min(_maxSeat, _seatSlots.Length);
+        var freeSeats = new List<int>();
+
+        //  비어있는 좌석 인덱스를 모두 수집
         for (int i = 0; i < limit; i++)
-            if (!seatOccupied[i]) return i;
-        return -1;
+        {
+            if (!seatOccupied[i])
+                freeSeats.Add(i);
+        }
+
+        //  비어있는 좌석이 없으면 -1 반환
+        if (freeSeats.Count == 0)
+            return -1;
+
+        //  빈 좌석 중 하나를 랜덤 선택
+        int randIndex = UnityEngine.Random.Range(0, freeSeats.Count);
+        int chosenSeat = freeSeats[randIndex];
+
+        //  로그(optional)
+        Debug.Log($"[Sales] 랜덤 좌석 선택: {chosenSeat} (총 {freeSeats.Count}석 중)");
+
+        return chosenSeat;
     }
 
     // 좌석 기준 스폰위치 확인
