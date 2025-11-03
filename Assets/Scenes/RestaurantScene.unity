@@ -2264,6 +2264,13 @@ MonoBehaviour:
   menus: []
   customerPrefabs:
   - {fileID: 877797151760090882, guid: d41230c8bd584794cad24372035dd84f, type: 3}
+  - {fileID: 877797151760090882, guid: b3266721fb1332f4db1dd787c82835e6, type: 3}
+  - {fileID: 877797151760090882, guid: 675aecffca1fac84e91596c1375cd566, type: 3}
+  - {fileID: 877797151760090882, guid: e865a99bc2bf91e4782af7de63339a84, type: 3}
+  - {fileID: 877797151760090882, guid: 669293e385cf9d24b8458669802c82f0, type: 3}
+  - {fileID: 877797151760090882, guid: 278037720a6ca7e4d8acd3e4e894e42a, type: 3}
+  - {fileID: 877797151760090882, guid: a94a68d16a87f3d439bcd1cfbc63dc37, type: 3}
+  - {fileID: 877797151760090882, guid: 45388530a90375741b4dc16eca9d2920, type: 3}
   spawnOffset: 2
   spawnInterval: 5
   _timeLeft: 0
@@ -2536,7 +2543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d44f6e6f8ecf604188d300e0459bc13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RestaurantLevel: 1
+  RestaurantLevel: 2
   Reputation: 0
   _maxSeat: 5
   _serviceTime: 120
