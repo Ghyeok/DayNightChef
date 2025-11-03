@@ -210,19 +210,38 @@ public class UI_RestaurantPreparePopup : UI_Popup
         UpdateRequiredItemsUI(currentSelectedRecipe);
     }
 
-    private void OnClickedOperationStartButton() // 영업 시작 버튼
+    private async void OnClickedOperationStartButton() // 영업 시작 버튼
     {
         var menuList = RestaurantPrepareManager.Instance.TodayMenu;
 
         if (RestaurantPrepareManager.Instance.CurTotalPlannedCount == 0)
         {
-            Debug.LogWarning("메뉴를 하나 이상 등록해야 합니다!");
+            await UI_ConfirmPopup.ShowAsync(
+                info: "메뉴를 하나 이상 선택해야 합니다!",
+                left: null,
+                right: null
+            );
+               
             return;
         }
-        // 1. 데이터 전달
-        Debug.Log("--- 영업 시작! ---");
-        SalesManager.Instance.SetMenus(menuList);
-        NightPhaseManager.Instance.StartService();
-        UIManager.Instance.ClosePopupUI(this);
+
+        bool result = await UI_ConfirmPopup.ShowAsync(
+            info: "영업을 시작하시겠습니까?",
+            left: "예",
+            right: "아니오"
+            );
+
+        if (result)
+        {
+            // 1. 데이터 전달
+            Debug.Log("--- 영업 시작! ---");
+            SalesManager.Instance.SetMenus(menuList);
+            NightPhaseManager.Instance.StartService();
+            UIManager.Instance.CloseAllPopupUI();
+        }
+        else
+        {
+            UIManager.Instance.ClosePopupUI();
+        }
     }
 }
