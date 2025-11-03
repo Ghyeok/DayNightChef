@@ -18,6 +18,6 @@ public class UI_MainLobbyScene : UI_Scene
     void OnClickedStartButton() // 메인 로비 -> 낮 페이즈 Base 씬
     {
         string sceneName = "DayPhaseScene";
-        SceneManager.LoadSceneAsync(sceneName);
+        SceneLoader.Instance.LoadScene(sceneName, LoadSceneMode.Single);
     }
 }

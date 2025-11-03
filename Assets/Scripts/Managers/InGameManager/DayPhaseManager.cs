@@ -121,8 +121,13 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
 
     public void LoadMap(MapType mapType)
     {
-        string newScene = mapSceneNames[(int)mapType];
+        StartCoroutine(LoadMapRoutine(mapType));
+    }
 
+    private IEnumerator LoadMapRoutine(MapType mapType)
+    {
+        string newScene = mapSceneNames[(int)mapType];
+        bool isComplete = false;
         Action sceneLoadedCallBack = () =>
         {
             curMapType = mapType;
@@ -130,9 +135,13 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
 
             Debug.Log($"[DayPhaseManager] Loaded {newScene}");
             OnMapLoadComplete?.Invoke();
+
+            isComplete = true;
         };
 
-        SceneLoader.Instance.LoadSceneAdditive(newScene, sceneLoadedCallBack);
+        SceneLoader.Instance.LoadScene(newScene,LoadSceneMode.Additive, sceneLoadedCallBack);
+
+        yield return new WaitUntil(() => isComplete);
     }
 
     private void ShowDayPhaseSceneUI()

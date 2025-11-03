@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_DayPhaseScene : UI_Scene
@@ -33,8 +34,8 @@ public class UI_DayPhaseScene : UI_Scene
         PauseButton,
         UpgradeButton,
         WeightButton,
-        //테스트용 상점 버튼
-        TestStoreButton,
+        StoreButton,
+        NightPhaseButton,
     }
 
 
@@ -68,11 +69,14 @@ public class UI_DayPhaseScene : UI_Scene
         var weightBtn = GetButton((int)Buttons.WeightButton).gameObject;
         AddUIEvent(weightBtn, _ => UI_Inven.Show(), Define.UIEvent.Click);
 
-        var TestStoreBtn = GetButton((int)Buttons.TestStoreButton).gameObject;
-        AddUIEvent(TestStoreBtn, _ => UI_GroceryStorePopup.Show(), Define.UIEvent.Click);
+        var StoreBtn = GetButton((int)Buttons.StoreButton).gameObject;
+        AddUIEvent(StoreBtn, _ => UI_GroceryStorePopup.Show(), Define.UIEvent.Click);
 
         var UpgradeBtn = GetButton((int)Buttons.UpgradeButton).gameObject;
         AddUIEvent(UpgradeBtn, _ => UI_UpgradePopup.Show(), Define.UIEvent.Click);
+
+        var NightBtn = GetButton((int)Buttons.NightPhaseButton).gameObject;
+        AddUIEvent(NightBtn,NightPhaseButtonOnclicked, Define.UIEvent.Click);
 
         SetJoyStickToPlayer();
 
@@ -211,6 +215,24 @@ public class UI_DayPhaseScene : UI_Scene
         else
         {
             dpm.currentInteract.Interact(dpm.dayPlayer);
+        }
+    }
+
+    public async void NightPhaseButtonOnclicked(PointerEventData data)
+    {
+        bool result = await UI_ConfirmPopup.ShowAsync(
+            info: "밤 페이즈로 이동하시겠습니까?",
+            left: "예",
+            right: "아니오"
+            );
+
+        if (result)
+        {
+            SceneLoader.Instance.LoadScene("NightPhaseScene", LoadSceneMode.Single);
+        }
+        else
+        {
+            UIManager.Instance.ClosePopupUI();
         }
     }
 }

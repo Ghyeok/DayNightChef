@@ -40,24 +40,24 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    public void LoadSceneAdditive(string sceneName, Action onLoadComplete = null)
+    public void LoadScene(string sceneName, LoadSceneMode mode, Action onLoadComplete = null)
     {
         if (loadingScreenInstance == null)
         {
             Debug.LogError("LoadingScreenPrefab이 할당되지 않았습니다!");
             return;
         }
-        StartCoroutine(LoadSceneCoroutine(sceneName, onLoadComplete));
+        StartCoroutine(LoadSceneCoroutine(sceneName, mode, onLoadComplete));
     }
 
-    private IEnumerator LoadSceneCoroutine(string sceneName, Action onLoadComplete)
+    private IEnumerator LoadSceneCoroutine(string sceneName, LoadSceneMode mode, Action onLoadComplete)
     {
         // --- 1. 로딩창 켜기 ---
         loadingScreenInstance.gameObject.SetActive(true);
         loadingScreenInstance.SetProgress(0); // LoadingScreenUI 스크립트의 함수 호출
 
         // --- 2. 새 씬 로드 시작 ---
-        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName, mode);
         op.allowSceneActivation = false;
 
         // --- 3. 로딩 진행률 로직 ---
@@ -89,7 +89,10 @@ public class SceneLoader : MonoBehaviour
         }
 
         // --- 4. 로드 완료 처리 ---
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+        if (mode == LoadSceneMode.Additive)
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+        }
         onLoadComplete?.Invoke();
 
         // --- 5. 로딩창 끄기 ---
