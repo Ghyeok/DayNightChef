@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
     {
         float ang = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
         if (ang < 0f) ang += 360f;
-        int idx = Mathf.RoundToInt(ang / 45f) % 7;
+        int idx = Mathf.RoundToInt(ang / 45f) % 8;
         return Octant[idx];
     }
 
