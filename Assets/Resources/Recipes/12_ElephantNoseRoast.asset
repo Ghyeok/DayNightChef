@@ -16,11 +16,11 @@ MonoBehaviour:
   recipe_name: "\uCF54\uB07C\uB9AC \uCF54 \uAD6C\uC774"
   recipe_image: {fileID: 21300000, guid: 0773c1450834d274b9849fbd0c87f392, type: 3}
   recipe_type: 0
-  recipe_price: 0
+  recipe_price: 135
   recipe_requireItems:
   - item: {fileID: 11400000, guid: 0c6dc6f277a1c58469866e0d31e6eda2, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: 4c43b819b223b73428efc63b497224f7, type: 2}
-    count: 1
+    count: 3
   - item: {fileID: 11400000, guid: ce4961fd6451d7242819e01512732f75, type: 2}
     count: 1

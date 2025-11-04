@@ -24,24 +24,3 @@ MonoBehaviour:
   - level: 3
     value: 0
     goldToNext: 3
-  - level: 4
-    value: 0
-    goldToNext: 3
-  - level: 5
-    value: 0
-    goldToNext: 3
-  - level: 6
-    value: 0
-    goldToNext: 3
-  - level: 7
-    value: 0
-    goldToNext: 3
-  - level: 8
-    value: 0
-    goldToNext: 3
-  - level: 9
-    value: 0
-    goldToNext: 3
-  - level: 10
-    value: 0
-    goldToNext: 3

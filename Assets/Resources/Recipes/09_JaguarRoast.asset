@@ -16,7 +16,7 @@ MonoBehaviour:
   recipe_name: "\uC7AC\uADDC\uC5B4 \uAD6C\uC774"
   recipe_image: {fileID: 21300000, guid: 8e3f9e8a5be2690468c4e86ca0d1cb5e, type: 3}
   recipe_type: 0
-  recipe_price: 0
+  recipe_price: 42
   recipe_requireItems:
   - item: {fileID: 11400000, guid: a70400b3a4bcd394d9a5026bd361b71f, type: 2}
     count: 1
