@@ -17,31 +17,31 @@ MonoBehaviour:
   records:
   - level: 1
     value: 10
-    goldToNext: 3
+    goldToNext: 100
   - level: 2
     value: 12
-    goldToNext: 3
+    goldToNext: 180
   - level: 3
     value: 14
-    goldToNext: 3
+    goldToNext: 400
   - level: 4
     value: 16
-    goldToNext: 3
+    goldToNext: 700
   - level: 5
     value: 19
-    goldToNext: 5
+    goldToNext: 1250
   - level: 6
     value: 22
-    goldToNext: 5
+    goldToNext: 2100
   - level: 7
     value: 26
-    goldToNext: 7
+    goldToNext: 3500
   - level: 8
     value: 31
-    goldToNext: 10
+    goldToNext: 5500
   - level: 9
     value: 37
-    goldToNext: 15
+    goldToNext: 9000
   - level: 10
     value: 45
-    goldToNext: 20
+    goldToNext: 0

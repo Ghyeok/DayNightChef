@@ -17,10 +17,10 @@ MonoBehaviour:
   records:
   - level: 1
     value: 0
-    goldToNext: 3
+    goldToNext: 200
   - level: 2
     value: 0
-    goldToNext: 3
+    goldToNext: 400
   - level: 3
     value: 0
-    goldToNext: 3
+    goldToNext: 0
