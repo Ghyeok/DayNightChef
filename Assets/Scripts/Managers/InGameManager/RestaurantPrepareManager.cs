@@ -44,6 +44,13 @@ public class RestaurantPrepareManager : SingletonManager<RestaurantPrepareManage
     {
         UIManager.Instance.ShowPopupUI<UI_RestaurantPreparePopup>("UI_RestaurantPreparePopup");
         WarehouseManager.Instance.OnEnterNightPhase_TransferAll();
+        // test 코드
+        WarehouseEntry test1 = new WarehouseEntry() { item = ItemManager.Instance.DropItems[4], count = 100 };
+        WarehouseEntry test2 = new WarehouseEntry() { item = ItemManager.Instance.DropItems[48], count = 100 };
+        WarehouseManager.Instance.TryAdd(test1.item, test1.count);
+        WarehouseManager.Instance.TryAdd(test2.item, test2.count);
+        WarehouseManager.Instance.OnEnterNightPhase_TransferAll();
+        // test 코드
     }
 
     /// <summary>

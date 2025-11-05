@@ -16,6 +16,18 @@ public class WaiterController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer sr;
 
+    [Header("Interaction")]
+    [SerializeField, Min(0.2f)] float chefPickupRadius = 1.2f; // 셰프 반경
+    [SerializeField, Min(0.2f)] float serveRayDIstance = 2.0f; // 손님 정면 레이 거리
+    [SerializeField] LayerMask chefLayer;
+    [SerializeField] LayerMask customerLayer;
+
+    [Header("비쥬얼")]
+    [SerializeField] SpriteRenderer carryIcon;
+    [SerializeField] Vector3 carryIconOffset = new Vector3(0, 0.8f, 0);
+
+    private Recipe carriedRecipe = null; // 들고있는 요리
+
     // 애니메이터 파라미터
     private int hashIsWalk, hashSpeed, hashMoveX, hashMoveY;
     private bool hasIsWalk, hasSpeed, hasMoveX, hasMoveY;
@@ -52,6 +64,8 @@ public class WaiterController : MonoBehaviour
         hasSpeed = HasParam(anim, hashSpeed);
         hasMoveX = HasParam(anim, hashMoveX);
         hasMoveY = HasParam(anim, hashMoveY);
+
+        UpdateCarryIcon();
     }
 
     private void FixedUpdate()
@@ -66,7 +80,78 @@ public class WaiterController : MonoBehaviour
         UpdateFacing();
         UpdateAnimator();
     }
+    // 요리 관련
+    public void OnInteract()
+    {
+        // 1. 들고있는 요리가 없으면 셰프에서 수령
+        if (carriedRecipe == null)
+        {
+            if (TryTakeFromChef()) return;
+        }
 
+        // 2. 들고 있는 요리가 있으면 정면 손님에게 서빙 시도
+        if (carriedRecipe != null)
+        {
+            if (TryServeToFrontCustomer()) return;
+        }
+    }
+
+    private bool TryTakeFromChef()
+    {
+        Debug.Log(" 셰프 감지 시작");
+        // 주변 원형 감지로 셰프 확인
+        var hits = Physics2D.OverlapCircleAll(transform.position, chefPickupRadius, chefLayer);
+        if (hits == null || hits.Length == 0) return false;
+        Debug.Log("셰프 감지 성공");
+
+        // 레디큐에서 1개 수령
+        var sales = SalesManager.Instance;
+        if (sales == null) return false;
+
+        if (sales.TryPopReadyOrder(out var order))
+        {
+            carriedRecipe = order.recipe;
+            UpdateCarryIcon();
+            //TODO 이펙트 or 사운드
+            return true;
+        }
+        return false;
+    }
+
+    private bool TryServeToFrontCustomer()
+    {
+        Vector2 origin = transform.position;
+        Vector2 dir = lookDir.sqrMagnitude > 1e-6f? lookDir.normalized : Vector2.zero;
+        RaycastHit2D hit = Physics2D.Raycast(origin, dir, serveRayDIstance, customerLayer);
+
+        if (hit.collider == null) return false;
+        var customer = hit.collider.GetComponent<Customer>();
+        if(customer == null) return false;
+
+        // 손님에게 서빙 시도
+        customer.TryServe(carriedRecipe);
+
+        // 서빙 후 빈 손으로 전환
+        carriedRecipe = null;
+        UpdateCarryIcon();
+        return true;
+    }
+
+    private void UpdateCarryIcon()
+    {
+        if (carryIcon == null) return;
+        if (carriedRecipe == null)
+        {
+            carryIcon.enabled = false;
+            carryIcon.sprite = null;
+        }
+        else
+        {
+            carryIcon.enabled = true;
+            carryIcon.transform.localPosition = carryIconOffset;
+            carryIcon.sprite = carriedRecipe.recipe_image;
+        }
+    }
     private bool HasParam(Animator a, int hash)
     {
         foreach (var p in a.parameters)

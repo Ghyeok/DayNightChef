@@ -66,7 +66,7 @@ public class SalesManager : SingletonManager<SalesManager>
 
     [Header("오늘의 영업 메뉴")]
     [SerializeField] private List<MenuPlan> menus = new();
-    public List<MenuPlan> TodayMenus { get { return menus; } }
+    public List<MenuPlan> TodayMenus => menus;
 
     [Header("손님")]
     [SerializeField] private GameObject[] customerPrefabs; // 손님 프리팹
@@ -84,18 +84,24 @@ public class SalesManager : SingletonManager<SalesManager>
     [SerializeField] private int _maxSeat;
     [SerializeField] private int customerCount; // 현재 손님 수
     private bool _isServiceRunning = false;
+    public float CookSeconds => defaultCookSeconds;
 
     public void SetMenus(List<MenuPlan> plans)
     {
         menus = plans ?? new List<MenuPlan>();
     }
 
-    public bool IsAllSoldOut() // 전체 품절 여부 확인
+    public bool IsAllSoldOut() // 전체 예약 여부 확인
     {
         return menus.All(m => m.RemainingToOrder <= 0);
 
     }
-
+    // 전체 판매 여부 확인
+    public bool IsAllSalesCompleted()
+    {
+        return menus.All(m => m.sold >= m.planned);
+    }
+    private static string SafeRecipeName(Recipe r) => r != null ? r.recipe_name : "<NULL RECIPE>";
     // 손님 주문 시 호출
     public void PlaceOrder(Customer customer, Recipe recipe)
     {
@@ -110,7 +116,7 @@ public class SalesManager : SingletonManager<SalesManager>
             queuedAt = Time.time
         };
         _pendingQueue.Enqueue(od);
-        Log($"주문 대기 큐 등록: #{od.orderId} {recipe.recipe_name}");
+        Log($"주문 대기 큐 등록: #{od.orderId} {SafeRecipeName(recipe)}");
         OnOrderQueued?.Invoke(od);
 
         if (_cookingNow == null)
@@ -124,37 +130,68 @@ public class SalesManager : SingletonManager<SalesManager>
     {
         while (_isServiceRunning)
         {
-            // 더 조리할 것이 없고, 현재도 없으면 종료
-            if (_cookingNow == null && _pendingQueue.Count == 0) {
+            if (_cookingNow == null && _pendingQueue.Count == 0)
+            {
                 Log("조리 루프 종료(대기 없음)");
-                yield break; 
+                yield break;
             }
 
-            // 조리 시작
             if (_cookingNow == null && _pendingQueue.Count > 0)
             {
                 _cookingNow = _pendingQueue.Dequeue();
+
+                // 주문 자체가 깨졌는지(손님/레시피) 선제 점검
+                if (_cookingNow == null)
+                {
+                    Log("경고: _cookingNow가 null입니다(비정상 주문). 다음 주문으로 넘어갑니다.");
+                    continue;
+                }
+
+                // 손님 null이면 폐기
                 if (_cookingNow.customer == null)
                 {
-                    // 손님이 사라지면 그 손님의 주문은 폐기
                     _cookingNow.state = OrderState.Canceled;
-                    Log($"주문 취소(고객 소멸): #{_cookingNow.orderId}");
+                    Log($"주문 취소(고객 소멸): #{_cookingNow.orderId}, recipe={SafeRecipeName(_cookingNow.recipe)}");
+                    OnOrderRemoved?.Invoke(_cookingNow);
+                    _cookingNow = null;
+                    continue;
+                }
+
+                // 레시피 null이면 폐기(여기서 NRE 방지)
+                if (_cookingNow.recipe == null)
+                {
+                    _cookingNow.state = OrderState.Canceled;
+                    Log($"주문 취소(recipe null): #{_cookingNow.orderId}");
                     OnOrderRemoved?.Invoke(_cookingNow);
                     _cookingNow = null;
                     continue;
                 }
 
                 _cookingNow.state = OrderState.Cooking;
-                Log($"조리 시작: #{_cookingNow.orderId} {_cookingNow.recipe.recipe_name}");
+                Log($"조리 시작: #{_cookingNow.orderId} {SafeRecipeName(_cookingNow.recipe)}");
                 OnOrderStarted?.Invoke(_cookingNow);
-                float cookSec = defaultCookSeconds;
 
+                float cookSec = defaultCookSeconds;
                 yield return new WaitForSeconds(cookSec);
 
-                if (_cookingNow.customer == null)
+                // 조리 중 고객이 사라졌다면 폐기
+                if (_cookingNow == null || _cookingNow.customer == null)
+                {
+                    if (_cookingNow != null)
+                    {
+                        _cookingNow.state = OrderState.Canceled;
+                        Log($"조리 중 취소(고객 소멸): #{_cookingNow.orderId} {SafeRecipeName(_cookingNow.recipe)}");
+                        OnOrderRemoved?.Invoke(_cookingNow);
+                        _cookingNow = null;
+                    }
+                    continue;
+                }
+
+                // 조리 완료 직전에도 레시피 null 방어
+                if (_cookingNow.recipe == null)
                 {
                     _cookingNow.state = OrderState.Canceled;
-                    Log($"조리 중 취소(고객 소멸): #{_cookingNow.orderId}");
+                    Log($"조리 중 취소(recipe null): #{_cookingNow.orderId}");
                     OnOrderRemoved?.Invoke(_cookingNow);
                     _cookingNow = null;
                     continue;
@@ -163,8 +200,9 @@ public class SalesManager : SingletonManager<SalesManager>
                 _cookingNow.state = OrderState.Ready;
                 _cookingNow.readyAt = Time.time;
                 _readyQueue.Enqueue(_cookingNow);
-                Log($"조리 완료: #{_cookingNow.orderId} {_cookingNow.recipe.recipe_name} (대기 완료큐)");
+                Log($"조리 완료: #{_cookingNow.orderId} {SafeRecipeName(_cookingNow.recipe)} (대기 완료큐)");
                 OnOrderReady?.Invoke(_cookingNow);
+
                 _cookingNow = null;
             }
             yield return null;
@@ -204,7 +242,7 @@ public class SalesManager : SingletonManager<SalesManager>
         _maxSeat = Mathf.Max(1, maxSeats);
         _seatSlots = seatSlots ?? Array.Empty<SeatSlot>();
 
-        if (!ValidateServiceConfig()) return; // ✅ 조기 종료
+        if (!ValidateServiceConfig()) return; 
 
         seatOccupied = new bool[_seatSlots.Length];
         customerCount = 0;
@@ -217,7 +255,7 @@ public class SalesManager : SingletonManager<SalesManager>
     private IEnumerator Co_ServiceRoutine()
     {
         Coroutine spawnLoop = StartCoroutine(Co_SpawnLoop());
-        while (_timeLeft > 0f && !IsAllSoldOut())
+        while (_timeLeft > 0f && !IsAllSalesCompleted())
         {
             _timeLeft -= Time.deltaTime;
             NightPhaseManager.Instance.TickService(_timeLeft);
@@ -231,7 +269,8 @@ public class SalesManager : SingletonManager<SalesManager>
     // 손님 생성 루프
     private IEnumerator Co_SpawnLoop()
     {
-        while(_timeLeft > 0f && !IsAllSoldOut())
+        TrySpawnCustomer();
+        while (_timeLeft > 0f && !IsAllSoldOut())
         {
             yield return new WaitForSeconds(spawnInterval);
 
@@ -239,9 +278,9 @@ public class SalesManager : SingletonManager<SalesManager>
             float rep = NightPhaseManager.Instance.Reputation;
             float interval = Mathf.Max(2f, spawnInterval - 0.04f * rep);
 
-            TrySpawnCustomer();
             Log($"스폰 대기(interval): {interval:F2}s (rep:{rep})");
             yield return new WaitForSeconds(interval);
+            TrySpawnCustomer();
         }
     }
 
@@ -404,9 +443,22 @@ public class SalesManager : SingletonManager<SalesManager>
         _isServiceRunning = false;
 
         // 모든 주문 취소 및 롤백
-        while (_pendingQueue.Count > 0) { var od = _pendingQueue.Dequeue(); od.state = OrderState.Canceled; OnOrderRemoved?.Invoke(od); RollbackAllocated(od.recipe); }
+        while (_pendingQueue.Count > 0)
+        {
+            var od = _pendingQueue.Dequeue();
+            od.state = OrderState.Canceled;
+            OnOrderRemoved?.Invoke(od);
+            RollbackAllocated(od.recipe);
+        }
+
         _cookingNow = null;
-        while (_readyQueue.Count > 0) { var od = _readyQueue.Dequeue(); od.state = OrderState.Canceled; OnOrderRemoved?.Invoke(od); RollbackAllocated(od.recipe); }
+        while (_readyQueue.Count > 0)
+        {
+            var od = _readyQueue.Dequeue();
+            od.state = OrderState.Canceled;
+            OnOrderRemoved?.Invoke(od);
+            RollbackAllocated(od.recipe);
+        }
 
         int totalSold = menus.Sum(m => m.sold);
         int totalRevenue = menus.Sum(m => m.sold * (m.recipe != null ? m.recipe.recipe_price : 0));
