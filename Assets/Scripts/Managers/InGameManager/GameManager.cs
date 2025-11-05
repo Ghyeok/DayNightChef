@@ -18,11 +18,12 @@ public class GameManager : SingletonManager<GameManager>
 
     public int currentWeek;
     public int totalGold;
+    public int[] managementFees;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -73,5 +74,11 @@ public class GameManager : SingletonManager<GameManager>
                 GameManager.Instance.SpendGold(g);
             }
         }
+    }
+
+    public void EndDayNightLoop()
+    {
+        Debug.Log("루프 끝! 맵 선택으로 넘어갑니다.");
+        currentWeek++;
     }
 }

@@ -9575,7 +9575,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.33, y: 2.11}
+  m_Size: {x: 2.14, y: 2.03}
   m_EdgeRadius: 0
 --- !u!1 &1875298137
 GameObject:
@@ -10802,12 +10802,12 @@ SceneRoots:
   - {fileID: 279835500}
   - {fileID: 1730688910}
   - {fileID: 902387627}
+  - {fileID: 522567232}
   - {fileID: 679062932}
   - {fileID: 1059454193}
   - {fileID: 1765930439}
   - {fileID: 813138326}
   - {fileID: 110109935}
-  - {fileID: 522567232}
   - {fileID: 85560238}
   - {fileID: 1246968030}
   - {fileID: 967809045475740189}

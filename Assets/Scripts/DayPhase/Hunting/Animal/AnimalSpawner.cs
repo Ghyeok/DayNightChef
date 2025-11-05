@@ -61,6 +61,11 @@ public class AnimalSpawner : MonoBehaviour
     }
     public void HandleAnimalDestroyed(Animal a)
     {
+        if (!this.enabled || !gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
         _spawned.Remove(a);
 
         if (DayPhaseManager.Instance)

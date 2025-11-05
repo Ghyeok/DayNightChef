@@ -106,6 +106,15 @@ public class UIManager : SingletonManager<UIManager>
 
     public T ShowPopupUI<T>(string name = null) where T : UI_Popup
     {
+        foreach (var p in _popupStack)
+        {
+            if(p is T)
+            {
+                Debug.LogWarning($"{name} 팝업은 이미 열려있습니다.");
+                return p as T;
+            }
+        }
+
         if (string.IsNullOrEmpty(name))
         {
             name = typeof(T).Name;

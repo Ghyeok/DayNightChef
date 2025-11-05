@@ -24,6 +24,7 @@ public class UI_RestaurantPreparePopup : UI_Popup
     [SerializeField] private Button plus;
     [SerializeField] private Button minus;
     [SerializeField] private Button confirm;
+    [SerializeField] private Button skip;
     [SerializeField] private TextMeshProUGUI curRecipeCountText; // 현재 선택한 레시피 수량
     [SerializeField] private Button OperationStartButton; // 식당 운영 시작 버튼
 
@@ -42,6 +43,7 @@ public class UI_RestaurantPreparePopup : UI_Popup
         minus.onClick.AddListener(OnClickedMinusButton);
         confirm.onClick.AddListener(OnClickedConfirmButton);
         OperationStartButton.onClick.AddListener(OnClickedOperationStartButton);
+        skip.onClick.AddListener(OnClickedSkipButton);
 
         RestaurantPrepareManager.Instance.OnMenuChanged += UpdateTotalCountUI;
         UpdateTotalCountUI();
@@ -239,6 +241,25 @@ public class UI_RestaurantPreparePopup : UI_Popup
             SalesManager.Instance.SetMenus(menuList);
             NightPhaseManager.Instance.StartService();
             UIManager.Instance.CloseAllPopupUI();
+        }
+        else
+        {
+            UIManager.Instance.ClosePopupUI();
+        }
+    }
+
+    private async void OnClickedSkipButton()
+    {
+        bool result = await UI_ConfirmPopup.ShowAsync(
+            info: "영업을 스킵하시겠습니까?",
+            left: "예",
+            right: "아니오"
+            );
+
+        if (result)
+        {
+            UIManager.Instance.CloseAllPopupUI();
+            NightPhaseManager.Instance.EndNightPhase();
         }
         else
         {

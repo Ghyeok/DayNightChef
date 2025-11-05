@@ -29,6 +29,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     public event Action OnServiceStarted;
     public event Action<float> OnServiceTick; // 남은 시간 전달
     public event Action OnServiceEnded;
+    public event Action OnLoopEnded; // 낮/밤 루프의 끝
 
     public enum RestaurantState
     {
@@ -91,6 +92,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     {
 
     }
+
     private static bool IsSideUnlocked(int level, SeatSide side)
     {
         // Lv1: Bottom만, Lv2: Bottom+Right, Lv3: Bottom+Right+Left
@@ -123,7 +125,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
         Log("EndService() 호출 → 상태 Close");
         OnServiceEnded?.Invoke();
         state = RestaurantState.Close;
-        // TODO 결과 팝업 , 낮페이지 돌입
+        EndNightPhase();
     }
     // 영업준비 매니저 에서 오늘의 메뉴 받아오기 -> SalesManager에 세팅 -> 영업 시작
     public void StartService()
@@ -143,5 +145,17 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
 
         Log($"영업 시작 위임: serviceTime={_serviceTime}s, maxSeat={allowedMaxSeat}");
         SalesManager.Instance.StartService(_serviceTime, allowedMaxSeat, unlocked);
+    }
+
+    /// <summary>
+    /// 밤 페이즈의 끝
+    /// 1. 관리비 납부 주인지 확인, 만약 관리비 납부 주라면 관리비 납부 팝업이 뜬다.
+    /// 2. 
+    /// </summary>
+    public void EndNightPhase()
+    {
+        GameManager.Instance.EndDayNightLoop(); // currentWeek 증가, 목표 금액 달성했는가? 
+        // TODO -> 정산 팝업 띄우기
+        SceneLoader.Instance.LoadScene("DayPhaseScene",UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 }
