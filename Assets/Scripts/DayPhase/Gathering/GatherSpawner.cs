@@ -29,8 +29,6 @@ public class GatherSpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gathers = new GameObject("Gathers");
-
         spawnItems = ItemManager.Instance.GetItemList(ItemType.Gather, DayPhaseManager.Instance.curMapType, curTier);
         if(spawnItems == null || spawnItems.Length == 0)
         {
@@ -59,7 +57,7 @@ public class GatherSpawner : MonoBehaviour
     {
         if (gatherPrefab == null || slots[index].point == null) return;
 
-        var node = Instantiate(gatherPrefab, slots[index].point.position, Quaternion.identity, gathers.transform);
+        var node = Instantiate(gatherPrefab, slots[index].point.position, Quaternion.identity, spawnPoints[index]);
         node.name = $"GatherNode_{index}";
 
         // 아이템을 정하지 않고, 컨텍스트만 전달

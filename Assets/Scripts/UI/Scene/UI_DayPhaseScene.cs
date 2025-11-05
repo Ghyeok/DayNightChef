@@ -18,6 +18,7 @@ public class UI_DayPhaseScene : UI_Scene
     {
         WeightText,
         GoldText,
+        WeekText,
     }
 
     public enum Images
@@ -49,9 +50,9 @@ public class UI_DayPhaseScene : UI_Scene
     void Update()
     {
         //SetWeightText(); Update가 아닌 이벤트를 구독하여 필요시에만 호출하도록함
-        SetHPBarImage();
+        //SetHPBarImage();
+        //SetGoldText();
         SetInteractionIcon();
-        //SetGoldText(); 위와 동일
     }
 
     public override void Init()
@@ -133,10 +134,13 @@ public class UI_DayPhaseScene : UI_Scene
         InventoryManager.Instance.OnInventoryChanged += RefreshWeightText;
         GameManager.Instance.OnGoldChanged += RefreshGoldText;
         DayPhaseManager.OnMapLoadComplete += SetJoyStickToPlayer;
+        DayPhasePlayerManager.Instance.OnPlayerDamaged -= SetHPBarImage;
+        DayPhasePlayerManager.Instance.OnPlayerDamaged += SetHPBarImage;
 
         // UI 초기 갱신
         RefreshWeightText();
         RefreshGoldText();
+        SetHPBarImage();
 
         _waitCo = null;
     }
@@ -234,5 +238,10 @@ public class UI_DayPhaseScene : UI_Scene
         {
             UIManager.Instance.ClosePopupUI();
         }
+    }
+
+    public void SetWeekText()
+    {
+        GetText((int)Texts.WeekText).text = $"{GameManager.Instance.currentWeek}주차";
     }
 }

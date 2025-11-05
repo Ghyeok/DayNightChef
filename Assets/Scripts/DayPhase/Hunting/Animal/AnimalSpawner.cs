@@ -41,7 +41,7 @@ public class AnimalSpawner : MonoBehaviour
             Vector2 offset = Random.insideUnitCircle * radius;
             Vector3 spawnPos = transform.position + new Vector3(offset.x, offset.y, 0f);
 
-            Animal a = Instantiate(animalPrefab, spawnPos, Quaternion.identity);
+            Animal a = Instantiate(animalPrefab, spawnPos, Quaternion.identity, transform);
             if (target != null) a.target = target;
 
             if (DayPhaseManager.Instance != null)

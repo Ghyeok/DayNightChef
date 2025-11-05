@@ -20,6 +20,8 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 {
     public float playerMaxHP { get; private set; }
     public float playerCurHP { get; private set; }
+    public event Action OnPlayerDamaged;
+
 
     public float playerAttack   { get; private set; }
     public float playerMoveSpeed { get; private set; }
@@ -130,6 +132,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         if (damage <= 0f) return;
         playerCurHP = Mathf.Max(0f, playerCurHP - damage);
         PushSnapshot();
+        OnPlayerDamaged?.Invoke();
         if (playerCurHP <= 0f)
         {
             // 죽음 처리 (ex :  밤페이즈로 전환)
