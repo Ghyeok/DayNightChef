@@ -1,5 +1,6 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class AnimalSpawner : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class AnimalSpawner : MonoBehaviour
     [Tooltip("모든 스폰 개체가 추적할 대상(플레이어)")]
     public Transform target;
 
+    [Tooltip("리스폰 지연(초)")]
+    public float respawnDelay = 8f;
+
     readonly List<Animal> _spawned = new List<Animal>();
 
     private void Start()
@@ -31,25 +35,47 @@ public class AnimalSpawner : MonoBehaviour
 
     public void SpawnAll()
     {
-        if (animalPrefab == null)
-        {
-            return;
-        }
+        if (!animalPrefab) return;
+        for (int i = 0; i < count; i++)
+            SpawnOne();
+    }
+    private Animal SpawnOne()
+    {
+        Vector2 offset = Random.insideUnitCircle * radius;
+        Vector3 pos = transform.position + new Vector3(offset.x, offset.y, 0f);
 
-        for (int i=0; i < count; i++)
-        {
-            Vector2 offset = Random.insideUnitCircle * radius;
-            Vector3 spawnPos = transform.position + new Vector3(offset.x, offset.y, 0f);
+        Animal a = Instantiate(animalPrefab, pos, Quaternion.identity, transform);
+        if (target) a.target = target;
 
-            Animal a = Instantiate(animalPrefab, spawnPos, Quaternion.identity, transform);
-            if (target != null) a.target = target;
+        // DayPhaseManager 등록
+        if (DayPhaseManager.Instance)
+            DayPhaseManager.Instance.animalList.Add(a);
 
-            if (DayPhaseManager.Instance != null)
-            {
-                DayPhaseManager.Instance.animalList.Add(a);
-            }
+        // 파괴(사망) 알림 연결
+        var notifier = a.GetComponent<DeathNotifier>() ?? a.gameObject.AddComponent<DeathNotifier>();
+        notifier.animal = a;
+        notifier.spawner = this;
 
-            _spawned.Add(a);
-        }
+        _spawned.Add(a);
+        return a;
+    }
+    public void HandleAnimalDestroyed(Animal a)
+    {
+        _spawned.Remove(a);
+
+        if (DayPhaseManager.Instance)
+            DayPhaseManager.Instance.animalList.Remove(a);
+
+        // 목표 수 유지: 부족할 때만 보충
+        if (_spawned.Count < count)
+            StartCoroutine(Co_RespawnAfterDelay());
+    }
+
+    private IEnumerator Co_RespawnAfterDelay()
+    {
+        yield return new WaitForSeconds(Mathf.Max(0f, respawnDelay));
+        if (!this || !enabled) yield break;      // 씬/오브젝트 파괴 방지
+        if (_spawned.Count < count)
+            SpawnOne();
     }
 }
