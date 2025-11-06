@@ -41,7 +41,8 @@ public class SalesManager : SingletonManager<SalesManager>
         public float queuedAt; // 시간
         public float readyAt; // 준비 완료 시간
     }
-
+    [SerializeField] private int _totalCapacity; // 이번 영업 총 입장 한도 (Sum planned)
+    [SerializeField] private int _spawnedTotal;  // 이번 영업 동안 실제 스폰된 손님 누계
     private readonly Queue<Order> _pendingQueue = new();
     private readonly Queue<Order> _readyQueue = new();
     private Order _cookingNow = null;
@@ -55,17 +56,22 @@ public class SalesManager : SingletonManager<SalesManager>
     public event Action<Order> OnOrderRemoved;
     public event Action<Order> OnReadyDequeued; // 완료 큐에서 꺼낼때
 
+    public event Action<Recipe, Recipe, int, bool> OnSaleRecorded;
+
     private int _orderSeq = 0;
 
     [System.Serializable]
     public struct SeatSlot
     {
         public Transform point;
-        public NightPhaseManager.SeatSide side;
+        public SeatSide side;
     }
 
     [Header("오늘의 영업 메뉴")]
     [SerializeField] private List<MenuPlan> menus = new();
+    [Header("잘못 서빙 패널티")]
+    [SerializeField, Range(0f, 1f)] private float wrongServePriceRate = 0.5f;
+    [SerializeField] private int wrongServeReputationPenalty = 2;
     public List<MenuPlan> TodayMenus => menus;
 
     public void ResetForNewNightPhase()
@@ -230,16 +236,6 @@ public class SalesManager : SingletonManager<SalesManager>
         return false;
     }
 
-    private void RollbackAllocated(Recipe recipe)
-    {
-        var mp = menus.FirstOrDefault(m => m.recipe == recipe);
-        if (mp != null)
-        {
-            int before = mp.allocated;
-            mp.allocated = Mathf.Max(0, mp.allocated - 1);
-            Log($"allocated 롤백: {recipe.recipe_name} {before} -> {mp.allocated}");
-        }
-    }
     // 영업 시작
     public void StartService(float serviceTime, int maxSeats, SeatSlot[] seatSlots)
     {
@@ -253,6 +249,8 @@ public class SalesManager : SingletonManager<SalesManager>
 
         seatOccupied = new bool[_seatSlots.Length];
         customerCount = 0;
+        _spawnedTotal = 0;
+        _totalCapacity = Mathf.Max(0, menus.Sum(m => Mathf.Max(0, m.planned)));
         _isServiceRunning = true;
 
         Log($"영업 시작: time={_timeLeft}s, seats={_maxSeat}/{_seatSlots.Length}, planned={menus.Sum(m => m.planned)}");
@@ -276,18 +274,15 @@ public class SalesManager : SingletonManager<SalesManager>
     // 손님 생성 루프
     private IEnumerator Co_SpawnLoop()
     {
-        TrySpawnCustomer();
-        while (_timeLeft > 0f && !IsAllSoldOut())
+        while (_timeLeft > 0f)
         {
-            yield return new WaitForSeconds(spawnInterval);
+            if (_spawnedTotal >= _totalCapacity) { yield return new WaitForSeconds(0.25f); continue; }
 
-            // 평판에 따른 스폰 간격 조정
             float rep = NightPhaseManager.Instance.Reputation;
             float interval = Mathf.Max(2f, spawnInterval - 0.04f * rep);
 
-            Log($"스폰 대기(interval): {interval:F2}s (rep:{rep})");
-            yield return new WaitForSeconds(interval);
             TrySpawnCustomer();
+            yield return new WaitForSeconds(interval);
         }
     }
 
@@ -318,7 +313,9 @@ public class SalesManager : SingletonManager<SalesManager>
     }
     private void TrySpawnCustomer()
     {
-        // 1) 빈 좌석 확인
+        if (_spawnedTotal >= _totalCapacity) return;
+        if (customerCount >= _maxSeat) return;
+            // 1) 빈 좌석 확인
         int seatIdx = FindFreeSeat();
         if (seatIdx < 0) { Log("스폰 취소: 빈 좌석 없음"); return; }
 
@@ -379,14 +376,14 @@ public class SalesManager : SingletonManager<SalesManager>
 
         seatOccupied[seatIdx] = true;
         customerCount++;
-
+        _spawnedTotal++;
         // 8) 주문 큐 등록
         PlaceOrder(customer, chosen.recipe);
     }
     // 빈 좌석 찾기
     private int FindFreeSeat()
     {
-        int limit = Mathf.Min(_maxSeat, _seatSlots.Length);
+        int limit = _seatSlots.Length;
         var freeSeats = new List<int>();
 
         //  비어있는 좌석 인덱스를 모두 수집
@@ -419,9 +416,9 @@ public class SalesManager : SingletonManager<SalesManager>
 
         return slot.side switch
         {
-            NightPhaseManager.SeatSide.BottomRow => basePos + Vector2.down * spawnOffset,
-            NightPhaseManager.SeatSide.LeftColumn => basePos + Vector2.left * spawnOffset,
-            NightPhaseManager.SeatSide.RightColumn => basePos + Vector2.right * spawnOffset,
+            SeatSide.BottomRow => basePos + Vector2.down * spawnOffset,
+            SeatSide.LeftColumn => basePos + Vector2.left * spawnOffset,
+            SeatSide.RightColumn => basePos + Vector2.right * spawnOffset,
             _ => basePos
         };
     }
@@ -432,17 +429,20 @@ public class SalesManager : SingletonManager<SalesManager>
         if (seatOccupied != null && (uint)seatIndex < seatOccupied.Length)
             seatOccupied[seatIndex] = false;
 
-        var mp = menus.FirstOrDefault(m => m.recipe == wanted);
-        if (mp != null)
+        if (served != null)
         {
-            int beforeAlloc = mp.allocated;
-            mp.allocated = Mathf.Max(0, mp.allocated - 1);
-            if (success) mp.sold++;
+            var soldPlan = menus.FirstOrDefault(m => m.recipe == served);
+            if (soldPlan != null) soldPlan.sold++;
 
-            Log($"퇴장 seat={seatIndex}, success={success}, want={wanted?.recipe_name}, served={served?.recipe_name}, alloc:{beforeAlloc}->{mp.allocated}, sold:{mp.sold}");
+            // 돈/평판 반영
+            RegisterSale(wanted, served);
         }
+        Log($"퇴장 seat={seatIndex}, wanted={wanted?.recipe_name}, served={served?.recipe_name}, " +
+       $"allocated(want)={(menus.FirstOrDefault(m => m.recipe == wanted)?.allocated)}, " +
+       $"sold(served)={(menus.FirstOrDefault(m => m.recipe == served)?.sold)}");
 
         customerCount = Mathf.Max(0, customerCount - 1);
+        CheckEarlyClose();
     }
     // 영업 종료
     private void EndService()
@@ -455,7 +455,6 @@ public class SalesManager : SingletonManager<SalesManager>
             var od = _pendingQueue.Dequeue();
             od.state = OrderState.Canceled;
             OnOrderRemoved?.Invoke(od);
-            RollbackAllocated(od.recipe);
         }
 
         _cookingNow = null;
@@ -464,7 +463,6 @@ public class SalesManager : SingletonManager<SalesManager>
             var od = _readyQueue.Dequeue();
             od.state = OrderState.Canceled;
             OnOrderRemoved?.Invoke(od);
-            RollbackAllocated(od.recipe);
         }
 
         int totalSold = menus.Sum(m => m.sold);
@@ -480,5 +478,39 @@ public class SalesManager : SingletonManager<SalesManager>
         StopAllCoroutines();
         _isServiceRunning = false;
         customerCount = 0;
+    }
+    private void RegisterSale(Recipe wanted, Recipe served)
+    {
+        if (served == null) return; // 못 받았으면 판매 아님
+
+        bool matched = (wanted == served);
+        int basePrice = served.recipe_price;
+        int finalPrice = matched ? basePrice
+                                 : Mathf.RoundToInt(basePrice * wrongServePriceRate);
+
+        GameManager.Instance.AddGold(finalPrice);
+
+        // 평판 패널티
+        if (!matched)
+        {
+            NightPhaseManager.Instance.Reputation =
+                Mathf.Max(0, NightPhaseManager.Instance.Reputation - wrongServeReputationPenalty);
+        }
+
+        OnSaleRecorded?.Invoke(wanted, served, finalPrice, matched);
+    }
+
+    // 영업종료를 일찍하는 함수 ex) 서빙에 실패해도 올 손님들이 모두 왔다감
+    private void CheckEarlyClose()
+    {
+        if (!_isServiceRunning) return;
+        bool capacityReached = (_spawnedTotal >= _totalCapacity); // 오늘 올 사람은 다 왔음
+        bool noCustomers = (customerCount <= 0);              // 현재 매장에 손님 없음
+
+        if (capacityReached && noCustomers)
+        {
+            Log("조기 종료: 마지막 손님 퇴장 및 처리 완료");
+            EndService();
+        }
     }
 }

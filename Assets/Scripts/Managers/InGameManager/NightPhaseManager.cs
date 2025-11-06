@@ -43,34 +43,13 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     }
 
     public RestaurantState state;
-    public enum SeatSide { LeftColumn, BottomRow, RightColumn }
 
-    [Serializable]
-    public class SeatGroup
+    private SeatGroup seatGroup;
+
+    public void SetSeatGroup(SeatGroup sg)
     {
-        public Transform[] leftSeats;
-        public Transform[] bottomSeats;
-        public Transform[] rightSeats;
-
-        public SalesManager.SeatSlot[] BuildSlots()
-        {
-            var list = new System.Collections.Generic.List<SalesManager.SeatSlot>();
-            if (leftSeats != null)
-                foreach (var t in leftSeats)
-                    if (t) list.Add(new SalesManager.SeatSlot{point = t, side = SeatSide.LeftColumn});
-            if (bottomSeats != null)
-                foreach (var t in bottomSeats)
-                    if (t) list.Add(new SalesManager.SeatSlot{point = t, side = SeatSide.BottomRow});
-            if (rightSeats != null)
-                foreach (var t in rightSeats)
-                    if (t) list.Add(new SalesManager.SeatSlot{point = t, side = SeatSide.RightColumn});
-            return list.ToArray();
-        }
+        this.seatGroup = sg;
     }
-
-    [Header("세 개의 테이블 좌석 (좌/하/우) 한 번만 세팅")]
-    public SeatGroup seatGroup;
-
     const int MaxRestaurantLevel = 3;
 
     public void ResetForNewNightPhase()

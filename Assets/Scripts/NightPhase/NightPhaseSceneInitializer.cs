@@ -1,8 +1,36 @@
 using System.Collections;
 using UnityEngine;
+using static NightPhaseManager;
+public enum SeatSide { LeftColumn, BottomRow, RightColumn }
+[System.Serializable]
+public class SeatGroup
+{
+    public Transform[] leftSeats;
+    public Transform[] bottomSeats;
+    public Transform[] rightSeats;
 
+    public SalesManager.SeatSlot[] BuildSlots()
+    {
+        var list = new System.Collections.Generic.List<SalesManager.SeatSlot>();
+        if (bottomSeats != null)
+            foreach (var t in bottomSeats)
+                if (t) list.Add(new SalesManager.SeatSlot { point = t, side = SeatSide.BottomRow });
+
+        if (rightSeats != null)
+            foreach (var t in rightSeats)
+                if (t) list.Add(new SalesManager.SeatSlot { point = t, side = SeatSide.RightColumn });
+
+        if (leftSeats != null)
+            foreach (var t in leftSeats)
+                if (t) list.Add(new SalesManager.SeatSlot { point = t, side = SeatSide.LeftColumn });
+
+        return list.ToArray();
+    }
+}
 public class NightPhaseSceneInitializer : MonoBehaviour
 {
+    [Header("좌석들")]
+    [SerializeField] private SeatGroup SeatGroup = new SeatGroup();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +46,7 @@ public class NightPhaseSceneInitializer : MonoBehaviour
         if (NightPhaseManager.Instance != null)
         {
             NightPhaseManager.Instance.ResetForNewNightPhase();
+            NightPhaseManager.Instance.SetSeatGroup(SeatGroup);
         }
         else
         {
