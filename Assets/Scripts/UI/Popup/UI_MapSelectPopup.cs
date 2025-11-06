@@ -20,7 +20,6 @@ public class UI_MapSelectPopup : UI_Popup
     private void Start()
     {
         Init();
-        StartCoroutine(DayPhaseManager.Instance.UnloadOldScene());
         grassLandSelect.onClick.AddListener(OnClickedGrassLandSelect);
         swampLandSelect.onClick.AddListener(OnClickedSwampLandSelect);
         winterLandSelect.onClick.AddListener(OnClickedWinterLandSelect);

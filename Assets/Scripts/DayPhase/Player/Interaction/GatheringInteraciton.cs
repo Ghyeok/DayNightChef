@@ -12,8 +12,8 @@ public class GatheringInteraciton : MonoBehaviour, IInteract
     // (선택) 스포너가 런타임으로 세팅할 때 사용
     public void SetContext(ItemType type, int t) { itemType = type; tier = t; }
 
-    public DayPhaseManager.PlayerBehavior GetBehaviorType()
-        => DayPhaseManager.PlayerBehavior.Gathering;
+    public PlayerBehavior GetBehaviorType()
+        => PlayerBehavior.Gathering;
 
     public void Interact(GameObject interactor)
     {

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class FishingInteraction : MonoBehaviour, IInteract
 {
-    public DayPhaseManager.PlayerBehavior GetBehaviorType()
+    public PlayerBehavior GetBehaviorType()
     {
-        return DayPhaseManager.PlayerBehavior.Fishing;
+        return PlayerBehavior.Fishing;
     }
 
     public void Interact(GameObject interactor)

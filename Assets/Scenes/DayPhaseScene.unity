@@ -173,6 +173,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3419696215796806738, guid: 5af3596d50ad03943bcaeff96403073d, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419696215796806738, guid: 5af3596d50ad03943bcaeff96403073d, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419696215796806738, guid: 5af3596d50ad03943bcaeff96403073d, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3419696215796806738, guid: 5af3596d50ad03943bcaeff96403073d, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6081684369067314680, guid: 5af3596d50ad03943bcaeff96403073d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -682,7 +698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0be19f903c1aa754582bab09f38540b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 0}
   dayPlayerPrefab: {fileID: 3592427519804802080, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
   dayPlayer: {fileID: 0}
 --- !u!4 &1321273207
@@ -775,13 +790,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90d98cde59f83ee4ea36d817ef362161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animalList: []
-  hpLevel: 0
-  moveSpeedLevel: 0
-  knifeLevel: 0
-  fishingLevel: 0
-  bagLevel: 0
   curMapType: 0
+  _uiDayPhaseScene: {fileID: 0}
   loadingCanvas: {fileID: 0}
   progressBar: {fileID: 0}
   progressText: {fileID: 0}
@@ -860,6 +870,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30529da0f39298645976b7506fa61f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpLevel: 0
+  moveSpeedLevel: 0
+  knifeLevel: 0
+  fishingLevel: 0
+  bagLevel: 0
+--- !u!1 &1957341632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1957341634}
+  - component: {fileID: 1957341633}
+  m_Layer: 0
+  m_Name: DayPhaseSceneInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1957341633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957341632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e893b873f8207bb44b35499690819fa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1957341634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957341632}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -22.178999, y: -24.70025, z: -0.060131624}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -877,3 +936,4 @@ SceneRoots:
   - {fileID: 1196050492}
   - {fileID: 1239861161}
   - {fileID: 1159124336}
+  - {fileID: 1957341634}

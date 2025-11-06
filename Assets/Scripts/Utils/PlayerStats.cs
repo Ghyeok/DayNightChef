@@ -6,8 +6,15 @@ using UnityEngine;
 [DefaultExecutionOrder(-500)]
 public class PlayerStats : MonoBehaviour
 {
+    public int hpLevel;
+    public int moveSpeedLevel;
+    public int knifeLevel;
+    public int fishingLevel;
+    public int bagLevel;
+
     public static event Action OnReady;
     public static event Action<StatType, int, int> OnStatChanged;
+
     //각 스텟의 현재 레벨을 저장하는 딕셔너리
     [SerializeField]
     private Dictionary<StatType, int> levels = new()

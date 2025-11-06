@@ -19,6 +19,7 @@ public class UI_DayPhaseScene : UI_Scene
         WeightText,
         GoldText,
         WeekText,
+        FeeText,
     }
 
     public enum Images
@@ -39,7 +40,6 @@ public class UI_DayPhaseScene : UI_Scene
         NightPhaseButton,
     }
 
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -57,8 +57,9 @@ public class UI_DayPhaseScene : UI_Scene
 
     public override void Init()
     {
-        if(_bound)
+        if (_bound)
             return; // 중복 바인딩 방지
+
         Bind<GameObject>(typeof(GameObjects));
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Image>(typeof(Images));
@@ -77,9 +78,7 @@ public class UI_DayPhaseScene : UI_Scene
         AddUIEvent(UpgradeBtn, _ => UI_UpgradePopup.Show(), Define.UIEvent.Click);
 
         var NightBtn = GetButton((int)Buttons.NightPhaseButton).gameObject;
-        AddUIEvent(NightBtn,NightPhaseButtonOnclicked, Define.UIEvent.Click);
-
-        SetJoyStickToPlayer();
+        AddUIEvent(NightBtn, NightPhaseButtonOnclicked, Define.UIEvent.Click);
 
         _bound = true;
     }
@@ -94,18 +93,18 @@ public class UI_DayPhaseScene : UI_Scene
 
     private void OnDisable()
     {
-        if(_waitCo != null)
+        if (_waitCo != null)
         {
             StopCoroutine(_waitCo);
             _waitCo = null;
         }
-        if(InventoryManager.Instance != null)
+        if (InventoryManager.Instance != null)
             InventoryManager.Instance.OnInventoryChanged -= RefreshWeightText;
-        if(GameManager.Instance != null)
+        if (GameManager.Instance != null)
             GameManager.Instance.OnGoldChanged -= RefreshGoldText;
     }
 
-    private static float SafeRatio (float cur, float max) // 분모 0 방지
+    private static float SafeRatio(float cur, float max) // 분모 0 방지
     {
         if (max <= 0f || float.IsNaN(max) || float.IsInfinity(max)) return 0f;
         float r = cur / max;
@@ -141,16 +140,43 @@ public class UI_DayPhaseScene : UI_Scene
         RefreshWeightText();
         RefreshGoldText();
         SetHPBarImage();
+        SetWeekText();
+        SetJoyStickToPlayer();
 
         _waitCo = null;
     }
 
     public void SetJoyStickToPlayer()
     {
-        PlayerController pc = DayPhasePlayerManager.Instance.dayPlayer.GetComponent<PlayerController>();
-        var joystick = Get<GameObject>((int)GameObjects.Joystick);
-        pc.joystick = joystick.GetComponent<VariableJoystick>();
-        pc.joystick.Init();
+        // 1. 플레이어 매니저와 플레이어 준비 상태 확인
+        if (DayPhasePlayerManager.Instance == null || !DayPhasePlayerManager.Instance.IsPlayerReady)
+        {
+            Debug.LogError("SetJoyStickToPlayer: PlayerManager가 준비되지 않았습니다!");
+            return;
+        }
+
+        // 2. dayPlayer 객체가 null이거나 파괴되었는지 확인
+        GameObject player = DayPhasePlayerManager.Instance.dayPlayer;
+        if (player == null) // C# null이거나 Unity의 'dead reference'인지 확인
+        {
+            Debug.LogError("SetJoyStickToPlayer: dayPlayer가 null이거나 파괴되었습니다!");
+            return;
+        }
+
+        var pc = player.GetComponent<PlayerController>();
+        if (pc != null)
+        {
+            var joystick = Get<GameObject>((int)GameObjects.Joystick);
+            if (joystick != null)
+            {
+                pc.joystick = joystick.GetComponent<VariableJoystick>();
+                pc.joystick.Init();
+            }
+        }
+        else
+        {
+            Debug.LogError("플레이어에서 조이스틱 타겟 컴포넌트를 찾지 못했습니다!");
+        }
     }
 
     public void RefreshWeightText()
@@ -200,13 +226,14 @@ public class UI_DayPhaseScene : UI_Scene
         var interact = DayPhasePlayerManager.Instance.currentInteract;
         if (interact == null)
         {
-            button.image.sprite = UIManager.Instance.SetInteractionButton(DayPhaseManager.PlayerBehavior.Hunting);
+            button.image.sprite = UIManager.Instance.SetInteractionButton(PlayerBehavior.Hunting);
             button.image.enabled = true;
             return;
         }
         button.image.enabled = true;
         button.image.sprite = UIManager.Instance.SetInteractionButton(interact.GetBehaviorType());
     }
+
     public void InteractionButtonOnclicked(PointerEventData data)
     {
         var dpm = DayPhasePlayerManager.Instance;
@@ -242,6 +269,11 @@ public class UI_DayPhaseScene : UI_Scene
 
     public void SetWeekText()
     {
+        GetText((int)Texts.FeeText).gameObject.SetActive(false);
         GetText((int)Texts.WeekText).text = $"{GameManager.Instance.currentWeek}주차";
+        if (GameManager.Instance.currentWeek % 4 == 0)
+        {
+            GetText((int)Texts.FeeText).gameObject.SetActive(true);
+        }
     }
 }

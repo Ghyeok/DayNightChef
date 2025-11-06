@@ -47,10 +47,6 @@ public class AnimalSpawner : MonoBehaviour
         Animal a = Instantiate(animalPrefab, pos, Quaternion.identity, transform);
         if (target) a.target = target;
 
-        // DayPhaseManager 등록
-        if (DayPhaseManager.Instance)
-            DayPhaseManager.Instance.animalList.Add(a);
-
         // 파괴(사망) 알림 연결
         var notifier = a.GetComponent<DeathNotifier>() ?? a.gameObject.AddComponent<DeathNotifier>();
         notifier.animal = a;
@@ -67,9 +63,6 @@ public class AnimalSpawner : MonoBehaviour
         }
 
         _spawned.Remove(a);
-
-        if (DayPhaseManager.Instance)
-            DayPhaseManager.Instance.animalList.Remove(a);
 
         // 목표 수 유지: 부족할 때만 보충
         if (_spawned.Count < count)

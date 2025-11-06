@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 5461687568723779224}
   - component: {fileID: 3029605557890874878}
   - component: {fileID: 1910449200430976251}
-  - component: {fileID: 8175269307574762051}
-  - component: {fileID: 7862494012313538601}
   - component: {fileID: 8834448496026632792}
   m_Layer: 6
   m_Name: DayPlayer
@@ -211,36 +209,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8175269307574762051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3592427519804802080}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 1579b87031a779043b4af5da7563ee70, type: 3}
---- !u!114 &7862494012313538601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3592427519804802080}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_CategoryHash: 1.8625731e-11
-  m_labelHash: 0.000000051887028
-  m_SpriteKey: 0
-  m_SpriteHash: 629323459
 --- !u!114 &8834448496026632792
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -180,7 +180,7 @@ public class UIManager : SingletonManager<UIManager>
         return sceneUI;
     }
 
-    private Dictionary<DayPhaseManager.PlayerBehavior, Sprite> interactionIcons;
+    private Dictionary<PlayerBehavior, Sprite> interactionIcons;
     private void InitInteractionButton() // 상호작용 버튼 초기 세팅
     {
         if(interactionIcons != null)
@@ -190,18 +190,18 @@ public class UIManager : SingletonManager<UIManager>
             Debug.Log("DayPhaseManager Instance가 없습니다!");
             return;
         }
-        interactionIcons = new Dictionary<DayPhaseManager.PlayerBehavior, Sprite>
+        interactionIcons = new Dictionary<PlayerBehavior, Sprite>
         {
-            {DayPhaseManager.PlayerBehavior.Hunting, ResourceManager.Instance.Load<Sprite>("Arts/UI/Hunting") },
-            {DayPhaseManager.PlayerBehavior.Fishing, ResourceManager.Instance.Load<Sprite>("Arts/UI/Fishing") },
-            {DayPhaseManager.PlayerBehavior.Gathering, ResourceManager.Instance.Load<Sprite>("Arts/UI/Gathering") },
+            {PlayerBehavior.Hunting, ResourceManager.Instance.Load<Sprite>("Arts/UI/Hunting") },
+            {PlayerBehavior.Fishing, ResourceManager.Instance.Load<Sprite>("Arts/UI/Fishing") },
+            {PlayerBehavior.Gathering, ResourceManager.Instance.Load<Sprite>("Arts/UI/Gathering") },
         };
     }
 
     /// <summary>
     /// 상호작용에 알맞은 버튼 스프라이트 반환
     /// </summary>
-    public Sprite SetInteractionButton(DayPhaseManager.PlayerBehavior behavior)
+    public Sprite SetInteractionButton(PlayerBehavior behavior)
     {
         if(DayPhaseManager.Instance == null)
         {

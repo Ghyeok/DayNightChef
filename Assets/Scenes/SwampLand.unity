@@ -130,15 +130,15 @@ PrefabInstance:
     - target: {fileID: 75766798907722818, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 1379675703}
+      objectReference: {fileID: 0}
     - target: {fileID: 442111541657119494, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 1379675703}
+      objectReference: {fileID: 0}
     - target: {fileID: 1582031413950675388, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 1379675703}
+      objectReference: {fileID: 0}
     - target: {fileID: 3421403883646978716, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: m_Name
       value: SwampLand
@@ -186,77 +186,14 @@ PrefabInstance:
     - target: {fileID: 8817415867007098118, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 1379675703}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
---- !u!1001 &1379675702
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3592427519804802080, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-      propertyPath: m_Name
-      value: DayPlayer
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
---- !u!4 &1379675703 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 954553479264993468, guid: d54275f61a1b91a448131bd01ec9d624, type: 3}
-  m_PrefabInstance: {fileID: 1379675702}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1349476209}
-  - {fileID: 1379675702}

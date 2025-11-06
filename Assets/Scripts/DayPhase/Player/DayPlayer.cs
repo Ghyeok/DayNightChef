@@ -2,6 +2,20 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
+public enum PlayerState
+{
+    Alive,
+    Dead,
+}
+
+public enum PlayerBehavior
+{
+    Hunting,
+    Fishing,
+    Gathering,
+    MaxCount,
+}
+
 public class DayPlayer :  MonoBehaviour , IDamagable
 {
     [Header("플레이어 스탯")]
@@ -27,7 +41,7 @@ public class DayPlayer :  MonoBehaviour , IDamagable
         var pm = DayPhasePlayerManager.Instance;
         if (pm != null)
         {
-            pm.BindPlayer(this);
+            //pm.BindPlayer(this);
             pm.OnSnapshotUpdated -= SyncFromManager;
             pm.OnSnapshotUpdated += SyncFromManager;
 

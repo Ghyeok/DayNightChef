@@ -2,6 +2,14 @@ using System.Buffers;
 using System.Collections;
 using UnityEngine;
 
+public enum AnimalStates
+{
+    Patrol = 0,
+    Attack,
+    Chase,
+    Die
+}
+
 public class Patrol : IState<Animal>
 {
     Vector2 target;
