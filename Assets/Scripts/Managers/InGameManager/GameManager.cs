@@ -20,6 +20,16 @@ public class GameManager : SingletonManager<GameManager>
     public int totalGold;
     public int[] managementFees;
 
+    public override void Awake()
+    {
+        base.Awake();
+
+        currentWeek = 1;
+        totalGold = 0;
+
+        // TODO -> Awake()로 먼저 초기화 하고, 저장된 변수들 불러오기
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -79,6 +89,7 @@ public class GameManager : SingletonManager<GameManager>
     public void EndDayNightLoop()
     {
         Debug.Log("루프 끝! 맵 선택으로 넘어갑니다.");
+        DayPhasePlayerManager.Instance.dayPlayer = null;
         currentWeek++;
     }
 }

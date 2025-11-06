@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /* 밤 페이즈에서 사용될 기능을 모아놓는 매니저
@@ -29,7 +28,6 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     public event Action OnServiceStarted;
     public event Action<float> OnServiceTick; // 남은 시간 전달
     public event Action OnServiceEnded;
-    public event Action OnLoopEnded; // 낮/밤 루프의 끝
 
     public enum RestaurantState
     {
@@ -75,11 +73,15 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
 
     const int MaxRestaurantLevel = 3;
 
+    public void ResetForNewNightPhase()
+    {
+        state = RestaurantState.Ready;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        state = RestaurantState.Ready;
+
     }
 
     // Update is called once per frame

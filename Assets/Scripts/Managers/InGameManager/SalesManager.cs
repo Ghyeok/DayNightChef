@@ -68,6 +68,13 @@ public class SalesManager : SingletonManager<SalesManager>
     [SerializeField] private List<MenuPlan> menus = new();
     public List<MenuPlan> TodayMenus => menus;
 
+    public void ResetForNewNightPhase()
+    {
+        menus.Clear();
+        _isServiceRunning = false;
+        customerCount = 0;
+    }
+
     [Header("손님")]
     [SerializeField] private GameObject[] customerPrefabs; // 손님 프리팹
 
