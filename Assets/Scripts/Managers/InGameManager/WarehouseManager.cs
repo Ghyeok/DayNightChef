@@ -14,6 +14,8 @@ public class WarehouseManager : SingletonManager<WarehouseManager>
     public event Action OnWarehouseChanged;
 
     private List<WarehouseEntry> _slots;
+    public List<WarehouseEntry> slots {  get { return _slots; } }
+
     private string SavePath => Path.Combine(Application.persistentDataPath, "warehouse.json");
 
     public IReadOnlyList<WarehouseEntry> Slots => _slots;
@@ -240,4 +242,63 @@ public class WarehouseManager : SingletonManager<WarehouseManager>
 
     private void OnApplicationQuit() => Save();
     #endregion
+
+    // WarehouseManager.cs 클래스 내부에 이 함수를 추가하세요.
+
+    /// <summary>
+    /// 창고 내의 두 슬롯을 교환하거나 합칩니다.
+    /// </summary>
+    public void SwapOrMergeSlots(int fromIndex, int toIndex)
+    {
+        if (fromIndex < 0 || fromIndex >= _slots.Count || toIndex < 0 || toIndex >= _slots.Count)
+        {
+            Debug.LogError($"[WarehouseManager] SwapOrMergeSlots: 인덱스 범위 오류. from:{fromIndex}, to:{toIndex}");
+            return;
+        }
+
+        if (fromIndex == toIndex)
+            return; // 같은 슬롯
+
+        var fromEntry = _slots[fromIndex];
+        var toEntry = _slots[toIndex];
+
+        // Case 1: Merge (두 아이템이 같고, to 슬롯이 가득 차지 않았을 때)
+        if (fromEntry.item != null &&
+            fromEntry.item == toEntry.item &&
+            toEntry.item.stackable &&
+            toEntry.count < toEntry.item.item_maxcount)
+        {
+            // to 슬롯에 더 담을 수 있는 양
+            int canMove = toEntry.item.item_maxcount - toEntry.count;
+            // from 슬롯에서 실제 옮길 양
+            int toMove = Mathf.Min(fromEntry.count, canMove);
+
+            if (toMove > 0)
+            {
+                toEntry.count += toMove;
+                fromEntry.count -= toMove;
+
+                // from 슬롯이 비었으면 아이템 제거
+                if (fromEntry.count <= 0)
+                {
+                    fromEntry.item = null;
+                    fromEntry.count = 0;
+                }
+
+                // 변경된 데이터를 리스트에 반영
+                _slots[fromIndex] = fromEntry;
+                _slots[toIndex] = toEntry;
+
+                OnWarehouseChanged?.Invoke();
+            }
+        }
+        // Case 2: Swap (아이템이 다르거나, 합칠 수 없는 상태일 때)
+        else
+        {
+            _slots[fromIndex] = toEntry;
+            _slots[toIndex] = fromEntry;
+
+            OnWarehouseChanged?.Invoke();
+        }
+    }
 }

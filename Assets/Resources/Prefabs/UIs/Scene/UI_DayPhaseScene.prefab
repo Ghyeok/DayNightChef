@@ -2322,7 +2322,7 @@ GameObject:
   - component: {fileID: 4202808551434769347}
   - component: {fileID: 3297270865969202388}
   m_Layer: 5
-  m_Name: WarehousButton
+  m_Name: WarehouseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -33,11 +33,14 @@ public class UI_DayPhaseScene : UI_Scene
     public enum Buttons
     {
         InteractionButton,
-        PauseButton,
         UpgradeButton,
         WeightButton,
-        StoreButton,
         NightPhaseButton,
+        PauseButton,
+        StoreButton,
+        WarehouseButton,
+        StatButton,
+        SettingButton,
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -79,6 +82,15 @@ public class UI_DayPhaseScene : UI_Scene
 
         var NightBtn = GetButton((int)Buttons.NightPhaseButton).gameObject;
         AddUIEvent(NightBtn, NightPhaseButtonOnclicked, Define.UIEvent.Click);
+
+        var warehouseBtn = GetButton((int)Buttons.WarehouseButton).gameObject;
+        AddUIEvent(warehouseBtn, _ => UI_WarehousePopup.Show(), Define.UIEvent.Click);
+
+        var statBtn = GetButton((int)Buttons.StatButton).gameObject;
+        // AddUIEvent
+
+        var settingBtn = GetButton((int)Buttons.SettingButton).gameObject;
+        // AddUIEvent
 
         _bound = true;
     }
