@@ -15,11 +15,13 @@ MonoBehaviour:
   item_number: 51
   item_Type: 3
   item_MapType: 3
+  item_Grade: 0
   item_name: "\uAC04\uC7A5"
   item_requireLevel: 1
+  item_tier: 0
   item_image: {fileID: 21300000, guid: 28d6d21aac8940e42a6f238e1f433374, type: 3}
   item_weight: 0.5
-  item_maxcount: 99
+  item_maxcount: 999
   isGet: 0
   stackable: 1
   item_price: 1

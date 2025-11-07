@@ -21,7 +21,7 @@ MonoBehaviour:
   item_tier: 2
   item_image: {fileID: 21300000, guid: d12a09cfbc3a1204492d88ca533487bf, type: 3}
   item_weight: 2
-  item_maxcount: 99
+  item_maxcount: 999
   isGet: 0
   stackable: 1
   item_price: 0
