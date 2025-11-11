@@ -24,6 +24,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
     public float curBagWeight => InventoryManager.Instance?.CurrentWeight ?? 0f;
 
     public event Action OnPlayerDamaged;
+    public event Action OnPlayerSpawned;
 
     public GameObject dayPlayerPrefab;
     public GameObject dayPlayer;
@@ -107,6 +108,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         {
             dp.Initialize(playerMaxHP, playerAttack, playerMoveSpeed);
         }
+        OnPlayerSpawned?.Invoke();
     }
 
     private void HandleStatChanged(StatType type, int oldLv, int newLv)

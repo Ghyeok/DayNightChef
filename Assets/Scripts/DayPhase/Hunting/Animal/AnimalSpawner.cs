@@ -24,13 +24,30 @@ public class AnimalSpawner : MonoBehaviour
 
     private void Start()
     {
+        DayPhasePlayerManager.Instance.OnPlayerSpawned -= SetTarget;
+        DayPhasePlayerManager.Instance.OnPlayerSpawned += SetTarget;
+
+        SpawnAll();
+    }
+
+    public void SetTarget()
+    {
         if (target == null)
         {
-            var player = GameObject.FindGameObjectWithTag("Player");
+            var player = GameObject.FindFirstObjectByType<DayPlayer>();
             if (player) target = player.transform;
         }
 
-        SpawnAll();
+        if (target)
+        {
+            foreach (var animal in _spawned)
+            {
+                if (animal != null && animal.target == null)
+                {
+                    animal.target = target;
+                }
+            }
+        }
     }
 
     public void SpawnAll()
