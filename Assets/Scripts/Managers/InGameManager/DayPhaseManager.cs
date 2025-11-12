@@ -57,7 +57,6 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         Debug.Log("[DayPhaseManager] 씬 참조를 리셋합니다.");
         _uiDayPhaseScene = null;
         currentLoadedMap = null;
-        // (이전에 로드된 맵이 있다면 여기서 UnloadOldScene 코루틴을 돌려도 됩니다)
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -132,8 +131,10 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
             yield break;
         }
 
-        // 3. 플레이어 스폰이 완료되었으니, 이제 UI를 표시해도 안전함
-        OnMapLoadComplete?.Invoke(); // -> ShowDayPhaseSceneUI() 호출, CameraController 연결
+        // 3. 데이터 로드
+
+        // 4. UI 업데이트
+        OnMapLoadComplete?.Invoke(); 
     }
 
     private void ShowDayPhaseSceneUI()
@@ -150,14 +151,12 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
 
     public void UnlockSwampLand()
     {
-        PlayerPrefs.SetInt(swampLandUnlocked, 1);
-        PlayerPrefs.Save();
+        GameManager.Instance.unlockSwampLand = true;
         Debug.Log("SwampLand 해금!");
     }
     public void UnlockWinterLand()
     {
-        PlayerPrefs.SetInt(winterLandUnlocked, 1);
-        PlayerPrefs.Save();
+        GameManager.Instance.unlockSwampLand = false;
         Debug.Log("WinterLand 해금!");
     }
 }

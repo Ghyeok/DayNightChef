@@ -11,8 +11,14 @@ public class SceneLoader : MonoBehaviour
     [Header("프리팹 할당")]
     [SerializeField]
     private GameObject loadingScreenPrefab; // 1. 프리팹을 참조
-
     private UI_LoadingCanvas loadingScreenInstance; // 2. 생성된 인스턴스를 저장
+
+    public enum LoadType
+    {
+        NewGame,
+        Continue,
+    }
+    public LoadType CurrentLoadType { get; private set; } = LoadType.NewGame;
 
     private void Awake()
     {

@@ -18,28 +18,14 @@ public class GameManager : SingletonManager<GameManager>
 
     public int currentWeek;
     public int totalGold;
+    public bool unlockSwampLand;
+    public bool unlockWinterLand;
+
     public int[] managementFees;
 
     public override void Awake()
     {
         base.Awake();
-
-        currentWeek = 1;
-        totalGold = 0;
-
-        // TODO -> Awake()로 먼저 초기화 하고, 저장된 변수들 불러오기
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void AddGold(int g)
@@ -47,6 +33,7 @@ public class GameManager : SingletonManager<GameManager>
         totalGold += g;
         OnGoldChanged?.Invoke();
     }
+
     //골드 소비시 true 반환, 실패시 false 반환
     public bool TrySpendGold(int g)
     {
@@ -79,7 +66,7 @@ public class GameManager : SingletonManager<GameManager>
         int g = 1;
         if (GameManager.Instance != null)
         {
-            if(GameManager.Instance.TrySpendGold(g))
+            if (GameManager.Instance.TrySpendGold(g))
             {
                 GameManager.Instance.SpendGold(g);
             }
@@ -91,5 +78,89 @@ public class GameManager : SingletonManager<GameManager>
         Debug.Log("루프 끝! 맵 선택으로 넘어갑니다.");
         DayPhasePlayerManager.Instance.dayPlayer = null;
         currentWeek++;
+    }
+
+    private PlayerStats GetPlayerStats()
+    {
+        return FindFirstObjectByType<PlayerStats>();
+    }
+
+    public GameSaveData GetAllDataToSave()
+    {
+        GameSaveData data = new GameSaveData();
+        PlayerStats stats = GetPlayerStats();
+
+        // 1. 플레이어 스탯
+        if (stats != null)
+        {
+            data.maxHPLevel = stats.GetLevel(StatType.MaxHP);
+            data.moveSpeedLevel = stats.GetLevel(StatType.MoveSpeed);
+            data.attackLevel = stats.GetLevel(StatType.Attack);
+            data.fishingLevel = stats.GetLevel(StatType.FishingRod);
+            data.weightLevel = stats.GetLevel(StatType.BagWeight);
+        }
+
+        // 2. 게임 진행도
+        data.currentWeek = this.currentWeek;
+        data.currentGold = this.totalGold;
+        data.unlockSwampLand = this.unlockSwampLand;
+        data.unlockWinterLand = this.unlockWinterLand;
+
+        // 3. 창고 / 인벤토리
+        data.warehouseEntries = WarehouseManager.Instance.GetDataToSave();
+        data.inventoryEntries = InventoryManager.Instance.GetDataToSave();
+
+        return data;
+    }
+
+    public void ApplyAllSaveData(GameSaveData data)
+    {
+        PlayerStats stats = GetPlayerStats();
+
+        // 1. 플레이어 스탯
+        if (stats != null)
+        {
+            stats.SetLevel(StatType.MaxHP, data.maxHPLevel);
+            stats.SetLevel(StatType.MoveSpeed, data.moveSpeedLevel);
+            stats.SetLevel(StatType.Attack, data.attackLevel);
+            stats.SetLevel(StatType.FishingRod, data.fishingLevel);
+            stats.SetLevel(StatType.BagWeight, data.weightLevel);
+        }
+
+        // 2. 게임 진행도
+        this.currentWeek = data.currentWeek;
+        this.totalGold = data.currentGold;
+        this.unlockSwampLand = data.unlockSwampLand;
+        this.unlockWinterLand = data.unlockWinterLand;
+
+        // 3. 창고 / 인벤토리
+        WarehouseManager.Instance.LoadData(data.warehouseEntries);
+        InventoryManager.Instance.LoadData(data.inventoryEntries);
+
+        OnGoldChanged?.Invoke();
+    }
+
+    public void StartNewGame()
+    {
+        Debug.Log("[GameManager] 모든 데이터를 초기화합니다. (새 게임)");
+
+        // 1. 플레이어 스탯
+        PlayerStats stats = GetPlayerStats();
+        if (stats != null)
+        {
+            stats.ResetLevels();
+        }
+
+        // 2. 게임 진행도
+        this.currentWeek = 1;
+        this.totalGold = 0;
+        this.unlockSwampLand = false;
+        this.unlockWinterLand = false;
+
+        // 3. 창고/인벤 초기화 (null을 보내 초기화)
+        WarehouseManager.Instance.LoadData(null);
+        InventoryManager.Instance.LoadData(null);
+
+        OnGoldChanged?.Invoke();
     }
 }

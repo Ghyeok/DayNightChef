@@ -3,12 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class InventoryEntry
-{
-    public Item item;
-    public int count;
-}
 public class InventoryManager : SingletonManager<InventoryManager>
 {
     [Serializable]
@@ -210,4 +204,32 @@ public class InventoryManager : SingletonManager<InventoryManager>
         _entries[index] = new Entry { item = item, count = count };
         OnInventoryChanged?.Invoke();
     }
+
+    #region 저장/로드(프로토타입)
+    public List<Entry> GetDataToSave()
+    {
+        return _entries;
+    }
+
+    /// <summary>
+    /// 로드된 슬롯 데이터로 현재 창고 상태를 덮어씁니다.
+    /// </summary>
+    public void LoadData(List<Entry> loadedSlots)
+    {
+        if (loadedSlots != null && loadedSlots.Count == slotCount)
+        {
+            _entries = loadedSlots;
+            Debug.Log($"[InventoryManager] 인벤토리 데이터 로드 완료. ({_entries.Count}개 슬롯)");
+        }
+        else
+        {
+            _entries = new List<Entry>(slotCount);
+            for (int i = 0; i < slotCount; i++)
+            {
+                _entries.Add(new Entry { item = null, count = 0 });
+            }
+        }
+        OnInventoryChanged?.Invoke();
+    }
+    #endregion
 }

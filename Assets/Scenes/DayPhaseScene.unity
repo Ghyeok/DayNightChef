@@ -795,6 +795,7 @@ MonoBehaviour:
   loadingCanvas: {fileID: 0}
   progressBar: {fileID: 0}
   progressText: {fileID: 0}
+  animalList: []
 --- !u!4 &1549417567
 Transform:
   m_ObjectHideFlags: 0
@@ -810,71 +811,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1682545686
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1682545688}
-  - component: {fileID: 1682545687}
-  - component: {fileID: 1682545689}
-  m_Layer: 0
-  m_Name: '@GameManager'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1682545687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682545686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ca659f6373669943a6abc266c88dcf8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentWeek: 0
-  totalGold: 0
-  managementFees: 
---- !u!4 &1682545688
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682545686}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.25492808, y: 1.8772818, z: 0.095529556}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1682545689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682545686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30529da0f39298645976b7506fa61f0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpLevel: 0
-  moveSpeedLevel: 0
-  knifeLevel: 0
-  fishingLevel: 0
-  bagLevel: 0
 --- !u!1 &1957341632
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,7 +865,6 @@ SceneRoots:
   - {fileID: 1441398367}
   - {fileID: 1321273207}
   - {fileID: 1549417567}
-  - {fileID: 1682545688}
   - {fileID: 428034860}
   - {fileID: 968991147}
   - {fileID: 379030204}

@@ -525962,7 +525962,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6919040780071958906, guid: 7aed927b62c30df49af19e5558ea2019, type: 3}
       propertyPath: count
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6919040780071958906, guid: 7aed927b62c30df49af19e5558ea2019, type: 3}
       propertyPath: radius
