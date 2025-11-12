@@ -46,6 +46,8 @@ public class SalesManager : SingletonManager<SalesManager>
     private readonly Queue<Order> _pendingQueue = new();
     private readonly Queue<Order> _readyQueue = new();
     private Order _cookingNow = null;
+    private int _goldAccrued = 0;
+    private int _reputationAccrued = 0;
 
     [Header("조리 시간")]
     [SerializeField] private float defaultCookSeconds = 4f;
@@ -70,8 +72,8 @@ public class SalesManager : SingletonManager<SalesManager>
     [Header("오늘의 영업 메뉴")]
     [SerializeField] private List<MenuPlan> menus = new();
     [Header("잘못 서빙 패널티")]
-    [SerializeField, Range(0f, 1f)] private float wrongServePriceRate = 0.5f;
-    [SerializeField] private int wrongServeReputationPenalty = 2;
+    [SerializeField] private int wrongServeReputationPenalty = -2;
+    [SerializeField] private int correctServeReputationReward = +2;
     public List<MenuPlan> TodayMenus => menus;
 
     public void ResetForNewNightPhase()
@@ -79,6 +81,8 @@ public class SalesManager : SingletonManager<SalesManager>
         menus.Clear();
         _isServiceRunning = false;
         customerCount = 0;
+        _goldAccrued = 0;
+        _reputationAccrued = 0;
     }
 
     [Header("손님")]
@@ -138,6 +142,8 @@ public class SalesManager : SingletonManager<SalesManager>
             StartCoroutine(Co_CookLoop());
         }
     }
+
+
     // 조리 루프
     private IEnumerator Co_CookLoop()
     {
@@ -449,7 +455,6 @@ public class SalesManager : SingletonManager<SalesManager>
     {
         _isServiceRunning = false;
 
-        // 모든 주문 취소 및 롤백
         while (_pendingQueue.Count > 0)
         {
             var od = _pendingQueue.Dequeue();
@@ -467,7 +472,15 @@ public class SalesManager : SingletonManager<SalesManager>
 
         int totalSold = menus.Sum(m => m.sold);
         int totalRevenue = menus.Sum(m => m.sold * (m.recipe != null ? m.recipe.recipe_price : 0));
-        Log($"영업 종료: 총 판매 {totalSold}개, 매출 {totalRevenue}");
+
+        // 일괄 정산: 영업 종료 시 한 번에 반영
+        if (_goldAccrued > 0)
+            GameManager.Instance.AddGold(_goldAccrued);
+
+        NightPhaseManager.Instance.Reputation += _reputationAccrued;
+
+        Log($"영업 종료: 총 판매 {totalSold}개, 매출 {totalRevenue}, " +
+            $"정산 골드(누적) {_goldAccrued}, 정산 평판 {_reputationAccrued}");
 
         NightPhaseManager.Instance.EndService();
     }
@@ -481,21 +494,18 @@ public class SalesManager : SingletonManager<SalesManager>
     }
     private void RegisterSale(Recipe wanted, Recipe served)
     {
-        if (served == null) return; // 못 받았으면 판매 아님
+        if (served == null) return;
 
         bool matched = (wanted == served);
         int basePrice = served.recipe_price;
-        int finalPrice = matched ? basePrice
-                                 : Mathf.RoundToInt(basePrice * wrongServePriceRate);
+        int finalPrice = matched
+            ? basePrice
+            : 0;
 
-        GameManager.Instance.AddGold(finalPrice);
+        _goldAccrued += Mathf.Max(0, finalPrice);
 
-        // 평판 패널티
-        if (!matched)
-        {
-            NightPhaseManager.Instance.Reputation =
-                Mathf.Max(0, NightPhaseManager.Instance.Reputation - wrongServeReputationPenalty);
-        }
+        _reputationAccrued += matched ? correctServeReputationReward
+                                      : wrongServeReputationPenalty;
 
         OnSaleRecorded?.Invoke(wanted, served, finalPrice, matched);
     }

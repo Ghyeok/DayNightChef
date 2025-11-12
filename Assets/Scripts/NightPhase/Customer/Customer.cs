@@ -131,20 +131,13 @@ public class Customer : MonoBehaviour
         if (served == Want)
         {
             IsServed = true;
-            if (served != null)
-            {
-                GameManager.Instance.AddGold(served.recipe_price);              
-            }
+
             Log($"서빙 성공: {served?.recipe_name}");
             Leave(success: true, served: served);
         }
         else
         {
             // 원하는 요리가 아닌 다른요리 서빙]
-            if (served != null)
-            {
-                GameManager.Instance.AddGold(served.recipe_price / 2); // 다른 요리 서빙 시 절반 금액 지급
-            }
             Log($"오서빙(다른 요리): {served?.recipe_name} (원함:{Want?.recipe_name})");
             Leave(success: false, served: served);
         }
@@ -154,10 +147,6 @@ public class Customer : MonoBehaviour
     {
         if (_leaving) return;
         _leaving = true;
-
-        // 평판/정산은 즉시 반영
-        if (success) NightPhaseManager.Instance.Reputation += 2;
-        else NightPhaseManager.Instance.Reputation -= 1;
 
         Log($"퇴장: success={success}, served={served?.recipe_name}, rep={NightPhaseManager.Instance.Reputation}");
 
