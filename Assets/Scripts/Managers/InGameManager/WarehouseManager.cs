@@ -16,8 +16,6 @@ public class WarehouseManager : SingletonManager<WarehouseManager>
     private List<WarehouseEntry> _slots;
     public List<WarehouseEntry> slots {  get { return _slots; } }
 
-    private string SavePath => Path.Combine(Application.persistentDataPath, "warehouse.json");
-
     public IReadOnlyList<WarehouseEntry> Slots => _slots;
 
     public override void Awake()
@@ -30,8 +28,6 @@ public class WarehouseManager : SingletonManager<WarehouseManager>
             for (int i = 0; i < slotCount; i++)
                 _slots.Add(new WarehouseEntry { item = null, count = 0 });
         }
-
-        Load();
         OnWarehouseChanged?.Invoke();
     }
 
@@ -215,35 +211,36 @@ public class WarehouseManager : SingletonManager<WarehouseManager>
     #endregion
 
     #region 저장/로드(프로토타입)
-    [Serializable] private class SaveData { public List<WarehouseEntry> slots; }
-
-    public void Save()
+    public List<WarehouseEntry> GetDataToSave()
     {
-        try
-        {
-            var data = new SaveData { slots = _slots };
-            File.WriteAllText(SavePath, JsonUtility.ToJson(data));
-        }
-        catch (Exception e) { Debug.LogWarning($"Warehouse Save Failed: {e.Message}"); }
+        return _slots;
     }
 
-    public void Load()
+    /// <summary>
+    /// 로드된 슬롯 데이터로 현재 창고 상태를 덮어씁니다.
+    /// </summary>
+    public void LoadData(List<WarehouseEntry> loadedSlots)
     {
-        try
+        if (loadedSlots != null && loadedSlots.Count == slotCount)
         {
-            if (!File.Exists(SavePath)) return;
-            var json = File.ReadAllText(SavePath);
-            var data = JsonUtility.FromJson<SaveData>(json);
-            if (data?.slots != null && data.slots.Count == slotCount)
-                _slots = data.slots;
+            _slots = loadedSlots;
+            Debug.Log($"[WarehouseManager] 창고 데이터 로드 완료. ({_slots.Count}개 슬롯)");
         }
-        catch (Exception e) { Debug.LogWarning($"Warehouse Load Failed: {e.Message}"); }
+        else
+        {
+            // 세이브 파일이 없거나(null), 버전이 달라 슬롯 카운트가 맞지 않으면
+            // 창고를 초기화합니다.
+            Debug.LogWarning($"[WarehouseManager] 로드할 데이터가 없거나(null) 슬롯 카운트({loadedSlots?.Count ?? 0}개)가 맞지 않아 새로 생성합니다. (기존: {slotCount}개)");
+            _slots = new List<WarehouseEntry>(slotCount);
+            for (int i = 0; i < slotCount; i++)
+            {
+                _slots.Add(new WarehouseEntry { item = null, count = 0 });
+            }
+        }
+        OnWarehouseChanged?.Invoke();
     }
 
-    private void OnApplicationQuit() => Save();
     #endregion
-
-    // WarehouseManager.cs 클래스 내부에 이 함수를 추가하세요.
 
     /// <summary>
     /// 창고 내의 두 슬롯을 교환하거나 합칩니다.

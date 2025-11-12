@@ -14,8 +14,8 @@ public class UI_MapSelectPopup : UI_Popup
 
     public static event Action<MapType> OnMapSelected;
 
-    private int unlockSwampLand;
-    private int unlockWinterLand;
+    private bool unlockSwampLand;
+    private bool unlockWinterLand;
 
     private void Start()
     {
@@ -27,13 +27,13 @@ public class UI_MapSelectPopup : UI_Popup
 
     private void OnEnable()
     {
-        unlockSwampLand = PlayerPrefs.GetInt(DayPhaseManager.swampLandUnlocked, 0);
-        unlockWinterLand = PlayerPrefs.GetInt(DayPhaseManager.winterLandUnlocked, 0);
+        unlockSwampLand = GameManager.Instance.unlockSwampLand;
+        swampLandSelect.interactable = unlockSwampLand;
+        swampPanel.SetActive(!unlockSwampLand);
 
-        swampLandSelect.interactable = unlockSwampLand > 0;
-        swampPanel.SetActive(unlockSwampLand <= 0);
-        winterLandSelect.interactable = unlockWinterLand > 0;
-        winterPanel.SetActive(unlockWinterLand <= 0);
+        unlockWinterLand = GameManager.Instance.unlockWinterLand;
+        winterLandSelect.interactable = unlockWinterLand;
+        winterPanel.SetActive(!unlockWinterLand);
     }
 
     private void OnClickedGrassLandSelect()

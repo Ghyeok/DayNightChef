@@ -127,22 +127,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 75766798907722818, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 442111541657119494, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1582031413950675388, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
-      propertyPath: count
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1582031413950675388, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
-      propertyPath: target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3421403883646978716, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: m_Name
       value: SwampLand
@@ -186,10 +170,6 @@ PrefabInstance:
     - target: {fileID: 7015256725068060397, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8817415867007098118, guid: 08da153118d74114a9c1cb47dc5ae27f, type: 3}
-      propertyPath: target
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -88,4 +88,25 @@ public class PlayerStats : MonoBehaviour
         OnStatChanged?.Invoke(type, oldLv, newLv);
         return true;
     }
+
+    public void SetLevel(StatType type, int level)
+    {
+        if (levels.ContainsKey(type))
+        {
+            levels[type] = Mathf.Max(level, 1);
+        }
+    }
+
+    public void ResetLevels()
+    {
+        Debug.Log("[PlayerStats] 모든 레벨을 1로 초기화합니다.");
+
+        // 딕셔너리의 모든 키를 가져와서 값을 1로 설정
+        var keys = new List<StatType>(levels.Keys);
+        foreach (var key in keys)
+        {
+            levels[key] = 1;
+        }
+        OnReady?.Invoke(); // 스탯이 준비되었다고 알림
+    }
 }

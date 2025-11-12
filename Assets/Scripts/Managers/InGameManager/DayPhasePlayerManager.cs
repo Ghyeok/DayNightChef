@@ -70,16 +70,6 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         IsPlayerReady = false;
         dayPlayer = null; // 이전 참조를 확실히 제거
 
-        PlayerStats ps = null;
-        while ((ps = FindFirstObjectByType<PlayerStats>()) == null || !ps.IsReady)
-            yield return null;
-
-        // 스탯 초기화
-        playerMaxHP = ps.GetValue(StatType.MaxHP);
-        playerCurHP = playerMaxHP;
-        playerAttack = ps.GetValue(StatType.Attack);
-        playerMoveSpeed = ps.GetValue(StatType.MoveSpeed);
-
         // 플레이어 스폰 함수 호출
         SpawnPlayer();
 
@@ -87,6 +77,30 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         {
             Debug.LogError("플레이어 스폰에 실패했습니다!");
             yield break; // 스폰 실패 시 중단
+        }
+
+        PlayerStats ps = dayPlayer.GetComponent<PlayerStats>();
+        if (ps == null)
+        {
+            Debug.LogError("스폰된 'dayPlayer' 프리팹에 PlayerStats 컴포넌트가 없습니다!");
+            yield break;
+        }
+
+        while (!ps.IsReady)
+        {
+            Debug.Log("PlayerStats가 준비되기를 기다리는 중...");
+            yield return null;
+        }
+
+        playerMaxHP = ps.GetValue(StatType.MaxHP);
+        playerCurHP = playerMaxHP;
+        playerAttack = ps.GetValue(StatType.Attack);
+        playerMoveSpeed = ps.GetValue(StatType.MoveSpeed);
+
+        DayPlayer dp = dayPlayer.GetComponent<DayPlayer>();
+        if (dp != null)
+        {
+            dp.Initialize(playerMaxHP, playerAttack, playerMoveSpeed);
         }
 
         IsPlayerReady = true;
@@ -100,14 +114,16 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
             Debug.LogError("DayPlayer Prefab이 할당되지 않았습니다!");
             return;
         }
-        PlayerSpawner ps = FindFirstObjectByType<PlayerSpawner>();
-        dayPlayer = Instantiate(dayPlayerPrefab, ps.transform.position, ps.transform.rotation);
 
-        DayPlayer dp = dayPlayer.GetComponent<DayPlayer>();
-        if (dp != null)
+        PlayerSpawner ps = FindFirstObjectByType<PlayerSpawner>();
+        if (ps == null)
         {
-            dp.Initialize(playerMaxHP, playerAttack, playerMoveSpeed);
+            Debug.LogError("맵 씬에 PlayerSpawner가 없습니다! 스폰에 실패했습니다.");
+            return;
         }
+
+        dayPlayer = Instantiate(ps.playerPrefab, ps.transform.position, ps.transform.rotation);
+
         OnPlayerSpawned?.Invoke();
     }
 
