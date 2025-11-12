@@ -6,11 +6,11 @@ using UnityEngine;
 [DefaultExecutionOrder(-500)]
 public class PlayerStats : MonoBehaviour
 {
-    public int hpLevel;
-    public int moveSpeedLevel;
-    public int knifeLevel;
-    public int fishingLevel;
-    public int bagLevel;
+    //public int hpLevel;
+    //public int moveSpeedLevel;
+    //public int knifeLevel;
+    //public int fishingLevel;
+    //public int bagLevel;
 
     public static event Action OnReady;
     public static event Action<StatType, int, int> OnStatChanged;
@@ -30,6 +30,7 @@ public class PlayerStats : MonoBehaviour
     private GameManager _gm;
 
     public bool IsReady { get; private set; }
+
     private IEnumerator Start()
     {
         // db 로드
@@ -86,27 +87,36 @@ public class PlayerStats : MonoBehaviour
         levels[type] = newLv;
 
         OnStatChanged?.Invoke(type, oldLv, newLv);
+        SaveManager.Instance.SaveGame();
         return true;
     }
 
     public void SetLevel(StatType type, int level)
     {
-        if (levels.ContainsKey(type))
-        {
-            levels[type] = Mathf.Max(level, 1);
-        }
+        if (!levels.ContainsKey(type)) return;
+
+        int oldLv = levels[type];
+        int newLv = Mathf.Max(1, level);
+
+        if (oldLv == newLv) return;
+
+        levels[type] = newLv;
+        OnStatChanged?.Invoke(type, oldLv, newLv);
     }
 
     public void ResetLevels()
     {
         Debug.Log("[PlayerStats] 모든 레벨을 1로 초기화합니다.");
 
-        // 딕셔너리의 모든 키를 가져와서 값을 1로 설정
         var keys = new List<StatType>(levels.Keys);
         foreach (var key in keys)
         {
-            levels[key] = 1;
+            int oldLv = levels[key];
+            if (oldLv != 1)
+            {
+                levels[key] = 1;
+                OnStatChanged?.Invoke(key, oldLv, 1);
+            }
         }
-        OnReady?.Invoke(); // 스탯이 준비되었다고 알림
     }
 }

@@ -132,6 +132,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         }
 
         // 3. 데이터 로드
+        GameManager.Instance.LoadDataOnSceneReady();
 
         // 4. UI 업데이트
         OnMapLoadComplete?.Invoke(); 

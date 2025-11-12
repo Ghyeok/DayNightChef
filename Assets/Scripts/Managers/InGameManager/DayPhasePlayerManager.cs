@@ -188,5 +188,4 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         playerCurHP = clamp ? Mathf.Clamp(newHP, 0f, playerMaxHP) : newHP;
         PushSnapshot();
     }
-
 }

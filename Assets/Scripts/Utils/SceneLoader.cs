@@ -18,7 +18,9 @@ public class SceneLoader : MonoBehaviour
         NewGame,
         Continue,
     }
-    public LoadType CurrentLoadType { get; private set; } = LoadType.NewGame;
+
+    public LoadType CurrentLoadType = LoadType.NewGame;
+    public void SetLoadType(LoadType loadType) {  CurrentLoadType = loadType; }
 
     private void Awake()
     {

@@ -29,6 +29,11 @@ public class SaveManager : SingletonManager<SaveManager>
 {
     private string SavePath => Path.Combine(Application.persistentDataPath, "savegame.json");
 
+    public override void Awake()
+    {
+        
+    }
+
     public void SaveGame()
     {
         Debug.Log("게임 저장 중...");

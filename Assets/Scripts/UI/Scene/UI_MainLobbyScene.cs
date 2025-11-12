@@ -21,13 +21,13 @@ public class UI_MainLobbyScene : UI_Scene
 
     private void OnClickedStartButton() // 메인 로비 -> 낮 페이즈 Base 씬
     {
-        SaveManager.Instance.StartNewGame();
+        SceneLoader.Instance.SetLoadType(SceneLoader.LoadType.NewGame);
         SceneLoader.Instance.LoadScene(nextSceneName, LoadSceneMode.Single);
     }
 
     private void OnClickedLoadButton() // 메인 로비 -> 낮 페이즈 Base 씬
     {
-        SaveManager.Instance.LoadGame();
+        SceneLoader.Instance.SetLoadType(SceneLoader.LoadType.Continue);
         SceneLoader.Instance.LoadScene(nextSceneName, LoadSceneMode.Single);
     }
 }

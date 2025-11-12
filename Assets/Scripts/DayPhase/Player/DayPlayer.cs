@@ -41,7 +41,6 @@ public class DayPlayer :  MonoBehaviour , IDamagable
         var pm = DayPhasePlayerManager.Instance;
         if (pm != null)
         {
-            //pm.BindPlayer(this);
             pm.OnSnapshotUpdated -= SyncFromManager;
             pm.OnSnapshotUpdated += SyncFromManager;
 

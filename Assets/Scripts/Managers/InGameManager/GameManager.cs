@@ -5,7 +5,6 @@ using UnityEngine;
  * 골드 추가 시 AddGold(int g)
  * 골드 소비 시 TrySpendGold(int g) -> true시 SpendGold(int g)
  */
-
 public class GameManager : SingletonManager<GameManager>
 {
     public enum GameState
@@ -14,6 +13,8 @@ public class GameManager : SingletonManager<GameManager>
         NightPhase,
     }
 
+    private bool isDataLoaded = false;
+    public void isDataLoadedFalse() { isDataLoaded = false; }
     public event Action OnGoldChanged;
 
     public int currentWeek;
@@ -43,6 +44,7 @@ public class GameManager : SingletonManager<GameManager>
         }
         return false;
     }
+
     public void SpendGold(int g)
     {
         if (totalGold >= g)
@@ -51,33 +53,30 @@ public class GameManager : SingletonManager<GameManager>
             OnGoldChanged?.Invoke();
         }
     }
-    //테스트용
-    public void GiveGold()
-    {
-        int g = 100;
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.AddGold(g);
-        }
-    }
-
-    public void TestSpendGold()
-    {
-        int g = 1;
-        if (GameManager.Instance != null)
-        {
-            if (GameManager.Instance.TrySpendGold(g))
-            {
-                GameManager.Instance.SpendGold(g);
-            }
-        }
-    }
 
     public void EndDayNightLoop()
     {
         Debug.Log("루프 끝! 맵 선택으로 넘어갑니다.");
         DayPhasePlayerManager.Instance.dayPlayer = null;
         currentWeek++;
+
+        SaveManager.Instance.SaveGame();
+    }
+
+    #region 게임 데이터 저장/로드 관리
+    public void LoadDataOnSceneReady()
+    {
+        if (isDataLoaded) return;
+
+        if (SceneLoader.Instance.CurrentLoadType == SceneLoader.LoadType.Continue)
+        {
+            SaveManager.Instance.LoadGame();
+        }
+        else
+        {
+            SaveManager.Instance.StartNewGame();
+        }
+        isDataLoaded = true;
     }
 
     private PlayerStats GetPlayerStats()
@@ -126,6 +125,10 @@ public class GameManager : SingletonManager<GameManager>
             stats.SetLevel(StatType.FishingRod, data.fishingLevel);
             stats.SetLevel(StatType.BagWeight, data.weightLevel);
         }
+        else
+        {
+            Debug.Log("PlayerStats 없음");
+        }
 
         // 2. 게임 진행도
         this.currentWeek = data.currentWeek;
@@ -161,6 +164,9 @@ public class GameManager : SingletonManager<GameManager>
         WarehouseManager.Instance.LoadData(null);
         InventoryManager.Instance.LoadData(null);
 
+        // 4. 새 게임 로드 완료 후, 이어하기 모드로
+        SceneLoader.Instance.SetLoadType(SceneLoader.LoadType.Continue);
         OnGoldChanged?.Invoke();
     }
+    #endregion
 }

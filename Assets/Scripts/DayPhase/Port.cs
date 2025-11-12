@@ -29,6 +29,7 @@ public class Port : MonoBehaviour
         {
             UIManager.Instance.ClosePopupUI();
             UIManager.Instance.ShowPopupUI<UI_MapSelectPopup>("UI_MapSelectPopup");
+            SaveManager.Instance.SaveGame();
         }
         else
         {

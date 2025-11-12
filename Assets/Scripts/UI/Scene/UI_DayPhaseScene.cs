@@ -52,9 +52,6 @@ public class UI_DayPhaseScene : UI_Scene
     // Update is called once per frame
     void Update()
     {
-        //SetWeightText(); Update가 아닌 이벤트를 구독하여 필요시에만 호출하도록함
-        //SetHPBarImage();
-        //SetGoldText();
         SetInteractionIcon();
     }
 
@@ -110,10 +107,14 @@ public class UI_DayPhaseScene : UI_Scene
             StopCoroutine(_waitCo);
             _waitCo = null;
         }
-        if (InventoryManager.Instance != null)
-            InventoryManager.Instance.OnInventoryChanged -= RefreshWeightText;
         if (GameManager.Instance != null)
             GameManager.Instance.OnGoldChanged -= RefreshGoldText;
+
+        if (DayPhasePlayerManager.Instance != null)
+        {
+            DayPhasePlayerManager.Instance.OnSnapshotUpdated -= RefreshHPBar;
+            DayPhasePlayerManager.Instance.OnSnapshotUpdated -= RefreshWeightText;
+        }
     }
 
     private static float SafeRatio(float cur, float max) // 분모 0 방지
@@ -139,19 +140,24 @@ public class UI_DayPhaseScene : UI_Scene
             yield return null;
 
         // 이벤트 구독
-        InventoryManager.Instance.OnInventoryChanged -= RefreshWeightText;
+
         GameManager.Instance.OnGoldChanged -= RefreshGoldText;
-        DayPhaseManager.OnMapLoadComplete -= SetJoyStickToPlayer;
-        InventoryManager.Instance.OnInventoryChanged += RefreshWeightText;
         GameManager.Instance.OnGoldChanged += RefreshGoldText;
+
+        DayPhaseManager.OnMapLoadComplete -= SetJoyStickToPlayer;
         DayPhaseManager.OnMapLoadComplete += SetJoyStickToPlayer;
-        DayPhasePlayerManager.Instance.OnPlayerDamaged -= SetHPBarImage;
-        DayPhasePlayerManager.Instance.OnPlayerDamaged += SetHPBarImage;
+
+        DayPhasePlayerManager.Instance.OnSnapshotUpdated -= RefreshHPBar;
+        DayPhasePlayerManager.Instance.OnSnapshotUpdated += RefreshHPBar;
+
+        DayPhasePlayerManager.Instance.OnSnapshotUpdated -= RefreshWeightText;
+        DayPhasePlayerManager.Instance.OnSnapshotUpdated += RefreshWeightText;
 
         // UI 초기 갱신
-        RefreshWeightText();
         RefreshGoldText();
-        SetHPBarImage();
+        RefreshWeightText(DayPhasePlayerManager.Instance.Snapshot);
+        RefreshHPBar(DayPhasePlayerManager.Instance.Snapshot);
+
         SetWeekText();
         SetJoyStickToPlayer();
 
@@ -191,17 +197,10 @@ public class UI_DayPhaseScene : UI_Scene
         }
     }
 
-    public void RefreshWeightText()
+    public void RefreshWeightText(PlayerRuntimeSnapshot snapshot)
     {
-        var inv = InventoryManager.Instance;
-        if (inv == null)
-        {
-            GetText((int)Texts.WeightText).text = "0/0";
-            return;
-        }
-
-        float cur = inv.CurrentWeight;
-        float max = inv.maxWeight;
+        float cur = snapshot.CurBagWeight;
+        float max = snapshot.MaxBagWeight;
         if (max <= 0f) max = 1f;
 
         cur = Mathf.Clamp(cur, 0f, max);
@@ -220,13 +219,9 @@ public class UI_DayPhaseScene : UI_Scene
         GetText((int)Texts.GoldText).text = $"{gm.totalGold}G";
     }
 
-    public void SetHPBarImage()
+    private void RefreshHPBar(PlayerRuntimeSnapshot snapshot)
     {
-        var dpm = DayPhasePlayerManager.Instance;
-        if (dpm == null)
-            return;
-
-        float fill = SafeRatio(dpm.playerCurHP, dpm.playerMaxHP);
+        float fill = SafeRatio(snapshot.CurHP, snapshot.MaxHP);
         var img = GetImage((int)Images.HPBarImage);
         if (img != null)
             img.fillAmount = fill;
@@ -271,6 +266,7 @@ public class UI_DayPhaseScene : UI_Scene
 
         if (result)
         {
+            SaveManager.Instance.SaveGame();
             SceneLoader.Instance.LoadScene("NightPhaseScene", LoadSceneMode.Single);
         }
         else

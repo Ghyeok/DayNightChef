@@ -20,9 +20,17 @@ public class UI_MapSelectPopup : UI_Popup
     private void Start()
     {
         Init();
+    }
+
+    public override void Init()
+    {
+        base.Init();
+
         grassLandSelect.onClick.AddListener(OnClickedGrassLandSelect);
         swampLandSelect.onClick.AddListener(OnClickedSwampLandSelect);
         winterLandSelect.onClick.AddListener(OnClickedWinterLandSelect);
+
+        GameManager.Instance.isDataLoadedFalse();
     }
 
     private void OnEnable()
