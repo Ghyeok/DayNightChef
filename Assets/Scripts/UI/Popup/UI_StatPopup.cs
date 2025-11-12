@@ -84,8 +84,6 @@ public class UI_StatPopup : UI_Popup
     private void OnDisable()
     {
         PlayerStats.OnStatChanged -= HandleStatChanged;
-        //테스트용
-        GameManager.Instance.AddGold(300);
     }
 
     public static UI_StatPopup Show() =>
