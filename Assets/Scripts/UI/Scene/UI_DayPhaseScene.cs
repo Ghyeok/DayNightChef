@@ -87,7 +87,7 @@ public class UI_DayPhaseScene : UI_Scene
         AddUIEvent(warehouseBtn, _ => UI_WarehousePopup.Show(), Define.UIEvent.Click);
 
         var statBtn = GetButton((int)Buttons.StatButton).gameObject;
-        // AddUIEvent
+        AddUIEvent(statBtn, _ => UI_StatPopup.Show(), Define.UIEvent.Click);
 
         var settingBtn = GetButton((int)Buttons.SettingButton).gameObject;
         // AddUIEvent

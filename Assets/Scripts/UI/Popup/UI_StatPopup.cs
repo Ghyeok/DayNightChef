@@ -1,16 +1,93 @@
 using UnityEngine;
-
-public class UI_StatPopup : MonoBehaviour
+using UnityEngine.UI;
+using TMPro;
+using System.Threading.Tasks;
+public class UI_StatPopup : UI_Popup
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public enum Buttons
     {
-        
+        ExitBtn,
+    }
+    public enum Texts
+    {
+        AttackLvText,
+        SpeedLvText,
+        WeightLvText,
+        HPLvText,
+        FishingLvText,
+    }
+    private TextMeshProUGUI _attackLv;
+    private TextMeshProUGUI _speedLv;
+    private TextMeshProUGUI _weightLv;
+    private TextMeshProUGUI _hpLv;
+    private TextMeshProUGUI _fishingLv;
+    private PlayerStats _stats;
+
+    public override void Init()
+    {
+        base.Init();
+
+        Bind<Button>(typeof(Buttons));
+        Bind<TextMeshProUGUI>(typeof(Texts));
+
+        _stats = FindFirstObjectByType<PlayerStats>();
+
+        var exitBtn = GetButton((int)Buttons.ExitBtn);
+        if (exitBtn != null)
+            UI_Base.AddUIEvent(exitBtn.gameObject, _ => UIManager.Instance.ClosePopupUI(this));
+
+        _attackLv = GetText((int)Texts.AttackLvText);
+        _speedLv = GetText((int)Texts.SpeedLvText);
+        _weightLv = GetText((int)Texts.WeightLvText);
+        _hpLv = GetText((int)Texts.HPLvText);
+        _fishingLv = GetText((int)Texts.FishingLvText);
+
+        PlayerStats.OnStatChanged -= HandleStatChanged;
+        PlayerStats.OnStatChanged += HandleStatChanged;
+
+        SetStat(_attackLv, StatType.Attack);
+        SetStat(_speedLv, StatType.MoveSpeed);
+        SetStat(_weightLv, StatType.BagWeight);
+        SetStat(_hpLv, StatType.MaxHP);
+        SetStat(_fishingLv, StatType.FishingRod);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SetStat(TextMeshProUGUI lvText, StatType type)
     {
-        
+        if (_stats == null) return;
+
+        int lv = _stats.GetLevel(type);
+        float stat = _stats.GetValueAtLevel(type, lv);
+
+        if (lvText)
+        {
+            if (type != StatType.FishingRod)
+            {
+                lvText.text = $"Lv{lv}\n{stat}";
+            }
+            else lvText.text = $"Lv{lv}";
+        }
     }
+
+    private void HandleStatChanged(StatType type, int oldLv, int newLv)
+    {
+        switch (type)
+        {
+            case StatType.Attack: SetStat(_attackLv, type); break;
+            case StatType.MoveSpeed: SetStat(_speedLv, type); break;
+            case StatType.BagWeight: SetStat(_weightLv, type); break;
+            case StatType.MaxHP: SetStat(_hpLv, type); break;
+            case StatType.FishingRod: SetStat(_fishingLv, type); break;
+        }
+    }
+
+    private void OnDisable()
+    {
+        PlayerStats.OnStatChanged -= HandleStatChanged;
+        //테스트용
+        GameManager.Instance.AddGold(300);
+    }
+
+    public static UI_StatPopup Show() =>
+        UIManager.Instance.ShowPopupUI<UI_StatPopup>("UI_StatPopup");
 }
