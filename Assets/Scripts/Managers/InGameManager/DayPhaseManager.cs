@@ -1,9 +1,10 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
-using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// 1. 맵 로드
@@ -27,6 +28,8 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
 
     public const string swampLandUnlocked = "swampLandUnlocked";
     public const string winterLandUnlocked = "winterLandUnlocked";
+
+    public List<Animal> animalList = new List<Animal>();
 
     private readonly string[] mapSceneNames = {
         "GrassLand",
@@ -60,13 +63,21 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (animalList == null)
+            animalList = new List<Animal>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (animalList == null) return;
+        for (int i = 0; i < animalList.Count; ++i)
+        {
+            if (animalList[i] != null)
+            {
+                animalList[i].Updated();
+            }
+        }
     }
 
     public IEnumerator UnloadOldScene()

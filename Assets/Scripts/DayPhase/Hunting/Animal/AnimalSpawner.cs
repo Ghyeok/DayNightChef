@@ -34,7 +34,7 @@ public class AnimalSpawner : MonoBehaviour
     {
         if (target == null)
         {
-            var player = GameObject.FindFirstObjectByType<DayPlayer>();
+            var player = DayPhasePlayerManager.Instance.dayPlayer;
             if (player) target = player.transform;
         }
 
@@ -70,6 +70,10 @@ public class AnimalSpawner : MonoBehaviour
         notifier.spawner = this;
 
         _spawned.Add(a);
+
+        var dpm = DayPhaseManager.Instance;
+        if (dpm != null && !dpm.animalList.Contains(a))
+            dpm.animalList.Add(a);
         return a;
     }
     public void HandleAnimalDestroyed(Animal a)
