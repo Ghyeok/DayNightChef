@@ -14,7 +14,6 @@ public class UI_RestaurantPreparePopup : UI_Popup
     [Header("레시피 정보")]
     [SerializeField] private Image recipeImage;
     [SerializeField] private TextMeshProUGUI recipeNameText;
-    //[SerializeField] private TextMeshProUGUI recipePriceText;
     [SerializeField] private TextMeshProUGUI recipeDescText;
     [SerializeField] private Transform itemRequirementTransform;
     [SerializeField] private GameObject requiredItemPrefab;
@@ -221,8 +220,8 @@ public class UI_RestaurantPreparePopup : UI_Popup
         {
             await UI_ConfirmPopup.ShowAsync(
                 info: "메뉴를 하나 이상 선택해야 합니다!",
-                left: null,
-                right: null
+                left: "확인",
+                right: "확인"
             );
                
             return;

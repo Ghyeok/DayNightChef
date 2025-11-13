@@ -22,7 +22,8 @@ public class GameManager : SingletonManager<GameManager>
     public bool unlockSwampLand;
     public bool unlockWinterLand;
 
-    public int[] managementFees;
+    private int baseFee = 100;
+    public int ManagementFee() => baseFee * (currentWeek / 4);
 
     public override void Awake()
     {
@@ -61,6 +62,27 @@ public class GameManager : SingletonManager<GameManager>
         currentWeek++;
 
         SaveManager.Instance.SaveGame();
+    }
+
+    public void PayManagementFee()
+    {
+        int pay = ManagementFee();
+        if (TrySpendGold(pay))  // 관리비 납부 성공
+        {
+            return;
+        }
+        else // 관리비 납부 실패
+        {
+            GameOver();
+        }
+    }
+
+    public void GameOver()
+    {
+        // UIManager.Instance.UI_GameoverPopup();
+        Debug.Log("관리비 납부 실패! 게임 오버");
+        // TODO -> 게임 데이터 초기화
+        SceneLoader.Instance.LoadScene("MainLobbyScene",UnityEngine.SceneManagement.LoadSceneMode.Single);
     }
 
     #region 게임 데이터 저장/로드 관리

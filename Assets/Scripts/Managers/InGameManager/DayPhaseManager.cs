@@ -148,6 +148,15 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         {
             _uiDayPhaseScene.Init();
         }
+        ShowManagementFeePopup();
+    }
+
+    private void ShowManagementFeePopup()
+    {
+        if(GameManager.Instance.currentWeek % 4 == 0)
+        {
+            UIManager.Instance.ShowPopupUI<UI_ManagementFeePopup>("UI_ManagementFeePopup");
+        }
     }
 
     public void UnlockSwampLand()
