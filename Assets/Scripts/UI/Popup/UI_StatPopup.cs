@@ -15,12 +15,14 @@ public class UI_StatPopup : UI_Popup
         WeightLvText,
         HPLvText,
         FishingLvText,
+        RestaurantLvText,
     }
     private TextMeshProUGUI _attackLv;
     private TextMeshProUGUI _speedLv;
     private TextMeshProUGUI _weightLv;
     private TextMeshProUGUI _hpLv;
     private TextMeshProUGUI _fishingLv;
+    private TextMeshProUGUI _restaurantLv;
     private PlayerStatsManager _stats;
 
     public override void Init()
@@ -41,6 +43,7 @@ public class UI_StatPopup : UI_Popup
         _weightLv = GetText((int)Texts.WeightLvText);
         _hpLv = GetText((int)Texts.HPLvText);
         _fishingLv = GetText((int)Texts.FishingLvText);
+        _restaurantLv = GetText((int)Texts.RestaurantLvText);
 
         PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
         PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
@@ -50,6 +53,7 @@ public class UI_StatPopup : UI_Popup
         SetStat(_weightLv, StatType.BagWeight);
         SetStat(_hpLv, StatType.MaxHP);
         SetStat(_fishingLv, StatType.FishingRod);
+        SetStat(_restaurantLv,StatType.Restaurant);
     }
 
     private void SetStat(TextMeshProUGUI lvText, StatType type)
@@ -61,11 +65,11 @@ public class UI_StatPopup : UI_Popup
 
         if (lvText)
         {
-            if (type != StatType.FishingRod)
+            if ((type == StatType.FishingRod) || (type == StatType.Restaurant))
             {
-                lvText.text = $"Lv{lv}\n{stat}";
+                lvText.text = $"Lv{lv}";
             }
-            else lvText.text = $"Lv{lv}";
+            else lvText.text = $"Lv{lv}\n{stat}";
         }
     }
 
@@ -78,6 +82,7 @@ public class UI_StatPopup : UI_Popup
             case StatType.BagWeight: SetStat(_weightLv, type); break;
             case StatType.MaxHP: SetStat(_hpLv, type); break;
             case StatType.FishingRod: SetStat(_fishingLv, type); break;
+            case StatType.Restaurant: SetStat(_restaurantLv, type);break;
         }
     }
 
