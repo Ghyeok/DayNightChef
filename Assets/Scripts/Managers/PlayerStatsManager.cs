@@ -1,19 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-[DefaultExecutionOrder(-500)]
-public class PlayerStats : MonoBehaviour
+public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
 {
-    //public int hpLevel;
-    //public int moveSpeedLevel;
-    //public int knifeLevel;
-    //public int fishingLevel;
-    //public int bagLevel;
+    // --- 1단계: 인스펙터 표시용 내부 클래스 추가 ---
+    [System.Serializable]
+    private class StatLevelDebugView
+    {
+        public StatType type;
+        public int level;
 
-    public static event Action OnReady;
-    public static event Action<StatType, int, int> OnStatChanged;
+        public StatLevelDebugView(StatType t, int l)
+        {
+            type = t;
+            level = l;
+        }
+    }
+    // ------------------------------------------
+
+    public event Action OnReady;
+    public event Action<StatType, int, int> OnStatChanged;
 
     //각 스텟의 현재 레벨을 저장하는 딕셔너리
     [SerializeField]
@@ -25,6 +34,12 @@ public class PlayerStats : MonoBehaviour
         { StatType.MoveSpeed, 1 },
         { StatType.FishingRod, 1 },
     };
+
+    // --- 2단계: 디버그용 리스트 필드 추가 ---
+    [Header("Debug View (Read-Only)")]
+    [SerializeField]
+    private List<StatLevelDebugView> currentLevelsForInspector = new List<StatLevelDebugView>();
+    // -------------------------------------
 
     private StatsDatabase db;
     private GameManager _gm;
@@ -41,6 +56,10 @@ public class PlayerStats : MonoBehaviour
         _gm = GameManager.Instance;
         IsReady = true;
         OnReady?.Invoke();
+
+#if UNITY_EDITOR
+        UpdateInspectorDebugView(); // 레벨 변경 시 업데이트
+#endif
     }
 
     public int GetLevel(StatType type) =>
@@ -48,6 +67,7 @@ public class PlayerStats : MonoBehaviour
 
     public float GetValue(StatType type) =>
         db != null ? db.GetValue(type, GetLevel(type)) : 0f;
+
     public float GetValueAtLevel(StatType type, int level)
     {
         return db != null ? db.GetValue(type, level) : 0f;
@@ -88,6 +108,11 @@ public class PlayerStats : MonoBehaviour
 
         OnStatChanged?.Invoke(type, oldLv, newLv);
         SaveManager.Instance.SaveGame();
+
+#if UNITY_EDITOR
+        UpdateInspectorDebugView(); // 레벨 변경 시 업데이트
+#endif
+
         return true;
     }
 
@@ -102,6 +127,10 @@ public class PlayerStats : MonoBehaviour
 
         levels[type] = newLv;
         OnStatChanged?.Invoke(type, oldLv, newLv);
+
+#if UNITY_EDITOR
+        UpdateInspectorDebugView(); // 레벨 변경 시 업데이트
+#endif
     }
 
     public void ResetLevels()
@@ -118,5 +147,28 @@ public class PlayerStats : MonoBehaviour
                 OnStatChanged?.Invoke(key, oldLv, 1);
             }
         }
+#if UNITY_EDITOR
+        UpdateInspectorDebugView(); // 레벨 변경 시 업데이트
+#endif
     }
+
+    // --- 3단계: 디버그 리스트 업데이트 함수 추가 ---
+#if UNITY_EDITOR
+    private void UpdateInspectorDebugView()
+    {
+        // (게임이 실행 중이 아닐 때는 실행 방지)
+        if (!Application.isPlaying || levels == null) return;
+
+        currentLevelsForInspector.Clear();
+
+        // 딕셔너리의 모든 키를 가져와 스탯 타입 순서대로 정렬 (선택 사항이지만 깔끔함)
+        var sortedKeys = levels.Keys.OrderBy(key => key.ToString());
+
+        foreach (var key in sortedKeys)
+        {
+            currentLevelsForInspector.Add(new StatLevelDebugView(key, levels[key]));
+        }
+    }
+#endif
+    // ------------------------------------------
 }

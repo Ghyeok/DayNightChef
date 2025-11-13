@@ -21,7 +21,7 @@ public class UI_StatPopup : UI_Popup
     private TextMeshProUGUI _weightLv;
     private TextMeshProUGUI _hpLv;
     private TextMeshProUGUI _fishingLv;
-    private PlayerStats _stats;
+    private PlayerStatsManager _stats;
 
     public override void Init()
     {
@@ -30,7 +30,7 @@ public class UI_StatPopup : UI_Popup
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        _stats = FindFirstObjectByType<PlayerStats>();
+        _stats = PlayerStatsManager.Instance;
 
         var exitBtn = GetButton((int)Buttons.ExitBtn);
         if (exitBtn != null)
@@ -42,8 +42,8 @@ public class UI_StatPopup : UI_Popup
         _hpLv = GetText((int)Texts.HPLvText);
         _fishingLv = GetText((int)Texts.FishingLvText);
 
-        PlayerStats.OnStatChanged -= HandleStatChanged;
-        PlayerStats.OnStatChanged += HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
 
         SetStat(_attackLv, StatType.Attack);
         SetStat(_speedLv, StatType.MoveSpeed);
@@ -83,7 +83,7 @@ public class UI_StatPopup : UI_Popup
 
     private void OnDisable()
     {
-        PlayerStats.OnStatChanged -= HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
     }
 
     public static UI_StatPopup Show() =>

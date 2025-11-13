@@ -22,13 +22,13 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
     public bool IsInitialized { get; private set; }
     public IReadOnlyList<Entry> Entries => _entries; // 인벤토리 항목 읽기 전용 리스트
-    private PlayerStats _ps;
-    private PlayerStats PS
+    private PlayerStatsManager _ps;
+    private PlayerStatsManager PS
     {
         get
         {
             if (_ps == null)
-                _ps = FindFirstObjectByType<PlayerStats>();
+                _ps = PlayerStatsManager.Instance;
             return _ps;
         }
     }
@@ -47,24 +47,24 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     private void OnEnable()
     {
-        PlayerStats.OnReady -= HandlePlayerStatsReady;
-        PlayerStats.OnReady += HandlePlayerStatsReady;
+        PlayerStatsManager.Instance.OnReady -= HandlePlayerStatsReady;
+        PlayerStatsManager.Instance.OnReady += HandlePlayerStatsReady;
 
-        PlayerStats.OnStatChanged -= HandlePlayerStatChanged;
-        PlayerStats.OnStatChanged += HandlePlayerStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged -= HandlePlayerStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged += HandlePlayerStatChanged;
 
         SyncCapacity();
     }
 
     private void OnDisable()
     {
-        PlayerStats.OnReady -= HandlePlayerStatsReady;
-        PlayerStats.OnStatChanged -= HandlePlayerStatChanged;
+        PlayerStatsManager.Instance.OnReady -= HandlePlayerStatsReady;
+        PlayerStatsManager.Instance.OnStatChanged -= HandlePlayerStatChanged;
     }
     private void OnDestroy()
     {
-        PlayerStats.OnReady -= HandlePlayerStatsReady;
-        PlayerStats.OnStatChanged -= HandlePlayerStatChanged;
+        PlayerStatsManager.Instance.OnReady -= HandlePlayerStatsReady;
+        PlayerStatsManager.Instance.OnStatChanged -= HandlePlayerStatChanged;
     }
 
     private void HandlePlayerStatChanged(StatType type, int oldlv, int newlv)
@@ -99,8 +99,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
         IsInitialized = true;
         OnInventoryChanged?.Invoke();
 
-        PlayerStats.OnReady -= HandlePlayerStatsReady;
-        PlayerStats.OnReady += HandlePlayerStatsReady;
+        PlayerStatsManager.Instance.OnReady -= HandlePlayerStatsReady;
+        PlayerStatsManager.Instance.OnReady += HandlePlayerStatsReady;
     }
 
     public override void Awake() // 싱글톤 초기화

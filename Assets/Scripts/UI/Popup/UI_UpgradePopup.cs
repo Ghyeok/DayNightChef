@@ -36,7 +36,7 @@ public class UI_UpgradePopup : UI_Popup
     private TextMeshProUGUI _hpLv, _hpGold;
     private TextMeshProUGUI _fishingLv, _fishingGold;
 
-    private PlayerStats _stats;
+    private PlayerStatsManager _stats;
     private GameManager _gm;
     public override void Init()
     {
@@ -45,7 +45,7 @@ public class UI_UpgradePopup : UI_Popup
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        _stats = FindFirstObjectByType<PlayerStats>();
+        _stats = PlayerStatsManager.Instance;
         _gm = GameManager.Instance;
 
         var exitBtn = GetButton((int)Buttons.ExitBtn);
@@ -76,11 +76,11 @@ public class UI_UpgradePopup : UI_Popup
             _gm.OnGoldChanged += RefreshGold;
         }
 
-        PlayerStats.OnReady -= RefreshAll;
-        PlayerStats.OnReady += RefreshAll;
+        PlayerStatsManager.Instance.OnReady -= RefreshAll;
+        PlayerStatsManager.Instance.OnReady += RefreshAll;
 
-        PlayerStats.OnStatChanged -= HandleStatChanged;
-        PlayerStats.OnStatChanged += HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
 
         RefreshAll();
     }
@@ -89,8 +89,8 @@ public class UI_UpgradePopup : UI_Popup
     {
         if (GameManager.Instance != null)
             GameManager.Instance.OnGoldChanged -= RefreshAll;
-        PlayerStats.OnReady -= RefreshAll;
-        PlayerStats.OnStatChanged -= HandleStatChanged;
+        PlayerStatsManager.Instance.OnReady -= RefreshAll;
+        PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
     }
 
     private void WireUpgradeButton(Buttons btnEnum, StatType type)

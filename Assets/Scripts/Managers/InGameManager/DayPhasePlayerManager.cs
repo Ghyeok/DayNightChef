@@ -47,15 +47,15 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 
     private void OnEnable()
     {
-        PlayerStats.OnStatChanged -= HandleStatChanged;
-        PlayerStats.OnStatChanged += HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
 
         if (InventoryManager.Instance != null) InventoryManager.Instance.OnInventoryChanged += PushSnapshot;
     }
 
     private void OnDisable()
     {
-        PlayerStats.OnStatChanged -= HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
         if (InventoryManager.Instance != null) InventoryManager.Instance.OnInventoryChanged -= PushSnapshot;
     }
 
@@ -79,7 +79,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
             yield break; // 스폰 실패 시 중단
         }
 
-        PlayerStats ps = dayPlayer.GetComponent<PlayerStats>();
+        PlayerStatsManager ps = PlayerStatsManager.Instance;
         if (ps == null)
         {
             Debug.LogError("스폰된 'dayPlayer' 프리팹에 PlayerStats 컴포넌트가 없습니다!");
@@ -129,7 +129,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 
     private void HandleStatChanged(StatType type, int oldLv, int newLv)
     {
-        PlayerStats ps = FindFirstObjectByType<PlayerStats>();
+        PlayerStatsManager ps = PlayerStatsManager.Instance;
         if (ps == null || !ps.IsReady) return;
         switch (type)
         {

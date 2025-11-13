@@ -79,15 +79,15 @@ public class GameManager : SingletonManager<GameManager>
         isDataLoaded = true;
     }
 
-    private PlayerStats GetPlayerStats()
+    private PlayerStatsManager GetPlayerStats()
     {
-        return FindFirstObjectByType<PlayerStats>();
+        return PlayerStatsManager.Instance;
     }
 
     public GameSaveData GetAllDataToSave()
     {
         GameSaveData data = new GameSaveData();
-        PlayerStats stats = GetPlayerStats();
+        PlayerStatsManager stats = GetPlayerStats();
 
         // 1. 플레이어 스탯
         if (stats != null)
@@ -114,7 +114,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public void ApplyAllSaveData(GameSaveData data)
     {
-        PlayerStats stats = GetPlayerStats();
+        PlayerStatsManager stats = GetPlayerStats();
 
         // 1. 플레이어 스탯
         if (stats != null)
@@ -148,7 +148,7 @@ public class GameManager : SingletonManager<GameManager>
         Debug.Log("[GameManager] 모든 데이터를 초기화합니다. (새 게임)");
 
         // 1. 플레이어 스탯
-        PlayerStats stats = GetPlayerStats();
+        PlayerStatsManager stats = GetPlayerStats();
         if (stats != null)
         {
             stats.ResetLevels();
