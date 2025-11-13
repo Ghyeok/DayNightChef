@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2632e78a4a0de434891abfdecad25e81, type: 3}
-  m_Name: 13_RabbitMeat
+  m_Name: 13_AnimalBone
   m_EditorClassIdentifier: 
   item_number: 13
   item_Type: 0
   item_MapType: 2
   item_Grade: 0
-  item_name: "\uD1A0\uB07C\uACE0\uAE30"
+  item_name: "\uB3D9\uBB3C\uBF08"
   item_requireLevel: 1
   item_tier: 1
-  item_image: {fileID: 21300000, guid: a93b6365bc091b54baeb1e80abc68f6d, type: 3}
+  item_image: {fileID: 21300000, guid: eb6f350e1cd3ef747b03dd178004021b, type: 3}
   item_weight: 2
   item_maxcount: 999
   isGet: 0

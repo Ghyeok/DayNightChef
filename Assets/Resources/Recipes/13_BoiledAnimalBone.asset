@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 94482040128bb7a41b055539b3e20b1b, type: 3}
-  m_Name: 13_RabbitMeatSteamed
+  m_Name: 13_BoiledAnimalBone
   m_EditorClassIdentifier: 
   recipe_number: 13
-  recipe_name: "\uD1A0\uB07C\uACE0\uAE30 \uCC1C"
-  recipe_image: {fileID: 21300000, guid: 8e425479451bbb44a946e0c7c01f57f7, type: 3}
+  recipe_name: "\uBF08 \uCC1C"
+  recipe_image: {fileID: 21300000, guid: 1ed2d6833d59c2c4684fb65e24d35aaa, type: 3}
   recipe_type: 0
   recipe_price: 19
   recipe_requireItems:
@@ -22,5 +22,5 @@ MonoBehaviour:
     count: 1
   - item: {fileID: 11400000, guid: 163eff3b5e981fb4eb100af8e4b27c9b, type: 2}
     count: 2
-  - item: {fileID: 11400000, guid: 95ca4dd11a3753a4ea8e6e115b0a25e6, type: 2}
+  - item: {fileID: 11400000, guid: f26d464bc7d0d024fb701554ff9215a5, type: 2}
     count: 1
