@@ -8,6 +8,7 @@ public enum  StatType
     MaxHP,
     MoveSpeed,
     FishingRod,
+    Restaurant,
 }
 
 [System.Serializable]

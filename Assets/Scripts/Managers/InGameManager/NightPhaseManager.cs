@@ -17,7 +17,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
         if (VERBOSE) Debug.Log($"{TAG} {msg}");
     }
     [Header("레스토랑 정보")]
-    public int RestaurantLevel = 1; // 현재 레스토랑 레벨
+    public int RestaurantLevel; // 현재 레스토랑 레벨
     public int Reputation = 0; // 현재 레스토랑 평판
     [Header("레스토랑 스텟")]
     [SerializeField] private int _maxSeat = 5; // 최대 좌석 수
@@ -116,6 +116,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
             Log("StartService 호출 무시: 이미 Open 상태");
             return;
         }
+        RestaurantLevel = PlayerStatsManager.Instance.GetLevel(StatType.Restaurant);
         state = RestaurantState.Open;
         Log("StartService → 상태 Open, OnServiceStarted 이벤트");
         OnServiceStarted?.Invoke();

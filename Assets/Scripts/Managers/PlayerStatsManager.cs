@@ -33,6 +33,7 @@ public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
         { StatType.MaxHP, 1 },
         { StatType.MoveSpeed, 1 },
         { StatType.FishingRod, 1 },
+        { StatType.Restaurant, 1 },
     };
 
     // --- 2단계: 디버그용 리스트 필드 추가 ---
