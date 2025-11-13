@@ -11,7 +11,8 @@ public class UI_UpgradePopup : UI_Popup
         SpeedBtn,
         WeightBtn,
         HPBtn,
-        FishingBtn
+        FishingBtn,
+        RestaurantBtn,
     }
 
     public enum Texts
@@ -27,6 +28,8 @@ public class UI_UpgradePopup : UI_Popup
         HPGoldText,
         FishingLvText,
         FishingGoldText,
+        RestaurantLvText,
+        RestaurantGoldText,
     }
 
     private TextMeshProUGUI _curGold;
@@ -35,6 +38,7 @@ public class UI_UpgradePopup : UI_Popup
     private TextMeshProUGUI _weightLv, _weightGold;
     private TextMeshProUGUI _hpLv, _hpGold;
     private TextMeshProUGUI _fishingLv, _fishingGold;
+    private TextMeshProUGUI _restaurantLv, _restaurantGold;
 
     private PlayerStatsManager _stats;
     private GameManager _gm;
@@ -63,12 +67,15 @@ public class UI_UpgradePopup : UI_Popup
         _hpGold = GetText((int)Texts.HPGoldText);
         _fishingLv = GetText((int)Texts.FishingLvText);
         _fishingGold = GetText((int)Texts.FishingGoldText);
+        _restaurantLv = GetText((int)Texts.RestaurantLvText);
+        _restaurantGold = GetText((int)Texts.RestaurantGoldText);
 
         WireUpgradeButton(Buttons.AttackBtn, StatType.Attack);
         WireUpgradeButton(Buttons.SpeedBtn, StatType.MoveSpeed);
         WireUpgradeButton(Buttons.WeightBtn, StatType.BagWeight);
         WireUpgradeButton(Buttons.HPBtn, StatType.MaxHP);
         WireUpgradeButton(Buttons.FishingBtn, StatType.FishingRod);
+        WireUpgradeButton(Buttons.RestaurantBtn, StatType.Restaurant);
 
         if(_gm != null)
         {
@@ -122,6 +129,7 @@ public class UI_UpgradePopup : UI_Popup
         RefreshStat(_weightLv, _weightGold, StatType.BagWeight);
         RefreshStat(_hpLv, _hpGold, StatType.MaxHP);
         RefreshStat(_fishingLv, _fishingGold, StatType.FishingRod);
+        RefreshStat(_restaurantLv, _restaurantGold, StatType.Restaurant);
 
     }
 
@@ -144,6 +152,7 @@ public class UI_UpgradePopup : UI_Popup
             case StatType.BagWeight: btn = GetButton((int)Buttons.WeightBtn); break;
             case StatType.MaxHP: btn = GetButton((int)Buttons.HPBtn); break;
             case StatType.FishingRod: btn = GetButton((int)Buttons.FishingBtn); break;
+            case StatType.Restaurant: btn = GetButton((int)Buttons.RestaurantBtn); break;
         }
 
         if (btn != null)
@@ -171,6 +180,7 @@ public class UI_UpgradePopup : UI_Popup
             case StatType.BagWeight: RefreshStat(_weightLv, _weightGold, type); break;
             case StatType.MaxHP: RefreshStat(_hpLv, _hpGold, type); break;
             case StatType.FishingRod: RefreshStat(_fishingLv, _fishingGold, type); break;
+            case StatType.Restaurant: RefreshStat(_restaurantLv, _restaurantGold, type); break;
         }
     }
 
@@ -183,6 +193,7 @@ public class UI_UpgradePopup : UI_Popup
         StatType.BagWeight => "가방 무게",
         StatType.MaxHP => "최대 HP",
         StatType.FishingRod => "낚싯대",
+        StatType.Restaurant => "레스토랑",
         _ => type.ToString()
     };
 
