@@ -47,7 +47,9 @@ public class SalesManager : SingletonManager<SalesManager>
     private readonly Queue<Order> _readyQueue = new();
     private Order _cookingNow = null;
     private int _goldAccrued = 0;
+    public int GoldAccrued() { return _goldAccrued; }
     private int _reputationAccrued = 0;
+    public int ReputationAccrued() { return _reputationAccrued; }
 
     [Header("조리 시간")]
     [SerializeField] private float defaultCookSeconds = 4f;

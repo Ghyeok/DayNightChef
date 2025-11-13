@@ -135,8 +135,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     /// </summary>
     public void EndNightPhase()
     {
-        GameManager.Instance.EndDayNightLoop(); // currentWeek 증가, 목표 금액 달성했는가? 
-        // TODO -> 정산 팝업 띄우기
-        SceneLoader.Instance.LoadScene("DayPhaseScene",UnityEngine.SceneManagement.LoadSceneMode.Single);
+        GameManager.Instance.EndDayNightLoop(); // currentWeek 증가, 목표 금액 달성했는가? 게임 저장
+        UIManager.Instance.ShowPopupUI<UI_SettlementPopup>("UI_SettlementPopup");
     }
 }
