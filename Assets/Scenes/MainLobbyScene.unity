@@ -458,7 +458,6 @@ MonoBehaviour:
   totalGold: 0
   unlockSwampLand: 0
   unlockWinterLand: 0
-  managementFees: 
 --- !u!4 &786992149
 Transform:
   m_ObjectHideFlags: 0
@@ -503,6 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a98582764515de943be89fcb997a8eb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevelsForInspector: []
 --- !u!4 &912241932
 Transform:
   m_ObjectHideFlags: 0

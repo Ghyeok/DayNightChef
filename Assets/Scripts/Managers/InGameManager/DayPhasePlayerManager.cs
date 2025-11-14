@@ -171,8 +171,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         OnPlayerDamaged?.Invoke();
         if (playerCurHP <= 0f)
         {
-            // 죽음 처리
-            // TODO -> 아이템 한 가지만 선택해서 창고에 넣고 나머지는 잃음, 밤 페이즈로 넘어감
+            DayPhasePlayerManager.Instance.DayPlayerDead();
         }
     }
 
@@ -187,5 +186,10 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
     {
         playerCurHP = clamp ? Mathf.Clamp(newHP, 0f, playerMaxHP) : newHP;
         PushSnapshot();
+    }
+
+    public void DayPlayerDead()
+    {
+
     }
 }

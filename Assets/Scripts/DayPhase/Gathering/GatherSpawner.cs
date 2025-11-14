@@ -12,6 +12,8 @@ public class GatherSpawner : MonoBehaviour
     [SerializeField] private Transform rootSpawnPoint;
     [SerializeField] private float spawnRange = 2.5f;
 
+    public Item[] SpawnItems => ItemManager.Instance.GetItemList(ItemType.Gather, DayPhaseManager.Instance.curMapType, curTier);
+
     private readonly int[] dx = {0,1,-1,1,-1};
     private readonly int[] dy = {0,1,1,-1,-1};
 
