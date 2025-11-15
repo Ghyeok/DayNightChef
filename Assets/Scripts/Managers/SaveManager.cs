@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-[SerializeField]
+[System.Serializable]
 public class GameSaveData
 {
     // 1. 게임 내 업그레이드 수치 저장
@@ -33,7 +33,7 @@ public class SaveManager : SingletonManager<SaveManager>
 
     public override void Awake()
     {
-
+        base.Awake();
     }
 
     public void SaveGame()

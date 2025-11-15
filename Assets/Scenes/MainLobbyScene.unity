@@ -743,6 +743,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3008354557705651638, guid: d65b74fd03c3813408f68517f94f1b45, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008354557705651638, guid: d65b74fd03c3813408f68517f94f1b45, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008354557705651638, guid: d65b74fd03c3813408f68517f94f1b45, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008354557705651638, guid: d65b74fd03c3813408f68517f94f1b45, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3331205987516818439, guid: d65b74fd03c3813408f68517f94f1b45, type: 3}
       propertyPath: m_Name
       value: MainLobbyScene

@@ -42,7 +42,7 @@ public class UI_MainLobbyScene : UI_Scene
 
     private void OnClickedSettingButton() // 
     {
-
+        UI_SettingPopup.Show();
     }
 
     private void OnClickedExitButton()
