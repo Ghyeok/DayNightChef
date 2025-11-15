@@ -39,6 +39,7 @@ public class UI_DayPhaseScene : UI_Scene
         PauseButton,
         StoreButton,
         WarehouseButton,
+        RecipeButton,
         StatButton,
         SettingButton,
     }
@@ -82,6 +83,9 @@ public class UI_DayPhaseScene : UI_Scene
 
         var warehouseBtn = GetButton((int)Buttons.WarehouseButton).gameObject;
         AddUIEvent(warehouseBtn, _ => UI_WarehousePopup.Show(), Define.UIEvent.Click);
+
+        var recipeBtn = GetButton((int)Buttons.RecipeButton).gameObject;
+        AddUIEvent(recipeBtn, _ => UI_RecipePopup.Show(), Define.UIEvent.Click);
 
         var statBtn = GetButton((int)Buttons.StatButton).gameObject;
         AddUIEvent(statBtn, _ => UI_StatPopup.Show(), Define.UIEvent.Click);
