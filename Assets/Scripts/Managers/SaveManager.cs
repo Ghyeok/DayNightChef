@@ -11,10 +11,12 @@ public class GameSaveData
     public int attackLevel;
     public int fishingLevel;
     public int weightLevel;
+    public int restaurantLevel;
 
     // 2. 게임 진행도 저장
     public int currentWeek;
     public int currentGold;
+    public int reputation;
     public bool unlockSwampLand;
     public bool unlockWinterLand;
 
