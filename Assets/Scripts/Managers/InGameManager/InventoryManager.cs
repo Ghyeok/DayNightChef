@@ -129,13 +129,50 @@ public class InventoryManager : SingletonManager<InventoryManager>
         return after <= maxWeight;
     }
 
-    public bool TryAdd(Item item, int count) // 아이템 추가 시도
+    public bool TryAdd(Item item, int count)
     {
-        if (!CanAdd(item, count)) return false;
+        if (item == null || count <= 0)
+            return false;
+
+        int addedCount = 0; // 실제로 몇 개 추가했는지 카운트
+
+        // 'count' 횟수만큼 1개씩 추가 시도
+        for (int i = 0; i < count; i++)
+        {
+            if (!CanAdd(item, 1))
+            {
+                break;
+            }
+
+            if (InternalAdd(item, 1))
+            {
+                // 슬롯에 추가 성공
+                addedCount++;
+            }
+            else
+            {
+                // 슬롯이 꽉 찼으면 중단
+                break;
+            }
+        }
+
+        // 3. 하나라도 추가했다면 이벤트를 호출하고 true 반환
+        if (addedCount > 0)
+        {
+            OnInventoryChanged?.Invoke();
+            return true;
+        }
+
+        // 4. 하나도 추가 못했으면 false 반환
+        return false;
+    }
+
+    private bool InternalAdd(Item item, int count)
+    {
         int remain = count;
 
         // 1. 이미 있는 아이템에 추가
-        if(item.stackable)
+        if (item.stackable)
         {
             for (int i = 0; i < _entries.Count; i++)
             {
@@ -145,21 +182,23 @@ public class InventoryManager : SingletonManager<InventoryManager>
                     _entries[i] = new Entry { item = item, count = _entries[i].count + canPut };
                     remain -= canPut;
 
+                    if (remain == 0) return true; // 다 채움
                 }
             }
         }
 
         // 2. 빈 슬롯에 추가
-        for (int i = 0; i< _entries.Count && remain > 0; i++)
+        for (int i = 0; i < _entries.Count && remain > 0; i++)
         {
             if (_entries[i].item == null)
             {
                 int put = item.stackable ? Math.Min(item.item_maxcount, remain) : 1;
                 _entries[i] = new Entry { item = item, count = put };
                 remain -= put;
+
+                if (remain == 0) return true; // 다 채움
             }
         }
-        OnInventoryChanged?.Invoke();
         return remain == 0;
     }
 
