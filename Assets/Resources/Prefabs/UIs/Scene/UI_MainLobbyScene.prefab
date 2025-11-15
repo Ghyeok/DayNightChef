@@ -513,6 +513,7 @@ MonoBehaviour:
   loadButton: {fileID: 5680425861501571795}
   howToButton: {fileID: 3776188944547852082}
   settingButton: {fileID: 1567874754170048945}
+  exitButton: {fileID: 7265007234097072893}
 --- !u!1 &3522715553739221403
 GameObject:
   m_ObjectHideFlags: 0

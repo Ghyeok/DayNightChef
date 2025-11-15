@@ -47,7 +47,6 @@ public class UI_MainLobbyScene : UI_Scene
 
     private void OnClickedExitButton()
     {
-        SaveManager.Instance.SaveGame();
         UIManager.Instance.OnExitButton();
     }
 }
