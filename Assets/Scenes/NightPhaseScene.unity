@@ -2395,8 +2395,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbe3fc577c3cde2418eccd47635e709f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _totalCapacity: 0
+  _spawnedTotal: 0
   defaultCookSeconds: 4
   menus: []
+  wrongServeReputationPenalty: -2
+  correctServeReputationReward: 2
   customerPrefabs:
   - {fileID: 877797151760090882, guid: d41230c8bd584794cad24372035dd84f, type: 3}
   - {fileID: 877797151760090882, guid: b3266721fb1332f4db1dd787c82835e6, type: 3}

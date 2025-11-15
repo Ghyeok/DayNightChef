@@ -10,7 +10,7 @@ public class WaiterController : MonoBehaviour
     public VariableJoystick joystick;   // 조이스틱만 사용
     [SerializeField] float deadZone = 0.15f;   // 드리프트 억제
     [SerializeField] bool useEightDirections = true; // 8방향 스냅(해제 시 4방향)
-    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float moveSpeed = 2f;
 
     [SerializeField] private Animator anim;
     [SerializeField] private Rigidbody2D rb;

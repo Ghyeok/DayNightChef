@@ -60,7 +60,6 @@ public class GameManager : SingletonManager<GameManager>
         Debug.Log("루프 끝! 맵 선택으로 넘어갑니다.");
         DayPhasePlayerManager.Instance.dayPlayer = null;
         currentWeek++;
-
         SaveManager.Instance.SaveGame();
     }
 
@@ -69,6 +68,7 @@ public class GameManager : SingletonManager<GameManager>
         int pay = ManagementFee();
         if (TrySpendGold(pay))  // 관리비 납부 성공
         {
+            SpendGold(pay);
             return;
         }
         else // 관리비 납부 실패

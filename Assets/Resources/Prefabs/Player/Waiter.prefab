@@ -243,7 +243,7 @@ MonoBehaviour:
   joystick: {fileID: 0}
   deadZone: 0.15
   useEightDirections: 0
-  moveSpeed: 1
+  moveSpeed: 1.5
   anim: {fileID: 0}
   rb: {fileID: 0}
   sr: {fileID: 0}
