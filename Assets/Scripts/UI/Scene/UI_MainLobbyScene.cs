@@ -37,7 +37,7 @@ public class UI_MainLobbyScene : UI_Scene
 
     private void OnClickedHowToButton() // 
     {
-
+        UI_GameRulePopup.Show();
     }
 
     private void OnClickedSettingButton() // 
