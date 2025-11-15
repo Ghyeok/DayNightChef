@@ -144,7 +144,6 @@ public class SalesManager : SingletonManager<SalesManager>
         }
     }
 
-
     // 조리 루프
     private IEnumerator Co_CookLoop()
     {
@@ -263,6 +262,7 @@ public class SalesManager : SingletonManager<SalesManager>
         Log($"영업 시작: time={_timeLeft}s, seats={_maxSeat}/{_seatSlots.Length}, planned={menus.Sum(m => m.planned)}");
         StartCoroutine(Co_ServiceRoutine());
     }
+
     // 메인 루프
     private IEnumerator Co_ServiceRoutine()
     {
@@ -285,7 +285,7 @@ public class SalesManager : SingletonManager<SalesManager>
         {
             if (_spawnedTotal >= _totalCapacity) { yield return new WaitForSeconds(0.25f); continue; }
 
-            float rep = NightPhaseManager.Instance.Reputation;
+            float rep = GameManager.Instance.restaurantReputation;
             float interval = Mathf.Max(2f, spawnInterval - 0.04f * rep);
 
             TrySpawnCustomer();
@@ -454,6 +454,8 @@ public class SalesManager : SingletonManager<SalesManager>
     // 영업 종료
     private void EndService()
     {
+        if(!_isServiceRunning) return;
+
         _isServiceRunning = false;
 
         while (_pendingQueue.Count > 0)
@@ -478,7 +480,7 @@ public class SalesManager : SingletonManager<SalesManager>
         if (_goldAccrued > 0)
             GameManager.Instance.AddGold(_goldAccrued);
 
-        NightPhaseManager.Instance.Reputation += _reputationAccrued;
+        GameManager.Instance.restaurantReputation += _reputationAccrued;
 
         Log($"영업 종료: 총 판매 {totalSold}개, 매출 {totalRevenue}, " +
             $"정산 골드(누적) {_goldAccrued}, 정산 평판 {_reputationAccrued}");
