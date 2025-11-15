@@ -2816,8 +2816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d44f6e6f8ecf604188d300e0459bc13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RestaurantLevel: 3
-  Reputation: 0
+  RestaurantLevel: 1
   _maxSeat: 5
   _serviceTime: 120
   state: 0

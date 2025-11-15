@@ -19,6 +19,7 @@ public class GameManager : SingletonManager<GameManager>
 
     public int currentWeek;
     public int totalGold;
+    public int restaurantReputation;
     public bool unlockSwampLand;
     public bool unlockWinterLand;
 
@@ -60,6 +61,7 @@ public class GameManager : SingletonManager<GameManager>
         Debug.Log("루프 끝! 맵 선택으로 넘어갑니다.");
         DayPhasePlayerManager.Instance.dayPlayer = null;
         currentWeek++;
+
         SaveManager.Instance.SaveGame();
     }
 
@@ -128,11 +130,13 @@ public class GameManager : SingletonManager<GameManager>
             data.attackLevel = stats.GetLevel(StatType.Attack);
             data.fishingLevel = stats.GetLevel(StatType.FishingRod);
             data.weightLevel = stats.GetLevel(StatType.BagWeight);
+            data.restaurantLevel = stats.GetLevel(StatType.Restaurant);
         }
 
         // 2. 게임 진행도
         data.currentWeek = this.currentWeek;
         data.currentGold = this.totalGold;
+        data.reputation = this.restaurantReputation;
         data.unlockSwampLand = this.unlockSwampLand;
         data.unlockWinterLand = this.unlockWinterLand;
 
@@ -155,6 +159,7 @@ public class GameManager : SingletonManager<GameManager>
             stats.SetLevel(StatType.Attack, data.attackLevel);
             stats.SetLevel(StatType.FishingRod, data.fishingLevel);
             stats.SetLevel(StatType.BagWeight, data.weightLevel);
+            stats.SetLevel(StatType.Restaurant, data.restaurantLevel);
         }
         else
         {
@@ -164,6 +169,7 @@ public class GameManager : SingletonManager<GameManager>
         // 2. 게임 진행도
         this.currentWeek = data.currentWeek;
         this.totalGold = data.currentGold;
+        this.restaurantReputation = data.reputation;
         this.unlockSwampLand = data.unlockSwampLand;
         this.unlockWinterLand = data.unlockWinterLand;
 
@@ -188,6 +194,7 @@ public class GameManager : SingletonManager<GameManager>
         // 2. 게임 진행도
         this.currentWeek = 1;
         this.totalGold = 0;
+        this.restaurantReputation = 0;
         this.unlockSwampLand = false;
         this.unlockWinterLand = false;
 

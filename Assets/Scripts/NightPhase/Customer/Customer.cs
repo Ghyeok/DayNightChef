@@ -148,7 +148,7 @@ public class Customer : MonoBehaviour
         if (_leaving) return;
         _leaving = true;
 
-        Log($"퇴장: success={success}, served={served?.recipe_name}, rep={NightPhaseManager.Instance.Reputation}");
+        Log($"퇴장: success={success}, served={served?.recipe_name}, rep={GameManager.Instance.restaurantReputation}");
 
         // 좌석 비우기(게임 로직상 바로 해제)
         _sales?.OnCustomerLeave(_seatIndex, success, Want, served);
