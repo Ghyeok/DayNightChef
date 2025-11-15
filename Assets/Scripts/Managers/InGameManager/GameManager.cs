@@ -77,12 +77,21 @@ public class GameManager : SingletonManager<GameManager>
         }
     }
 
-    public void GameOver()
+    public async void GameOver()
     {
-        // UIManager.Instance.UI_GameoverPopup();
-        Debug.Log("관리비 납부 실패! 게임 오버");
-        // TODO -> 게임 데이터 초기화
-        SceneLoader.Instance.LoadScene("MainLobbyScene",UnityEngine.SceneManagement.LoadSceneMode.Single);
+        Debug.Log("게임 오버! 세이브 파일을 삭제합니다.");
+        SaveManager.Instance.DeleteSaveData();
+
+        bool result = await UI_ConfirmPopup.ShowAsync(
+            info: "게임 오버!",
+            left: "확인",
+            right: "확인"
+            );
+        if (result || !result)
+        {
+            UIManager.Instance.CloseAllPopupUI();
+            SceneLoader.Instance.LoadScene("MainLobbyScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
+        }
     }
 
     #region 게임 데이터 저장/로드 관리
