@@ -34,20 +34,24 @@ public class UI_DeathPopup : UI_Popup
         var confirmBtn = GetButton((int)Buttons.ConfirmButton);
         if (confirmBtn != null)
         {
-            AddUIEvent(confirmBtn.gameObject, async _ =>
+            AddUIEvent(confirmBtn.gameObject, _ =>
             {
-                // 선택한 슬롯이 유효한지 검사
-                if (!HasValidSelection())
-                {
-                    await UI_ConfirmPopup.ShowAsync(
-                        info: "밤 페이즈로 가져갈 재료를 하나 선택하세요.",
-                        left: "확인",
-                        right: "확인");
-                    return;
-                }
+                var inv = InventoryManager.Instance;
 
-                // 선택된 슬롯 하나만 남기고 나머지 인벤토리 비우기
-                KeepOnlySelectedItem();
+                if (inv != null && inv.Entries != null)
+                { 
+                    if (HasAnyItem()) // 아이템이 하나라도 있으면
+                    {
+                        if (HasValidSelection())
+                        {
+                            KeepOnlySelectedItem();
+                        }
+                        else
+                        {
+                            ClearAllItems();
+                        }
+                    }
+                }
 
                 // 팝업 닫고 밤 페이즈로 이동
                 UIManager.Instance.ClosePopupUI(this);
@@ -214,6 +218,22 @@ public class UI_DeathPopup : UI_Popup
     }
 
     /// <summary>
+    /// 인벤토리에 아이템이 하나라도 있는지 확인
+    /// </summary>
+    private bool HasAnyItem()
+    {
+        var inv = InventoryManager.Instance;
+        if (inv == null || inv.Entries == null) return false;
+
+        foreach (var e in inv.Entries)
+        {
+            if (e.item != null && e.count > 0)
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>
     /// 선택된 슬롯 하나만 남기고 나머지 인벤토리 슬롯 비우기
     /// </summary>
     private void KeepOnlySelectedItem()
@@ -240,5 +260,22 @@ public class UI_DeathPopup : UI_Popup
 
             inv.SetSlot(i, null, 0);
         }
+    }
+
+    /// <summary>
+    /// 인벤토리 전체 아이템 삭제
+    /// </summary>
+    private void ClearAllItems()
+    {
+        var inv = InventoryManager.Instance;
+        if (inv == null || inv.Entries == null) return;
+
+        int count = inv.Entries.Count;
+        for (int i = 0; i < count; i++)
+        {
+            inv.SetSlot(i, null, 0);
+        }
+
+        Debug.Log("[UI_DeathPopup] 선택된 슬롯이 없어, 인벤토리 전체를 비우고 넘어갑니다.");
     }
 }
