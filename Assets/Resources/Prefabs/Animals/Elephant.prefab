@@ -330,8 +330,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8b70131065ba7654299161f3cbdf4abe, type: 2}
   maxHP: 400
   attackPower: 7
-  walkSpeed: 8.5
-  runSpeed: 13
+  walkSpeed: 4
+  runSpeed: 8.5
   leashDIstance: 15
   returnArriveRadius: 3
   regenPerSec: 8
@@ -342,7 +342,7 @@ MonoBehaviour:
   target: {fileID: 0}
   attackBehavior: {fileID: 1208389740455098303}
   debugLogs: 0
-  attackCooldown: 2.22
+  attackCooldown: 1
   hitStunDuration: 0.35
   rb: {fileID: 0}
   animator: {fileID: 0}

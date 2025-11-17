@@ -327,10 +327,10 @@ MonoBehaviour:
   DropItem:
   - {fileID: 11400000, guid: b7219cb6621feef41a76ec5e6bfa6a00, type: 2}
   - {fileID: 11400000, guid: 014ea875444d36942a941c85be2758bf, type: 2}
-  maxHP: 50
-  attackPower: 8
+  maxHP: 70
+  attackPower: 3
   walkSpeed: 5
-  runSpeed: 10
+  runSpeed: 11
   leashDIstance: 15
   returnArriveRadius: 3
   regenPerSec: 8
@@ -341,7 +341,7 @@ MonoBehaviour:
   target: {fileID: 0}
   attackBehavior: {fileID: 1548005980562770934}
   debugLogs: 1
-  attackCooldown: 5
+  attackCooldown: 0.1
   hitStunDuration: 1.25
   rb: {fileID: 0}
   animator: {fileID: 0}
