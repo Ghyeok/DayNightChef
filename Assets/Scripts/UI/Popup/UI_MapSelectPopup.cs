@@ -8,6 +8,7 @@ public class UI_MapSelectPopup : UI_Popup
     [SerializeField] private Button grassLandSelect;
     [SerializeField] private Button swampLandSelect;
     [SerializeField] private Button winterLandSelect;
+    [SerializeField] private Button mainLobbyButton;
 
     [SerializeField] private GameObject swampPanel;
     [SerializeField] private GameObject winterPanel;
@@ -29,6 +30,7 @@ public class UI_MapSelectPopup : UI_Popup
         grassLandSelect.onClick.AddListener(OnClickedGrassLandSelect);
         swampLandSelect.onClick.AddListener(OnClickedSwampLandSelect);
         winterLandSelect.onClick.AddListener(OnClickedWinterLandSelect);
+        mainLobbyButton.onClick.AddListener(OnClickedMainLobbyButton);
 
         GameManager.Instance.isDataLoadedFalse();
     }
@@ -58,5 +60,10 @@ public class UI_MapSelectPopup : UI_Popup
     {
         UIManager.Instance.ClosePopupUI(this);
         OnMapSelected?.Invoke(MapType.Cold);
+    }
+    private void OnClickedMainLobbyButton()
+    {
+        UIManager.Instance.ClosePopupUI(this);
+        SceneLoader.Instance.LoadScene("MainLobbyScene",LoadSceneMode.Single);
     }
 }
