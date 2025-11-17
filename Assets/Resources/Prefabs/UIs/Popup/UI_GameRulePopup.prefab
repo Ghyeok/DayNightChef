@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 611, y: -288}
+  m_AnchoredPosition: {x: 646, y: -365}
   m_SizeDelta: {x: 140, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1805218805661347255
@@ -230,7 +230,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 664, y: 293}
+  m_AnchoredPosition: {x: 664, y: 418}
   m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &653408502584180874
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 7849652521418277157}
   - component: {fileID: 7578726133470774529}
   m_Layer: 5
-  m_Name: PopupName
+  m_Name: RuleName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -349,7 +349,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 317}
+  m_AnchoredPosition: {x: 0, y: 443}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7849652521418277157
@@ -415,7 +415,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -545.5687, y: -15.739136, z: -541.50195, w: -67.29291}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -485,8 +485,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1300, y: 450}
+  m_AnchoredPosition: {x: 0, y: 49}
+  m_SizeDelta: {x: 1000, y: 520}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7779481010624635125
 CanvasRenderer:
@@ -643,12 +643,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameRules:
-  - RuleImage: {fileID: -3164809056393425246, guid: 82cd0d1e13c31e846b5ec74f7c518df6, type: 3}
-    RuleText: "\u314E\u3147\u314E\u3147 1\uD398"
-  - RuleImage: {fileID: -5225540622116197949, guid: aadfa64076def8a4db9a576bac7e8f91, type: 3}
-    RuleText: "\u314E\u3147\u314E\u3147 2\uD398"
-  - RuleImage: {fileID: 8793915729297761979, guid: 45aac43a4ea0d644f911be4f87b509a1, type: 3}
-    RuleText: "\u314E\u3147\u314E\u3147 3\uD398"
+  - RuleImage: {fileID: 21300000, guid: 738a8f24dfe768742a0bca0619bbde4b, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 738a8f24dfe768742a0bca0619bbde4b, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: c738db28e6195d34799d5d86dad99000, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 7a94bbc63fffab34a95d9575f8b8c497, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: ecb7b1ab85ced6d44aaf33dc9d591495, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 2c999d73ebe25784194785c0f2694b1e, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 994c577dbab7faa46823dbeea235bf3e, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 4e297b7d696fd0b4ba121d0d5077b84a, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 821711f5564f0be4fa102bfe22a87791, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: b354f1a490c3db243bfc68d8f7f8306b, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: f284f387a5446794ba615834037e1ee0, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 75e93a031f5316948a83c8899847e8c2, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: ca97426c74d5d314597df8929a940651, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: ca97426c74d5d314597df8929a940651, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 6429d711f02396840851b4d1ea6f09d2, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 4e8374b280b4a594d9e2acea6421fba5, type: 3}
+    RuleName: 
+    RuleText: 
+  - RuleImage: {fileID: 21300000, guid: 68c85f795db9b2a4fab7a1da3a7e3bd9, type: 3}
+    RuleName: 
+    RuleText: 
 --- !u!1 &7340755464475529925
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,7 +793,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -779,7 +824,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -28.86023, y: -4.647461, z: -36.766846, w: -143.96402}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -824,7 +869,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1451.1309, y: 712.7827}
+  m_SizeDelta: {x: 1500, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6896426252031696961
 CanvasRenderer:
@@ -899,7 +944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -611, y: -288}
+  m_AnchoredPosition: {x: -642, y: -361}
   m_SizeDelta: {x: 140, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4976892830533380126
