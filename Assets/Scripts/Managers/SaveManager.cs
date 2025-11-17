@@ -45,6 +45,12 @@ public class SaveManager : SingletonManager<SaveManager>
         // 1. 게임 데이터 불러오기
         GameSaveData dataToSave = GameManager.Instance.GetAllDataToSave();
 
+        if (!IsValidGameData(dataToSave))
+        {
+            Debug.LogWarning("[SaveManager] 아직 유효한 게임 진행 데이터가 아니어서 저장을 건너뜁니다.");
+            return;
+        }
+
         // 2. JSON으로 직렬화 하기
         string json = JsonUtility.ToJson(dataToSave, true);
 
@@ -80,6 +86,17 @@ public class SaveManager : SingletonManager<SaveManager>
         }
     }
 
+    private bool IsValidGameData(GameSaveData data)
+    {
+        if (data == null) return false;
+
+        // 0주차 방지
+        if (data.currentWeek <= 0)
+            return false;
+
+        return true;
+    }
+
     public void LoadGame()
     {
         if (!File.Exists(SavePath))
@@ -101,6 +118,14 @@ public class SaveManager : SingletonManager<SaveManager>
             }
 
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
+
+            if (data == null || data.currentWeek <= 0)
+            {
+                Debug.LogWarning("[SaveManager] 유효하지 않은 세이브 데이터(currentWeek <= 0). 새 게임 시작.");
+                StartNewGame();
+                return;
+            }
+
             GameManager.Instance.ApplyAllSaveData(data);
         }
         catch (System.Exception e)
@@ -143,8 +168,11 @@ public class SaveManager : SingletonManager<SaveManager>
     /// <summary>
     /// 게임 종료 시 자동 저장
     /// </summary>
-    public void OnApplicationQuit()
+    private void OnApplicationQuit()
     {
-        SaveGame();
+        if (GameManager.Instance != null && GameManager.Instance.currentWeek > 0)
+        {
+            SaveGame();
+        }
     }
 }
