@@ -190,6 +190,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
 
     public void DayPlayerDead()
     {
-
+        dayPlayer.gameObject.SetActive(false);
+        UIManager.Instance.ShowPopupUI<UI_DeathPopup>("UI_DeathPopup");
     }
 }

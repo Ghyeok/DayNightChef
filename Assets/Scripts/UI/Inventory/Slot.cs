@@ -36,6 +36,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
     // anchor/pivot 백업용
     private Vector2 oldAnchorMin, oldAnchorMax, oldPivot;
+    // 하이라이트용 원래 스케일
+    private Vector3 originalScale = Vector3.one;
+
     void Awake()
     {
         rootCanvas = GetComponentInParent<Canvas>(true);
@@ -46,6 +49,10 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         }
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+
+        if (rectTransform != null)
+            originalScale = rectTransform.localScale;
+
         TryAutoWireChildren();
     }
     // UI 자동화
@@ -94,15 +101,51 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             itemWeight.text = has ? $"{w:0.##}kg" : string.Empty;
         }
     }
+
+    private bool HasItem()
+    {
+        var inv = InventoryManager.Instance;
+        if (inv == null || inv.Entries == null) return false;
+        if (index < 0 || index >= inv.Entries.Count) return false;
+
+        var e = inv.Entries[index];
+        return (e.item != null && e.count > 0);
+    }
+
     //포인터/드래그(터치+마우스)
     public void OnPointerEnter(PointerEventData e)
     {
-        // 아이템 터치 했을때 표시 (툴팁 & 하이라이트)
+        if (!HasItem() || isDragging) return;
+
+        if (rectTransform != null)
+            rectTransform.localScale = originalScale * 1.05f;
+
+        if (canvasGroup != null)
+            canvasGroup.alpha = 1f;
+
+        if (itemImage != null)
+        {
+            var c = itemImage.color;
+            itemImage.color = new Color(c.r, c.g, c.b, 1f);
+        }
+
+        // TODO: 여기서 아이템 툴팁 시스템이 있다면 호출
+        // var entry = InventoryManager.Instance.Entries[index];
+        // UITooltip.Show(entry.item, e.position);
     }
 
     public void OnPointerExit(PointerEventData e)
     {
-        // 아이템 터치 땠을때 표시 (툴팁 & 하이라이트 해체)
+        if (isDragging) return;
+
+        if (rectTransform != null)
+            rectTransform.localScale = originalScale;
+
+        if (canvasGroup != null)
+            canvasGroup.alpha = 1f;
+
+        // TODO: 툴팁 닫기
+        // UITooltip.Hide();
     }
 
     public void OnBeginDrag(PointerEventData e)

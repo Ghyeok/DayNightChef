@@ -52,7 +52,7 @@ public class UI_SettlementPopup : UI_Popup
     {
         currentPrice.text = $"영업 전 골드 : {GameManager.Instance.totalGold - SalesManager.Instance.GoldAccrued()}G";
         totalPrice.text = $"영업 후 골드 : {GameManager.Instance.totalGold}G";
-        reputation.text = $"현재 평판 : {GameManager.Instance.restaurantReputation + SalesManager.Instance.ReputationAccrued()}";
+        reputation.text = $"현재 평판 : {GameManager.Instance.restaurantReputation}";
     }
 
     private void OnClickedConfirmButton()

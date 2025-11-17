@@ -87,17 +87,18 @@ public class InventoryManager : SingletonManager<InventoryManager>
         SyncCapacity();
     }
 
-
     public void Init() // 인벤토리 초기화
     {
         if (_entries == null)
+        {
             _entries = new List<Entry>(slotCount);
             for (int i = 0; i < slotCount; i++)
             {
                 _entries.Add(new Entry { item = null, count = 0 });
             }
-        IsInitialized = true;
-        OnInventoryChanged?.Invoke();
+            IsInitialized = true;
+            OnInventoryChanged?.Invoke();
+        }
 
         PlayerStatsManager.Instance.OnReady -= HandlePlayerStatsReady;
         PlayerStatsManager.Instance.OnReady += HandlePlayerStatsReady;
