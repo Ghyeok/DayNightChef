@@ -44,8 +44,8 @@ public class UI_SettingPopup : UI_Popup
             _bgmSlider.value = sm.BGMVolume;
             _sfxSlider.value = sm.SFXVolume;
 
-            lastBgmValue = Mathf.Max(_bgmSlider.value, 0.1f);
-            lastSfxValue = Mathf.Max(_sfxSlider.value, 0.1f);
+            lastBgmValue = Mathf.Max(_bgmSlider.value, 1f);
+            lastSfxValue = Mathf.Max(_sfxSlider.value, 1f);
         }
 
         // 슬라이더 리스너 등록

@@ -16,11 +16,14 @@ public class UI_MainLobbyScene : UI_Scene
     void Start()
     {
         Init();
+
         startButton.onClick.AddListener(OnClickedStartButton);
         loadButton.onClick.AddListener(OnClickedLoadButton);
         howToButton.onClick.AddListener(OnClickedHowToButton);
         settingButton.onClick.AddListener(OnClickedSettingButton);
         exitButton.onClick.AddListener(OnClickedExitButton);
+
+        SoundManager.Instance.PlayAudioClip("MainLobbyBGM", SoundManager.SoundTypes.BGM);
     }
 
     private void OnClickedStartButton() // 메인 로비 -> 낮 페이즈 Base 씬
