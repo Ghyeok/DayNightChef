@@ -10,7 +10,7 @@ public class MeleeSwipeAttack : AttackBehavior
 {
     [SerializeField] float preDelay = 0.12f;
     [SerializeField] float postDelay = 0.35f;
-    [SerializeField] int damage = 8;
+    [SerializeField] int damage;
     [SerializeField] float hitRadius = 0.6f;
     [SerializeField] LayerMask playerMask;
     Coroutine co;
@@ -18,7 +18,7 @@ public class MeleeSwipeAttack : AttackBehavior
     public override void OnEnter()
     {
         if (_busy) return;
-
+        damage = owner.AttackPower;
         _busy = true;
         if (co != null) owner.StopCoroutine(co);
         co = owner.StartCoroutine(CoAttack());

@@ -334,7 +334,7 @@ MonoBehaviour:
   leashDIstance: 15
   returnArriveRadius: 3
   regenPerSec: 8
-  attackRange: 1
+  attackRange: 0.73
   patrolRadius: 10
   idleMin: 1
   idleMax: 2
@@ -342,7 +342,7 @@ MonoBehaviour:
   attackBehavior: {fileID: 1548005980562770934}
   debugLogs: 1
   attackCooldown: 0.01
-  hitStunDuration: 1.25
+  hitStunDuration: 0.6
   rb: {fileID: 0}
   animator: {fileID: 0}
   drawGizmos: 1

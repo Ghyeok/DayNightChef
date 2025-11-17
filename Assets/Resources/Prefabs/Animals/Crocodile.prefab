@@ -333,7 +333,7 @@ MonoBehaviour:
   leashDIstance: 10
   returnArriveRadius: 3
   regenPerSec: 8
-  attackRange: 1.82
+  attackRange: 2.05
   patrolRadius: 3.5
   idleMin: 1
   idleMax: 2
@@ -364,7 +364,7 @@ MonoBehaviour:
   preDelay: 0.29
   postDelay: 0
   damage: 8
-  hitRadius: 1.76
+  hitRadius: 1.8
   playerMask:
     serializedVersion: 2
     m_Bits: 0

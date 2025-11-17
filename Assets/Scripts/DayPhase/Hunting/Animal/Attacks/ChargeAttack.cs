@@ -20,7 +20,7 @@ public class ChargeAttack : AttackBehavior
     [SerializeField] private bool stopOnHit = false; // 타격 시 돌진 멈춤 여부
 
     [Header("Hit Settings")]
-    [SerializeField] private float damage = 10f;
+    [SerializeField] private float damage;
     [SerializeField] private float hitRadius = 0.5f; // 타격 범위
     [SerializeField] private float hitForwardOffset = 0.45f; // 타격범위의 몸 앞 오프셋
     [SerializeField] private LayerMask playerMask; // 플레이어 레이어
@@ -38,6 +38,7 @@ public class ChargeAttack : AttackBehavior
     {
         if (_busy) return;
         _busy = true;
+        damage = owner.AttackPower;
         if (co != null) owner.StopCoroutine(co);
         co = owner.StartCoroutine(CoCharge());
     }
