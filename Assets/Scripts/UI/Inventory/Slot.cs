@@ -17,6 +17,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
     [SerializeField] private Image itemImage; // 아이템이미지
     [SerializeField] private TextMeshProUGUI countText; // 아이템갯수
     [SerializeField] private TextMeshProUGUI itemWeight; // 아이템무게
+    [SerializeField] private GameObject itemShowPanel; // 아이템 하이라이트 패널
+    [SerializeField] private TextMeshProUGUI itemText; // 아이템 이름 텍스트
+
 
     [Header("Drag Visual")]
     [SerializeField] private float draggingAlpha = 0.7f;
@@ -64,6 +67,10 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             countText = transform.Find("CountText")?.GetComponent<TextMeshProUGUI>();
         if(itemWeight == null)
             itemWeight = transform.Find("ItemWeight")?.GetComponent<TextMeshProUGUI>();
+        if (itemShowPanel == null)
+            itemShowPanel = transform.Find("ItemShowPanel")?.gameObject;
+        if (itemShowPanel != null && itemText == null)
+            itemText = itemShowPanel.transform.Find("ItemText")?.GetComponent<TextMeshProUGUI>();
     }
     // UI 갱신
     public void RefreshUI()
@@ -74,6 +81,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             if (itemImage) { itemImage.enabled = false; itemImage.sprite = null; }
             if (countText) countText.text = string.Empty;
             if (itemWeight) itemWeight.text = string.Empty;
+            if (itemText) itemText.text = string.Empty;
             return;
         }
         if (index < 0 || index >= inv.Entries.Count)
@@ -81,6 +89,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             if (itemImage) { itemImage.enabled = false; itemImage.sprite = null; }
             if (countText) countText.text = string.Empty;
             if (itemWeight) itemWeight.text = string.Empty;
+            if (itemText) itemText.text = string.Empty;
             return;
         }
         var e = InventoryManager.Instance.Entries[index];
@@ -99,6 +108,10 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         {
             float w = has ? e.item.item_weight * e.count : 0f;
             itemWeight.text = has ? $"{w:0.##}kg" : string.Empty;
+        }
+        if(itemText)
+        {
+            itemText.text = has ? e.item.item_name : string.Empty;
         }
     }
 
@@ -132,6 +145,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         // TODO: 여기서 아이템 툴팁 시스템이 있다면 호출
         // var entry = InventoryManager.Instance.Entries[index];
         // UITooltip.Show(entry.item, e.position);
+        itemShowPanel.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData e)
@@ -146,10 +160,12 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
 
         // TODO: 툴팁 닫기
         // UITooltip.Hide();
+        itemShowPanel.SetActive(false);
     }
 
     public void OnBeginDrag(PointerEventData e)
     {
+        itemShowPanel.SetActive(false);
         isDragging = false; // 기본값
 
         var inv = InventoryManager.Instance;
