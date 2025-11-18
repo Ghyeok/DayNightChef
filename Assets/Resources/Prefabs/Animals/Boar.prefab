@@ -211,7 +211,7 @@ MonoBehaviour:
   leashDIstance: 10
   returnArriveRadius: 3
   regenPerSec: 8
-  attackRange: 1.75
+  attackRange: 1.79
   patrolRadius: 5
   idleMin: 1
   idleMax: 3
