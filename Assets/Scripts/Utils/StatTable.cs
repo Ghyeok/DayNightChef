@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+using System;
 public enum  StatType
 {
     Attack,
@@ -43,7 +43,7 @@ public class StatTable : ScriptableObject
     public float GetValue(int level)
     {
         if (!useValue) return 0f;
-        return GetClamped(level).value;
+        return (float)Math.Round(GetClamped(level).value, 2);
     }
     //레벨에 따른 다음 레벨업에 필요한 골드 반환
     public int GetGoldToNext(int level)
