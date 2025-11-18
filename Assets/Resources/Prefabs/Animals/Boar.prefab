@@ -261,7 +261,7 @@ MonoBehaviour:
   hitRadius: 1.5
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1 &8892739116834603341
 GameObject:
   m_ObjectHideFlags: 0

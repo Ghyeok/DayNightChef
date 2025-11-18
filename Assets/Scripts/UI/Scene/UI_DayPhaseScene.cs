@@ -301,7 +301,7 @@ public class UI_DayPhaseScene : UI_Scene
     {
         GetText((int)Texts.FeeText).gameObject.SetActive(false);
         GetText((int)Texts.WeekText).text = $"{GameManager.Instance.currentWeek}주차";
-        if (GameManager.Instance.currentWeek % 3 == 0)
+        if ((GameManager.Instance.currentWeek % 4 - 3) == 0)
         {
             GetText((int)Texts.FeeText).gameObject.SetActive(true);
         }

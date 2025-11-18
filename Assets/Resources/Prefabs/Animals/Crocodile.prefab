@@ -367,4 +367,4 @@ MonoBehaviour:
   hitRadius: 1.88
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
