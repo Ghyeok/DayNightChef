@@ -81,6 +81,8 @@ public class UI_UpgradePopup : UI_Popup
         {
             _gm.OnGoldChanged -= RefreshGold;
             _gm.OnGoldChanged += RefreshGold;
+            _gm.OnGoldChanged -= RefreshAll;
+            _gm.OnGoldChanged += RefreshAll;
         }
 
         PlayerStatsManager.Instance.OnReady -= RefreshAll;
@@ -88,6 +90,7 @@ public class UI_UpgradePopup : UI_Popup
 
         PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
         PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
+
 
         RefreshAll();
     }
