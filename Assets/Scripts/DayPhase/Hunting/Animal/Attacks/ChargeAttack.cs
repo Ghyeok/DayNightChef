@@ -16,7 +16,6 @@ public class ChargeAttack : AttackBehavior
     [SerializeField] float postDelay = 0f; // 후딜 시간
 
     [Header("Motion")]
-    [SerializeField] float chargeSpeed = 20.0f; // 돌진 속도
     [SerializeField] private bool stopOnHit = false; // 타격 시 돌진 멈춤 여부
 
     [Header("Hit Settings")]

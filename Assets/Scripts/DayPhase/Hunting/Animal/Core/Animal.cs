@@ -180,25 +180,26 @@ public class Animal : Organism
         if (IsDead) return;
 
         HP = Mathf.Max(0f, HP - dmg);
-        animCtrl.TriggerHit();
 
-        hitStunUntil = Time.time + hitStunDuration;
-        SetMovementLock(true);
-        
         if (HP <= 0f)
         {
             IsDead = true;
             StopMove();
             animCtrl.TriggerDie();
             ItemManager.Instance.GetHuntingItem(base.MapType, ItemType.Animal, DropItem);
-            Invoke(nameof(DestroySelf), 3f);
+            Invoke(nameof(DestroySelf), 1.5f);
             if (boss != null) boss.UnlockedMap(MapType);
             return;
         }
+
+        animCtrl.TriggerHit();
+
+        hitStunUntil = Time.time + hitStunDuration;
+        SetMovementLock(true);
+
         StopAllCoroutines();
         StartCoroutine(CoStun());
     }
-
     IEnumerator CoStun()
     {
         while (Time.time < hitStunUntil) yield return null;
