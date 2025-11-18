@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
+using System;
 public class UI_UpgradePopup : UI_Popup
 {
     public enum Buttons
@@ -90,7 +91,6 @@ public class UI_UpgradePopup : UI_Popup
 
         PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
         PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
-
 
         RefreshAll();
     }
@@ -208,6 +208,7 @@ public class UI_UpgradePopup : UI_Popup
         int nextLv = curLv + 1;
         float curValue = _stats.GetValue(type);
         float nextValue = _stats.GetValueAtLevel(type, nextLv);
+        float _value = (float)Math.Round(nextValue - curValue, 2);
         int cost = _stats.GetNextCost(type);
 
         if (cost <= 0) // 최대 레벨
@@ -217,7 +218,7 @@ public class UI_UpgradePopup : UI_Popup
 
         string info =
             $"{curLv}Lv >> {nextLv}Lv\n" +
-            $"{GetDisplayName(type)} + {nextValue - curValue}\n" +
+            $"{GetDisplayName(type)} + {_value}\n" +
             $"필요 골드 : {cost}G";
         bool ok = await UI_ConfirmPopup.ShowAsync(info, left: "예",right: "아니오");
         if (!ok) return;

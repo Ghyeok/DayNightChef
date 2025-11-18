@@ -194,4 +194,5 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         UIManager.Instance.ShowPopupUI<UI_DeathPopup>("UI_DeathPopup");
     }
 
+
 }

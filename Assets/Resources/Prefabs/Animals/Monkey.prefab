@@ -77,7 +77,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 0.15, y: 0.15}
   m_EdgeRadius: 0
 --- !u!50 &3404005409824245840
 Rigidbody2D:
@@ -189,7 +189,7 @@ SpriteRenderer:
   m_SortingLayerID: 1088124823
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 368746673022191736, guid: ec55014f666cb2d4195dd0780b96f8ab, type: 3}
+  m_Sprite: {fileID: 8893443453730532091, guid: ec55014f666cb2d4195dd0780b96f8ab, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -271,7 +271,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 0.15, y: 0.15}
   m_EdgeRadius: 0
 --- !u!95 &4793560112562788745
 Animator:
@@ -333,7 +333,7 @@ MonoBehaviour:
   leashDIstance: 10
   returnArriveRadius: 6
   regenPerSec: 8
-  attackRange: 0.78
+  attackRange: 0.95
   patrolRadius: 5
   idleMin: 1
   idleMax: 2
@@ -364,7 +364,7 @@ MonoBehaviour:
   preDelay: 0.34
   postDelay: 0.8
   damage: 8
-  hitRadius: 0.65
+  hitRadius: 0.77
   playerMask:
     serializedVersion: 2
     m_Bits: 64

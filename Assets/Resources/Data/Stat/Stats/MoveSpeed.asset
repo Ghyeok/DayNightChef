@@ -37,7 +37,7 @@ MonoBehaviour:
     value: 8.75
     goldToNext: 1100
   - level: 8
-    value: 1.9
+    value: 9.9
     goldToNext: 1800
   - level: 9
     value: 10.5
