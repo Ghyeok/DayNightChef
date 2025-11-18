@@ -313,7 +313,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f532786d3eec5a04e846867a3f42b271, type: 2}
   - {fileID: 11400000, guid: 8af10e3550d53734d8faae8f75409fb0, type: 2}
   maxHP: 500
-  attackPower: 9
+  attackPower: 8
   walkSpeed: 0.5
   runSpeed: 3
   leashDIstance: 10
@@ -366,7 +366,6 @@ MonoBehaviour:
   preDelay: 0.3
   attackDuration: 0.48
   postDelay: 0
-  chargeSpeed: 2.25
   stopOnHit: 1
   damage: 10
   hitRadius: 0.8

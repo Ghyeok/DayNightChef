@@ -328,8 +328,8 @@ MonoBehaviour:
   DropItem:
   - {fileID: 11400000, guid: 0c6dc6f277a1c58469866e0d31e6eda2, type: 2}
   - {fileID: 11400000, guid: 8b70131065ba7654299161f3cbdf4abe, type: 2}
-  maxHP: 400
-  attackPower: 7
+  maxHP: 300
+  attackPower: 6
   walkSpeed: 0.5
   runSpeed: 2.55
   leashDIstance: 10
