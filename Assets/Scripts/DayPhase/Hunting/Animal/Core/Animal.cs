@@ -191,7 +191,7 @@ public class Animal : Organism
             StopMove();
             animCtrl.TriggerDie();
             ItemManager.Instance.GetHuntingItem(base.MapType, ItemType.Animal, DropItem);
-            Invoke(nameof(DestroySelf), 2f);
+            Invoke(nameof(DestroySelf), 3f);
             if (boss != null) boss.UnlockedMap(MapType);
             return;
         }
