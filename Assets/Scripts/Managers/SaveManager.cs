@@ -17,6 +17,7 @@ public class GameSaveData
     public int currentWeek;
     public int currentGold;
     public int reputation;
+    public bool isFeePayed;
     public bool unlockSwampLand;
     public bool unlockWinterLand;
 

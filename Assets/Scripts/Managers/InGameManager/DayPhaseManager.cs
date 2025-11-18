@@ -153,7 +153,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
 
     private void ShowManagementFeePopup()
     {
-        if(GameManager.Instance.currentWeek % 4 == 0)
+        if(GameManager.Instance.currentWeek % 4 == 0 && !GameManager.Instance.isFeePayed)
         {
             UIManager.Instance.ShowPopupUI<UI_ManagementFeePopup>("UI_ManagementFeePopup");
         }

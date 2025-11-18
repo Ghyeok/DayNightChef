@@ -28,7 +28,7 @@ public class UI_ManagementFeePopup : UI_Popup
 
     private void SetManagementFeeText()
     {
-        managementFeeText.text = $"현재 관리비 : {GameManager.Instance.ManagementFee()}G / 다음 관리비 : {GameManager.Instance.ManagementFee() + 100}G";
+        managementFeeText.text = $"현재 관리비 : {GameManager.Instance.ManagementFee()}G / 다음 관리비 : {GameManager.Instance.ManagementFee() + GameManager.Instance.baseFee}G";
         currentPrice.text = $"납부 전 골드 : {GameManager.Instance.totalGold}G";
         totalPrice.text = $"납부 후 골드 : {GameManager.Instance.totalGold - GameManager.Instance.ManagementFee()}G";
     }

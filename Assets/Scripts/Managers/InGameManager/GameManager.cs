@@ -20,10 +20,12 @@ public class GameManager : SingletonManager<GameManager>
     public int currentWeek;
     public int totalGold;
     public int restaurantReputation;
+
     public bool unlockSwampLand;
     public bool unlockWinterLand;
 
-    private int baseFee = 100;
+    public bool isFeePayed;
+    public int baseFee = 75;
     public int ManagementFee() => baseFee * (currentWeek / 4);
 
     public override void Awake()
@@ -61,6 +63,7 @@ public class GameManager : SingletonManager<GameManager>
         Debug.Log("루프 끝! 맵 선택으로 넘어갑니다.");
         DayPhasePlayerManager.Instance.dayPlayer = null;
         currentWeek++;
+        isFeePayed = false;
 
         SaveManager.Instance.SaveGame();
     }
@@ -68,6 +71,7 @@ public class GameManager : SingletonManager<GameManager>
     public void PayManagementFee()
     {
         int pay = ManagementFee();
+        isFeePayed = true;
         if (TrySpendGold(pay))  // 관리비 납부 성공
         {
             SpendGold(pay);
@@ -137,6 +141,7 @@ public class GameManager : SingletonManager<GameManager>
         data.currentWeek = this.currentWeek;
         data.currentGold = this.totalGold;
         data.reputation = this.restaurantReputation;
+        data.isFeePayed = this.isFeePayed;
         data.unlockSwampLand = this.unlockSwampLand;
         data.unlockWinterLand = this.unlockWinterLand;
 
@@ -170,6 +175,7 @@ public class GameManager : SingletonManager<GameManager>
         this.currentWeek = data.currentWeek;
         this.totalGold = data.currentGold;
         this.restaurantReputation = data.reputation;
+        this.isFeePayed = data.isFeePayed;
         this.unlockSwampLand = data.unlockSwampLand;
         this.unlockWinterLand = data.unlockWinterLand;
 
@@ -195,6 +201,7 @@ public class GameManager : SingletonManager<GameManager>
         this.currentWeek = 1;
         this.totalGold = 0;
         this.restaurantReputation = 0;
+        this.isFeePayed = false;
         this.unlockSwampLand = false;
         this.unlockWinterLand = false;
 
