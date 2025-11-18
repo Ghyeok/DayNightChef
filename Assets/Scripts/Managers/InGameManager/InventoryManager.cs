@@ -17,7 +17,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     public int slotCount = 40; // 가방 슬롯 개수
 
     public event Action OnInventoryChanged; // 인벤토리 변경 이벤트
-    public event Action OnInventoryGetted; // 인벤토리 획득 이벤트
+    public event Action<Item, int> OnInventoryGetted;
 
     private List<Entry> _entries; // 인벤토리 항목 리스트
 
@@ -162,6 +162,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         if (addedCount > 0)
         {
             OnInventoryChanged?.Invoke();
+            OnInventoryGetted?.Invoke(item, addedCount);
             return true;
         }
 

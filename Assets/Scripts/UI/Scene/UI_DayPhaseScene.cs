@@ -9,6 +9,10 @@ public class UI_DayPhaseScene : UI_Scene
 {
     private bool _bound = false; // 중복 바인딩 방지
     private Coroutine _waitCo; // 대기 코루틴
+
+    [Header("Get Item Popup")]
+    [SerializeField] private ShowGetItem showGetItem;
+    private Coroutine _itemPopupCo;
     public enum GameObjects
     {
         Joystick,
@@ -120,6 +124,15 @@ public class UI_DayPhaseScene : UI_Scene
             DayPhasePlayerManager.Instance.OnSnapshotUpdated -= RefreshHPBar;
             DayPhasePlayerManager.Instance.OnSnapshotUpdated -= RefreshWeightText;
         }
+
+        if (InventoryManager.Instance != null)
+            InventoryManager.Instance.OnInventoryGetted -= HandleInventoryGetted;
+
+        if (_itemPopupCo != null)
+        {
+            StopCoroutine(_itemPopupCo);
+            _itemPopupCo = null;
+        }
     }
 
     private static float SafeRatio(float cur, float max) // 분모 0 방지
@@ -157,6 +170,10 @@ public class UI_DayPhaseScene : UI_Scene
 
         DayPhasePlayerManager.Instance.OnSnapshotUpdated -= RefreshWeightText;
         DayPhasePlayerManager.Instance.OnSnapshotUpdated += RefreshWeightText;
+
+        // 인벤토리 획득 이벤트 구독
+        InventoryManager.Instance.OnInventoryGetted -= HandleInventoryGetted;
+        InventoryManager.Instance.OnInventoryGetted += HandleInventoryGetted;
 
         // UI 초기 갱신
         RefreshGoldText();
@@ -288,5 +305,34 @@ public class UI_DayPhaseScene : UI_Scene
         {
             GetText((int)Texts.FeeText).gameObject.SetActive(true);
         }
+    }
+
+    private void HandleInventoryGetted(Item item, int count)
+    {
+        if (showGetItem == null || item == null || count <= 0)
+            return;
+
+        // 이전 코루틴 돌고 있으면 정지
+        if (_itemPopupCo != null)
+        {
+            StopCoroutine(_itemPopupCo);
+            _itemPopupCo = null;
+        }
+
+        // 텍스트 갱신 + 활성화
+        showGetItem.gameObject.SetActive(true);
+        showGetItem.ShowItem(item, count);
+
+        // 일정 시간 뒤 자동으로 숨기기
+        _itemPopupCo = StartCoroutine(HideGetItemPopup());
+    }
+
+    private IEnumerator HideGetItemPopup()
+    {
+        yield return new WaitForSeconds(1.5f);
+        if (showGetItem != null)
+            showGetItem.gameObject.SetActive(false);
+
+        _itemPopupCo = null;
     }
 }
