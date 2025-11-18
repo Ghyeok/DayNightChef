@@ -67,7 +67,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (animalList == null) return;
         for (int i = 0; i < animalList.Count; ++i)

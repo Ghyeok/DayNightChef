@@ -16,22 +16,22 @@ MonoBehaviour:
   useValue: 1
   records:
   - level: 1
-    value: 5
+    value: 3
     goldToNext: 30
   - level: 2
-    value: 5.5
+    value: 3.3
     goldToNext: 50
   - level: 3
-    value: 6
+    value: 3.6
     goldToNext: 120
   - level: 4
-    value: 6.6
+    value: 3.96
     goldToNext: 220
   - level: 5
-    value: 7.25
+    value: 4.35
     goldToNext: 400
   - level: 6
-    value: 8
+    value: 4.8
     goldToNext: 700
   - level: 7
     value: 8.75

@@ -182,7 +182,7 @@ MonoBehaviour:
   deadZone: 0.15
   useEightDirections: 0
   curTime: 0
-  coolTime: 0.5
+  coolTime: 1.5
   attackRange: 0.5
   attackRadius: 0.5
   damage: 0

@@ -329,20 +329,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 014ea875444d36942a941c85be2758bf, type: 2}
   maxHP: 70
   attackPower: 3
-  walkSpeed: 5
-  runSpeed: 11
-  leashDIstance: 15
+  walkSpeed: 0.5
+  runSpeed: 3.3
+  leashDIstance: 10
   returnArriveRadius: 3
   regenPerSec: 8
   attackRange: 0.64
-  patrolRadius: 10
+  patrolRadius: 5
   idleMin: 1
   idleMax: 2
   target: {fileID: 0}
   attackBehavior: {fileID: 1548005980562770934}
   debugLogs: 1
   attackCooldown: 0.1
-  hitStunDuration: 1.25
+  hitStunDuration: 1.24
   rb: {fileID: 0}
   animator: {fileID: 0}
   drawGizmos: 1
@@ -362,8 +362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c932e94233f0602419ac9388c7bbd141, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  preDelay: 0.12
-  postDelay: 0.5
+  preDelay: 0.34
+  postDelay: 0.8
   damage: 8
   hitRadius: 0.45
   playerMask:

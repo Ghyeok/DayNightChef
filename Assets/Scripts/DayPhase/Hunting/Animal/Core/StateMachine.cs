@@ -22,5 +22,5 @@ public sealed class StateMachine<T>
         current?.Enter(owner);
     }
 
-    public void Update(float dt) => current?.Execute(owner, dt);
+    public void FixedUpdate(float dt) => current?.Execute(owner, dt);
 }

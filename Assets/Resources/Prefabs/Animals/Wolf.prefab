@@ -312,13 +312,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3914e98e28a25e4c994d79e8ba3d6b2, type: 2}
   maxHP: 40
   attackPower: 2
-  walkSpeed: 5
-  runSpeed: 11
-  leashDIstance: 15
+  walkSpeed: 0.5
+  runSpeed: 3.3
+  leashDIstance: 10
   returnArriveRadius: 3
   regenPerSec: 8
   attackRange: 5
-  patrolRadius: 10
+  patrolRadius: 5
   idleMin: 1
   idleMax: 3
   target: {fileID: 0}
@@ -364,7 +364,7 @@ MonoBehaviour:
   preDelay: 0.23
   attackDuration: 0.43
   postDelay: 0
-  chargeSpeed: 15
+  chargeSpeed: 2.5
   stopOnHit: 1
   damage: 2
   hitRadius: 0.8

@@ -84,7 +84,7 @@ public class Animal : Organism
     public override void Updated()
     {
         if (IsDead) return;
-        fsm.Update(Time.deltaTime);
+        fsm.FixedUpdate(Time.fixedDeltaTime);
         if (_movementLocked)
         {
             _desiredVelocity = Vector2.zero;
@@ -153,7 +153,7 @@ public class Animal : Organism
         }
         Vector2 dir = dest - rb.position;
         _desiredVelocity = (dir.sqrMagnitude > 0.0001f) ? dir.normalized * speed : Vector2.zero;
-        rb.MovePosition(rb.position + _desiredVelocity * Time.deltaTime);
+        rb.MovePosition(rb.position + _desiredVelocity * Time.fixedDeltaTime);
     }
     public void StopMove() => _desiredVelocity = Vector2.zero;
     public void SetRunning(bool v) => _isRunning = v;
