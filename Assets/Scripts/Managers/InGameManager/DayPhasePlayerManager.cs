@@ -135,7 +135,7 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         {
             case StatType.MaxHP:
                 playerMaxHP = ps.GetValue(StatType.MaxHP);
-                playerCurHP = Mathf.Min(playerCurHP, playerMaxHP);
+                playerCurHP = playerCurHP + (playerMaxHP - ps.GetValueAtLevel(StatType.MaxHP, oldLv));
                 break;
             case StatType.Attack:
                 playerAttack = ps.GetValue(StatType.Attack);
@@ -193,4 +193,5 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         dayPlayer.gameObject.SetActive(false);
         UIManager.Instance.ShowPopupUI<UI_DeathPopup>("UI_DeathPopup");
     }
+
 }
