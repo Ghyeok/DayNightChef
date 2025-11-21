@@ -18,12 +18,12 @@ MonoBehaviour:
   - level: 1
     value: 7
     goldToNext: 300
-    ReputationToNext: 0
+    ReputationToNext: 1
   - level: 2
     value: 8
     goldToNext: 1000
-    ReputationToNext: 0
+    ReputationToNext: 2
   - level: 3
     value: 9
     goldToNext: 0
-    ReputationToNext: 0
+    ReputationToNext: 3

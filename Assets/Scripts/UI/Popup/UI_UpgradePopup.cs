@@ -91,8 +91,6 @@ public class UI_UpgradePopup : UI_Popup
 
         PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
         PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
-        //테스트용 코드
-        _gm.AddGold(10000);
         RefreshAll();
     }
 
@@ -102,7 +100,6 @@ public class UI_UpgradePopup : UI_Popup
             GameManager.Instance.OnGoldChanged -= RefreshAll;
         PlayerStatsManager.Instance.OnReady -= RefreshAll;
         PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
-        GameManager.Instance.restaurantReputation += 100; // 테스트용 코드
     }
 
     private void WireUpgradeButton(Buttons btnEnum, StatType type)
