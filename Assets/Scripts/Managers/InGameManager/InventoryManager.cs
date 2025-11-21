@@ -131,10 +131,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
         return after <= maxWeight;
     }
 
-    public bool TryAdd(Item item, int count)
+    public int TryAdd(Item item, int count)
     {
         if (item == null || count <= 0)
-            return false;
+            return 0;
 
         int addedCount = 0; // 실제로 몇 개 추가했는지 카운트
 
@@ -163,11 +163,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
         {
             OnInventoryChanged?.Invoke();
             OnInventoryGetted?.Invoke(item, addedCount);
-            return true;
         }
 
-        // 4. 하나도 추가 못했으면 false 반환
-        return false;
+        return addedCount;
     }
 
     private bool InternalAdd(Item item, int count)

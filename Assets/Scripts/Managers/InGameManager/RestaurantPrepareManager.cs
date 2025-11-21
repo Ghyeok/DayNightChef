@@ -89,12 +89,10 @@ public class RestaurantPrepareManager : SingletonManager<RestaurantPrepareManage
         // 4. 재료 환불 (delta < 0)
         else if (delta < 0)
         {
-            int amountToRefund = -delta; // (예: delta가 -3이면, 3개 환불)
+            int amountToRefund = -delta; 
 
-            // 재료를 창고에 '환불' (TryAdd 사용)
             foreach (var need in recipe.recipe_requireItems)
             {
-                // (가정) TryAdd는 창고가 꽉 차지 않는 한 항상 성공
                 WarehouseManager.Instance.TryAdd(need.item, need.count * amountToRefund);
             }
             Debug.Log($"[재료 환불] {recipe.recipe_name} {amountToRefund}개분 환불됨.");
