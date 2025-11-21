@@ -30,4 +30,6 @@ public class StatsDatabase : ScriptableObject
 
     public int GetGoldToNext(StatType type, int level) =>
         _cache.TryGetValue(type, out var t) ? t.GetGoldToNext(level) : 0;
+    public int GetReputationToNext(StatType type, int level) =>
+        _cache.TryGetValue(type, out var t) ? t.GetReputationToNext(level) : 0;
 }

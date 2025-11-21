@@ -5340,7 +5340,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD544\uC694 \uACE8\uB4DC\n4G"
+  m_text: "\uD544\uC694 \uACE8\uB4DC/\uD3C9\uD310\n4G/2000"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4cae336f1f4afe4469885fab8cd391a3, type: 2}
   m_sharedMaterial: {fileID: 8399884637820582456, guid: 4cae336f1f4afe4469885fab8cd391a3, type: 2}

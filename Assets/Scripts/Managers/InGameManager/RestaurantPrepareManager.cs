@@ -43,6 +43,19 @@ public class RestaurantPrepareManager : SingletonManager<RestaurantPrepareManage
     {
 
     }
+    private void OnEnable()
+    {
+        PlayerStatsManager.Instance.OnReady -= HandleStatsReady;
+        PlayerStatsManager.Instance.OnReady += HandleStatsReady;
+        PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
+        PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
+    }
+
+    private void OnDisable()
+    {
+        PlayerStatsManager.Instance.OnReady -= HandleStatsReady;
+        PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
+    }
 
     /// <summary>
     /// 메뉴 플랜을 즉시 변경하고 재료를 차감/환불합니다.
@@ -136,5 +149,19 @@ public class RestaurantPrepareManager : SingletonManager<RestaurantPrepareManage
             Debug.Log("[Menu] 모든 계획 초기화");
             OnMenuChanged?.Invoke();
         }
+    }
+
+    private void HandleStatsReady()
+    {
+        SetMaxCount();
+    }
+    private void HandleStatChanged(StatType type, int oldLv, int newLv)
+    {
+        if (type != StatType.Restaurant) return;
+        SetMaxCount();
+    }
+    private void SetMaxCount()
+    {
+        maxTotalItemCount = (int)PlayerStatsManager.Instance.GetValue(StatType.Restaurant);
     }
 }

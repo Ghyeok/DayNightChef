@@ -73,6 +73,13 @@ public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
     {
         return db != null ? db.GetValue(type, level) : 0f;
     }
+    public int GetNextReputation(StatType type)
+    {
+        if (db == null) return 0;
+        int cur = GetLevel(type);
+        if (cur >= db.GetMaxLevel(type)) return 0;
+        return db.GetReputationToNext(type, cur);
+    }
 
     public int GetNextCost(StatType type)
     {
@@ -90,6 +97,11 @@ public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
         if (cur >= max) return false;
 
         int cost = db.GetGoldToNext(type, cur);
+        if (type == StatType.Restaurant)
+        {
+            if (db.GetReputationToNext(type, cur) > _gm.restaurantReputation)
+                return false;
+        }
         return _gm != null && _gm.TrySpendGold(cost);
     }
 

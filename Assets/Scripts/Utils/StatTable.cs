@@ -17,6 +17,7 @@ public struct LevelRecord
     [Min(1)] public int level;
     public float value;
     [Min(0)] public int goldToNext;
+    [Min(0)] public int ReputationToNext;
 }
 
 [CreateAssetMenu(fileName = "StatTable", menuName = "Stat Table")]
@@ -51,19 +52,24 @@ public class StatTable : ScriptableObject
         var rec = GetClamped(level);
         return rec.goldToNext;
     }
-
+    //레벨에 따른 다음 평판 반환
+    public int GetReputationToNext(int level)
+    {
+        var rec = GetClamped(level);
+        return rec.ReputationToNext;
+    }
     // 에디터에서 검증
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        // 레벨마다 검증
         for (int i = 0; i < records.Count; i++)
         {
             records[i] = new LevelRecord
             {
                 level = Mathf.Max(1, i + 1),
                 value = records[i].value,
-                goldToNext = Mathf.Max(0, records[i].goldToNext)
+                goldToNext = Mathf.Max(0, records[i].goldToNext),
+                ReputationToNext = Mathf.Max(0, records[i].ReputationToNext)
             };
         }
     }

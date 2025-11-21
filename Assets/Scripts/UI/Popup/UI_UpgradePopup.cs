@@ -91,7 +91,8 @@ public class UI_UpgradePopup : UI_Popup
 
         PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
         PlayerStatsManager.Instance.OnStatChanged += HandleStatChanged;
-
+        //테스트용 코드
+        _gm.AddGold(10000);
         RefreshAll();
     }
 
@@ -101,6 +102,7 @@ public class UI_UpgradePopup : UI_Popup
             GameManager.Instance.OnGoldChanged -= RefreshAll;
         PlayerStatsManager.Instance.OnReady -= RefreshAll;
         PlayerStatsManager.Instance.OnStatChanged -= HandleStatChanged;
+        GameManager.Instance.restaurantReputation += 100; // 테스트용 코드
     }
 
     private void WireUpgradeButton(Buttons btnEnum, StatType type)
@@ -146,6 +148,11 @@ public class UI_UpgradePopup : UI_Popup
 
         if (lvText) lvText.text = maxed ? $"현재 레벨 : {lv}" : $"현재 레벨 : {lv}";
         if (costText) costText.text = maxed ? "필요 골드\n-G" : $"필요 골드\n{cost}G";
+        if (type == StatType.Restaurant)
+        {
+            int rep = _stats.GetNextReputation(type);
+            costText.text = maxed ? "필요 골드/평판\n-G/-" : $"필요 골드/평판\n{cost}G/{rep}";
+        }
 
         Button btn = null;
         switch (type)
@@ -161,6 +168,10 @@ public class UI_UpgradePopup : UI_Popup
         if (btn != null)
         {
             bool interactable = !(maxed || _gm.totalGold < cost);
+            if (type == StatType.Restaurant)
+            {
+                interactable = !(maxed || _gm.totalGold < cost || _stats.GetNextReputation(type) > _gm.restaurantReputation);
+            }
             btn.interactable = interactable;
 
             var cg = btn.GetComponent<CanvasGroup>();
@@ -196,7 +207,7 @@ public class UI_UpgradePopup : UI_Popup
         StatType.BagWeight => "가방 무게",
         StatType.MaxHP => "최대 HP",
         StatType.FishingRod => "낚싯대",
-        StatType.Restaurant => "레스토랑",
+        StatType.Restaurant => "최대 손님수",
         _ => type.ToString()
     };
 
@@ -220,6 +231,7 @@ public class UI_UpgradePopup : UI_Popup
             $"{curLv}Lv >> {nextLv}Lv\n" +
             $"{GetDisplayName(type)} + {_value}\n" +
             $"필요 골드 : {cost}G";
+
         bool ok = await UI_ConfirmPopup.ShowAsync(info, left: "예",right: "아니오");
         if (!ok) return;
 
