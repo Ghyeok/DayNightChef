@@ -9,6 +9,8 @@ public class GatheringInteraciton : MonoBehaviour, IInteract
 
     public event Action<GatheringInteraciton> OnCollected;
 
+    private bool isGathered = false;
+
     // 스포너가 런타임으로 세팅할 때 사용
     public void SetContext(ItemType type, int t) { itemType = type; tier = t; }
 
@@ -17,6 +19,9 @@ public class GatheringInteraciton : MonoBehaviour, IInteract
 
     public void Interact(GameObject interactor)
     {
+        if (isGathered) return;
+        isGathered = true;
+
         var map = DayPhaseManager.Instance.curMapType;
         Item[] candidates = ItemManager.Instance.GetItemList(itemType, map, tier);
 
