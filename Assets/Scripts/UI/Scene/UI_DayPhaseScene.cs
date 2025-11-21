@@ -13,6 +13,11 @@ public class UI_DayPhaseScene : UI_Scene
     [Header("Get Item Popup")]
     [SerializeField] private ShowGetItem showGetItem;
     private Coroutine _itemPopupCo;
+    private GameObject _storeBtn;
+    private GameObject _warehouseBtn;
+    private GameObject _settingBtn;
+    private GameObject _statBtn;
+    private bool _isPaused = false;
     public enum GameObjects
     {
         Joystick,
@@ -76,8 +81,8 @@ public class UI_DayPhaseScene : UI_Scene
         var weightBtn = GetButton((int)Buttons.WeightButton).gameObject;
         AddUIEvent(weightBtn, _ => UI_Inven.Show(), Define.UIEvent.Click);
 
-        var StoreBtn = GetButton((int)Buttons.StoreButton).gameObject;
-        AddUIEvent(StoreBtn, _ => UI_GroceryStorePopup.Show(), Define.UIEvent.Click);
+        _storeBtn = GetButton((int)Buttons.StoreButton).gameObject;
+        AddUIEvent(_storeBtn, _ => UI_GroceryStorePopup.Show(), Define.UIEvent.Click);
 
         var UpgradeBtn = GetButton((int)Buttons.UpgradeButton).gameObject;
         AddUIEvent(UpgradeBtn, _ => UI_UpgradePopup.Show(), Define.UIEvent.Click);
@@ -85,19 +90,25 @@ public class UI_DayPhaseScene : UI_Scene
         var NightBtn = GetButton((int)Buttons.NightPhaseButton).gameObject;
         AddUIEvent(NightBtn, NightPhaseButtonOnclicked, Define.UIEvent.Click);
 
-        var warehouseBtn = GetButton((int)Buttons.WarehouseButton).gameObject;
-        AddUIEvent(warehouseBtn, _ => UI_WarehousePopup.Show(), Define.UIEvent.Click);
+        _warehouseBtn = GetButton((int)Buttons.WarehouseButton).gameObject;
+        AddUIEvent(_warehouseBtn, _ => UI_WarehousePopup.Show(), Define.UIEvent.Click);
 
         var recipeBtn = GetButton((int)Buttons.RecipeButton).gameObject;
         AddUIEvent(recipeBtn, _ => UI_RecipePopup.Show(), Define.UIEvent.Click);
 
-        var statBtn = GetButton((int)Buttons.StatButton).gameObject;
-        AddUIEvent(statBtn, _ => UI_StatPopup.Show(), Define.UIEvent.Click);
+        _statBtn = GetButton((int)Buttons.StatButton).gameObject;
+        AddUIEvent(_statBtn, _ => UI_StatPopup.Show(), Define.UIEvent.Click);
 
-        var settingBtn = GetButton((int)Buttons.SettingButton).gameObject;
-        AddUIEvent(settingBtn, _ => UI_SettingPopup.Show(), Define.UIEvent.Click);
+        _settingBtn = GetButton((int)Buttons.SettingButton).gameObject;
+        AddUIEvent(_settingBtn, _ => UI_SettingPopup.Show(), Define.UIEvent.Click);
+
+        var pauseBtn = GetButton((int)Buttons.PauseButton).gameObject;
+        AddUIEvent(pauseBtn, _ => OnClickedPause(), Define.UIEvent.Click);
         // AddUIEvent
-
+        _storeBtn.SetActive(false);
+        _warehouseBtn.SetActive(false);
+        _settingBtn.SetActive(false);
+        _statBtn.SetActive(false);
         _bound = true;
     }
 
@@ -334,5 +345,14 @@ public class UI_DayPhaseScene : UI_Scene
             showGetItem.gameObject.SetActive(false);
 
         _itemPopupCo = null;
+    }
+
+    private void OnClickedPause()
+    {
+        _isPaused = !_isPaused;
+        _warehouseBtn.SetActive(_isPaused);
+        _storeBtn.SetActive(_isPaused);
+        _settingBtn.SetActive(_isPaused);
+        _statBtn.SetActive(_isPaused);
     }
 }
