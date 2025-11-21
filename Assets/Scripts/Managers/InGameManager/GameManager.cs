@@ -14,6 +14,7 @@ public class GameManager : SingletonManager<GameManager>
     }
 
     private bool isDataLoaded = false;
+    public bool IsPaused { get; private set; }
     public void isDataLoadedFalse() { isDataLoaded = false; }
     public event Action OnGoldChanged;
 
@@ -37,6 +38,12 @@ public class GameManager : SingletonManager<GameManager>
     {
         totalGold += g;
         OnGoldChanged?.Invoke();
+    }
+
+    public void SetPause(bool pause)
+    {
+        IsPaused = pause;
+        Time.timeScale = pause ? 0f : 1f;
     }
 
     //골드 소비시 true 반환, 실패시 false 반환

@@ -1,16 +1,22 @@
 using UnityEngine;
-
-public class UI_NightPhaseScene : MonoBehaviour
+using UnityEngine.UI;
+public class UI_NightPhaseScene : UI_Scene
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    enum Buttons
     {
-        
+        SettingBtn,
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        Init();
+    }
+    public override void Init()
+    {
+        base.Init();
+        Bind<Button>(typeof(Buttons));
+        var settingBtn = GetButton((int)Buttons.SettingBtn).gameObject;
+        AddUIEvent(settingBtn, _ => UI_SettingPopup.Show(), Define.UIEvent.Click);
+
     }
 }

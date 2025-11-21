@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2317500751930082067}
   m_Layer: 5
-  m_Name: Pause
+  m_Name: Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 8844477633310890034}
   - component: {fileID: 30336969797679316}
   m_Layer: 5
-  m_Name: Button
+  m_Name: SettingBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8a59122773c288a46a6e8f61a8a1392b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cf821afb0583ad146baeeabea09ccd9f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 1331644093298835720}
   - component: {fileID: 1655879682676019792}
   - component: {fileID: 1231225367655164057}
+  - component: {fileID: 8158117543711949948}
   m_Layer: 5
   m_Name: UI_NightPhaseScene
   m_TagString: Untagged
@@ -456,6 +457,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8158117543711949948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8075576353067171711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84df57ef82c1f9941856accc8b5cb2b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6989165496600590963
 PrefabInstance:
   m_ObjectHideFlags: 0

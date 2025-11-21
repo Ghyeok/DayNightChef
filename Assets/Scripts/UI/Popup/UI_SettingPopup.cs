@@ -30,13 +30,16 @@ public class UI_SettingPopup : UI_Popup
     public override void Init()
     {
         base.Init();
+        GameManager.Instance.SetPause(true);
 
         Bind<Button>(typeof(Buttons));
 
         // Exit 버튼
         var exitBtn = GetButton((int)Buttons.ExitBtn);
         if (exitBtn != null)
-            UI_Base.AddUIEvent(exitBtn.gameObject, _ => UIManager.Instance.ClosePopupUI(this));
+            UI_Base.AddUIEvent(exitBtn.gameObject, _ => { UIManager.Instance.ClosePopupUI(this);
+                GameManager.Instance.SetPause(false);
+            });
 
         // BGM/SFX 슬라이더 초기값 로드
         var sm = SoundManager.Instance;
@@ -160,6 +163,11 @@ public class UI_SettingPopup : UI_Popup
 #endif
     }
 
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.IsPaused)
+            GameManager.Instance.SetPause(false);
+    }
     public static UI_SettingPopup Show() =>
        UIManager.Instance.ShowPopupUI<UI_SettingPopup>("UI_SettingPopup");
 }
