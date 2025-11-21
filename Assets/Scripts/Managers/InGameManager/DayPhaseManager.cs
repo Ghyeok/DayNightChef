@@ -166,7 +166,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     }
     public void UnlockWinterLand()
     {
-        GameManager.Instance.unlockSwampLand = false;
+        GameManager.Instance.unlockWinterLand = false;
         Debug.Log("WinterLand 해금!");
     }
 }
