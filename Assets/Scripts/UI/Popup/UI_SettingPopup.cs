@@ -22,9 +22,10 @@ public class UI_SettingPopup : UI_Popup
     [Header("아이콘 이미지")]
     [SerializeField] private Sprite noteIcon;
     [SerializeField] private Sprite muteIcon;
+
     // 마지막 세팅 기억용
-    private float lastBgmValue = 1f;
-    private float lastSfxValue = 1f;
+    private float lastBgmValue;
+    private float lastSfxValue;
 
     public override void Init()
     {
@@ -44,13 +45,18 @@ public class UI_SettingPopup : UI_Popup
             _bgmSlider.value = sm.BGMVolume;
             _sfxSlider.value = sm.SFXVolume;
 
-            lastBgmValue = Mathf.Max(_bgmSlider.value, 1f);
-            lastSfxValue = Mathf.Max(_sfxSlider.value, 1f);
+            lastBgmValue = (_bgmSlider.value > 0f) ? _bgmSlider.value : 1f;
+            lastSfxValue = (_sfxSlider.value > 0f) ? _sfxSlider.value : 1f;
+
+            sm.SetBGMVolume(lastBgmValue);
+            sm.SetSFXVolume(lastSfxValue);
         }
 
-        // 슬라이더 리스너 등록
+        // 슬라이더 리스너 등록 및 초기화
         _bgmSlider.onValueChanged.AddListener(OnBgmSliderChanged);
         _sfxSlider.onValueChanged.AddListener(OnSfxSliderChanged);
+        OnBgmSliderChanged(_bgmSlider.value);
+        OnSfxSliderChanged(_sfxSlider.value);
 
         // 음소거 버튼 등록
         var bgmMuteBtn = GetButton((int)Buttons.BGMMuteBtn);

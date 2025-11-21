@@ -51,7 +51,6 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         OnMapLoadComplete -= ShowDayPhaseSceneUI;
     }
 
-    // DayPhaseSceneInitializer가 호출할 리셋 함수
     public void ResetForNewDayPhase()
     {
         Debug.Log("[DayPhaseManager] 씬 참조를 리셋합니다.");

@@ -65,8 +65,8 @@ public class SoundManager : SingletonManager<SoundManager>
         bgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f);
         sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1.0f);
 
-        audioMixer.SetFloat(BGM_MIXER_PARAM, LinearToDb(bgmVolume));
-        audioMixer.SetFloat(SFX_MIXER_PARAM, LinearToDb(sfxVolume));
+        SetBGMVolume(bgmVolume);
+        SetSFXVolume(sfxVolume);
     }
 
     public void SetBGMVolume(float volume)
