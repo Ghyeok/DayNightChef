@@ -110,6 +110,31 @@ public class ItemManager : SingletonManager<ItemManager>
         GetItem(chosen);
         return chosen;
     }
+    public List<Item> GetHuntingItems(MapType mapType, ItemType itemType, Item[] dropList)
+    {
+        List<Item> results = new();
+
+        if (dropList == null || dropList.Length == 0)
+            return results;
+
+        foreach (var drop in dropList)
+        {
+            if (drop == null) continue;
+
+            Item final = drop;
+
+            if (drop.item_Grade == ItemGrade.Normal && Random.value < specialItemProb)
+            {
+                var special = PickSpecialCandidate(mapType, itemType, drop.item_tier);
+                if (special != null)
+                    final = special;
+            }
+
+            GetItem(final);
+            results.Add(final);
+        }
+        return results;
+    }
 
     /// <summary>
     /// 낚시에 성공하면 현재 낚싯대 레벨에 맞는 물고리를 랜덤으로 획득한다.

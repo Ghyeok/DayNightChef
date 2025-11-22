@@ -62,11 +62,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
         PlayerStatsManager.Instance.OnReady -= HandlePlayerStatsReady;
         PlayerStatsManager.Instance.OnStatChanged -= HandlePlayerStatChanged;
     }
-    private void OnDestroy()
-    {
-        PlayerStatsManager.Instance.OnReady -= HandlePlayerStatsReady;
-        PlayerStatsManager.Instance.OnStatChanged -= HandlePlayerStatChanged;
-    }
 
     private void HandlePlayerStatChanged(StatType type, int oldlv, int newlv)
     {

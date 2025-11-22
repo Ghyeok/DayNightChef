@@ -186,9 +186,16 @@ public class Animal : Organism
             IsDead = true;
             StopMove();
             animCtrl.TriggerDie();
-            ItemManager.Instance.GetHuntingItem(base.MapType, ItemType.Animal, DropItem);
             Invoke(nameof(DestroySelf), 1.5f);
-            if (boss != null) boss.UnlockedMap(MapType);
+            if (boss != null) // 보스인 경우
+            {
+                boss.UnlockedMap(MapType);
+                ItemManager.Instance.GetHuntingItems(base.MapType, ItemType.Animal, DropItem);
+            }
+            else // 보스가 아닌경우
+            {
+                ItemManager.Instance.GetHuntingItem(base.MapType, ItemType.Animal, DropItem);
+            }
             return;
         }
 

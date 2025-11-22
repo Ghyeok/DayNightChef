@@ -133,6 +133,8 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         // 3. 데이터 로드
         GameManager.Instance.LoadDataOnSceneReady();
 
+        GameManager.Instance.AddGold(100000);
+
         // 4. UI 업데이트
         OnMapLoadComplete?.Invoke(); 
     }
@@ -165,7 +167,7 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
     }
     public void UnlockWinterLand()
     {
-        GameManager.Instance.unlockWinterLand = false;
+        GameManager.Instance.unlockWinterLand = true;
         Debug.Log("WinterLand 해금!");
     }
 }

@@ -380,7 +380,7 @@ MonoBehaviour:
   unlockSwampLand: 0
   unlockWinterLand: 0
   isFeePayed: 0
-  baseFee: 75
+  baseFee: 50
 --- !u!4 &786992149
 Transform:
   m_ObjectHideFlags: 0

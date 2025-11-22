@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 /* 낮, 밤 공통으로 사용되는 기능을 관리
@@ -26,7 +27,7 @@ public class GameManager : SingletonManager<GameManager>
     public bool unlockWinterLand;
 
     public bool isFeePayed;
-    public int baseFee = 75;
+    public int baseFee = 50;
     public int ManagementFee() => baseFee * (currentWeek / 4);
 
     public override void Awake()
@@ -161,22 +162,25 @@ public class GameManager : SingletonManager<GameManager>
 
     public void ApplyAllSaveData(GameSaveData data)
     {
-        PlayerStatsManager stats = GetPlayerStats();
+        StartCoroutine(ApplyAfterStatsReady(data));
+    }
 
-        // 1. 플레이어 스탯
-        if (stats != null)
+    private IEnumerator ApplyAfterStatsReady(GameSaveData data)
+    {
+        var stats = PlayerStatsManager.Instance;
+        while (stats == null || !stats.IsReady)
         {
-            stats.SetLevel(StatType.MaxHP, data.maxHPLevel);
-            stats.SetLevel(StatType.MoveSpeed, data.moveSpeedLevel);
-            stats.SetLevel(StatType.Attack, data.attackLevel);
-            stats.SetLevel(StatType.FishingRod, data.fishingLevel);
-            stats.SetLevel(StatType.BagWeight, data.weightLevel);
-            stats.SetLevel(StatType.Restaurant, data.restaurantLevel);
+            stats = PlayerStatsManager.Instance;
+            yield return null;
         }
-        else
-        {
-            Debug.Log("PlayerStats 없음");
-        }
+
+        // 1. 스탯
+        stats.SetLevel(StatType.MaxHP, data.maxHPLevel);
+        stats.SetLevel(StatType.MoveSpeed, data.moveSpeedLevel);
+        stats.SetLevel(StatType.Attack, data.attackLevel);
+        stats.SetLevel(StatType.FishingRod, data.fishingLevel);
+        stats.SetLevel(StatType.BagWeight, data.weightLevel);
+        stats.SetLevel(StatType.Restaurant, data.restaurantLevel);
 
         // 2. 게임 진행도
         this.currentWeek = data.currentWeek;
@@ -189,6 +193,10 @@ public class GameManager : SingletonManager<GameManager>
         // 3. 창고 / 인벤토리
         WarehouseManager.Instance.LoadData(data.warehouseEntries);
         InventoryManager.Instance.LoadData(data.inventoryEntries);
+
+        Debug.Log($"[Save] week={data.currentWeek}, " +
+           $"HP={data.maxHPLevel}, Atk={data.attackLevel}, Spd={data.moveSpeedLevel}, " +
+           $"Bag={data.weightLevel}, Fish={data.fishingLevel}, Rest={data.restaurantLevel}");
 
         OnGoldChanged?.Invoke();
     }

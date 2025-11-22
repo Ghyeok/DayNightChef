@@ -17,13 +17,13 @@ MonoBehaviour:
   records:
   - level: 1
     value: 7
-    goldToNext: 300
-    ReputationToNext: 1
+    goldToNext: 500
+    ReputationToNext: 100
   - level: 2
-    value: 8
+    value: 10
     goldToNext: 1000
-    ReputationToNext: 2
+    ReputationToNext: 300
   - level: 3
-    value: 9
+    value: 15
     goldToNext: 0
-    ReputationToNext: 3
+    ReputationToNext: 0
