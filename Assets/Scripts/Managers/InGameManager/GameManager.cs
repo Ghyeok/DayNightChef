@@ -121,6 +121,7 @@ public class GameManager : SingletonManager<GameManager>
         {
             SaveManager.Instance.StartNewGame();
         }
+
         isDataLoaded = true;
     }
 

@@ -12,7 +12,11 @@ public class DayPhaseSceneInitializer : MonoBehaviour
 
     private IEnumerator InitializationRoutine()
     {
-        // 1. 모든 싱글톤 매니저가 Awake()를 마칠 때까지 한 프레임 대기
+        yield return null;
+
+        // 1. 데이터 로드
+        GameManager.Instance.LoadDataOnSceneReady();
+
         yield return null;
 
         // 2. DayPhaseManager 리셋
