@@ -142,9 +142,6 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
             itemImage.color = new Color(c.r, c.g, c.b, 1f);
         }
 
-        // TODO: 여기서 아이템 툴팁 시스템이 있다면 호출
-        // var entry = InventoryManager.Instance.Entries[index];
-        // UITooltip.Show(entry.item, e.position);
         itemShowPanel.SetActive(true);
     }
 

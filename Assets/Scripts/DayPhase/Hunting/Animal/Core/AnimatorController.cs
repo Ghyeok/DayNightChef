@@ -15,8 +15,6 @@ public class AnimatorController : MonoBehaviour
     [SerializeField] float idleStickEps = 1e-4f; // 정지 판정 임계값
     [SerializeField] bool clampUnit = true; // MoveX/Y를 단위벡터로 고정할지
 
-    [Header("Debug")]
-    [SerializeField] bool debugLogs = false;
 
     Vector2 _lastDir = Vector2.down; // 초기값 남쪽
     static readonly Vector2[] DIR8 = {
@@ -59,7 +57,6 @@ public class AnimatorController : MonoBehaviour
         _lockedDir = (dir.sqrMagnitude > 1e-6f) ? dir.normalized :
                      (_lockedDir.sqrMagnitude > 1e-6f ? _lockedDir : Vector2.right);
         _lastDir = _lockedDir;
-        if (debugLogs) LogParams("[LockFacingFor]");
     }
 
 
@@ -92,7 +89,6 @@ public class AnimatorController : MonoBehaviour
         animator.SetFloat(HashMoveX, dir.x);
         animator.SetFloat(HashMoveY, dir.y);
 
-        if (debugLogs) LogParams("[ApplyMovement]");
     }
 
     // 방향만 바꾸고 싶을 때 (공격 등)
@@ -107,7 +103,6 @@ public class AnimatorController : MonoBehaviour
         animator.SetFloat(HashMoveX, d.x);
         animator.SetFloat(HashMoveY, d.y);
 
-        if (debugLogs) LogParams("[FaceTo]");
     }
 
     // 단발 액션 트리거
@@ -135,12 +130,5 @@ public class AnimatorController : MonoBehaviour
 
     // 외부에서 마지막 방향 호출용
     public Vector2 LastDir => _lockFacing ? _lockedDir : _lastDir;
-    void LogParams(string tag)
-    {
-        float sx = animator.GetFloat(HashSpeed);
-        float mx = animator.GetFloat(HashMoveX);
-        float my = animator.GetFloat(HashMoveY);
-        bool run = animator.GetBool(HashIsRunning);
-        Debug.Log($"{tag} t={Time.time:F3} | Speed={sx:F3} Move=({mx:F2},{my:F2}) Run={run} Lock={_lockFacing} Last=({_lastDir.x:F2},{_lastDir.y:F2})");
-    }
+
 }

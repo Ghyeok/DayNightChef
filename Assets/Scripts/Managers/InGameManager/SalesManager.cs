@@ -245,13 +245,11 @@ public class SalesManager : SingletonManager<SalesManager>
     // 영업 시작
     public void StartService(float serviceTime, int maxSeats, SeatSlot[] seatSlots)
     {
-        if (_isServiceRunning) { Log("StartService 무시: 이미 진행 중"); return; }
+        if (_isServiceRunning) return;
 
         _timeLeft = Mathf.Max(1f, serviceTime);
         _maxSeat = Mathf.Max(1, maxSeats);
         _seatSlots = seatSlots ?? Array.Empty<SeatSlot>();
-
-        if (!ValidateServiceConfig()) return; 
 
         seatOccupied = new bool[_seatSlots.Length];
         customerCount = 0;
@@ -294,30 +292,7 @@ public class SalesManager : SingletonManager<SalesManager>
     }
 
     // 손님 생성
-    private bool ValidateServiceConfig()
-    {
-        if (customerPrefabs == null || customerPrefabs.Length == 0)
-        {
-            Debug.LogError("[Sales] 고객 프리팹이 비어 있습니다. SalesManager.customerPrefabs를 인스펙터에 지정하세요.");
-            return false;
-        }
 
-        if (_seatSlots == null || _seatSlots.Length == 0)
-        {
-            Debug.LogError("[Sales] 좌석 슬롯이 비어 있습니다. NightPhaseManager의 seatGroup을 확인하세요.");
-            return false;
-        }
-
-        // 메뉴에 recipe null이 섞여 있는지 점검
-        int nullRecipe = menus.Count(m => m.recipe == null);
-        if (nullRecipe > 0)
-        {
-            Debug.LogError($"[Sales] recipe가 null인 메뉴가 {nullRecipe}개 있습니다. RestaurantPrepareManager.TodayMenu 항목을 점검하세요.");
-            // 계속 진행은 가능하지만, 스폰 시점에 다시 걸러냅니다.
-        }
-
-        return true;
-    }
     private void TrySpawnCustomer()
     {
         if (_spawnedTotal >= _totalCapacity) return;
@@ -331,16 +306,11 @@ public class SalesManager : SingletonManager<SalesManager>
         if (candidates.Count == 0) { Log("스폰 취소: 주문 가능 메뉴 없음(품절 or recipe null)"); return; }
 
         // 3) 고객 프리팹 확인
-        if (customerPrefabs == null || customerPrefabs.Length == 0)
-        {
-            Debug.LogError("[Sales] 스폰 취소: customerPrefabs가 비었습니다.");
-            return;
-        }
+        if (customerPrefabs == null || customerPrefabs.Length == 0)  return;
 
         // 4) 후보 선택 및 예약(allocated++)
         var chosen = candidates[UnityEngine.Random.Range(0, candidates.Count)];
         chosen.allocated++;
-        Log($"손님 스폰 준비: seat={seatIdx}, menu={chosen.recipe.recipe_name}, allocated={chosen.allocated}/{chosen.planned}");
 
         // 5) 좌석 슬롯/좌표 확인
         if (_seatSlots == null || (uint)seatIdx >= _seatSlots.Length)
@@ -353,7 +323,6 @@ public class SalesManager : SingletonManager<SalesManager>
         var slot = _seatSlots[seatIdx];
         if (slot.point == null)
         {
-            Debug.LogError("[Sales] 스폰 취소: seatSlot.point가 null입니다. 좌석 Transform을 지정하세요.");
             chosen.allocated = Mathf.Max(0, chosen.allocated - 1);
             return;
         }
@@ -362,7 +331,6 @@ public class SalesManager : SingletonManager<SalesManager>
         var prefab = customerPrefabs[UnityEngine.Random.Range(0, customerPrefabs.Length)];
         if (prefab == null)
         {
-            Debug.LogError("[Sales] 스폰 취소: customerPrefabs에 null 항목이 있습니다.");
             chosen.allocated = Mathf.Max(0, chosen.allocated - 1);
             return;
         }
@@ -371,7 +339,6 @@ public class SalesManager : SingletonManager<SalesManager>
         var customer = go.GetComponent<Customer>();
         if (customer == null)
         {
-            Debug.LogWarning("[Sales] Customer 컴포넌트 누락 → 스폰 취소");
             Destroy(go);
             chosen.allocated = Mathf.Max(0, chosen.allocated - 1);
             return;
@@ -408,9 +375,6 @@ public class SalesManager : SingletonManager<SalesManager>
         int randIndex = UnityEngine.Random.Range(0, freeSeats.Count);
         int chosenSeat = freeSeats[randIndex];
 
-        //  로그(optional)
-        Debug.Log($"[Sales] 랜덤 좌석 선택: {chosenSeat} (총 {freeSeats.Count}석 중)");
-
         return chosenSeat;
     }
 
@@ -444,9 +408,6 @@ public class SalesManager : SingletonManager<SalesManager>
             // 돈/평판 반영
             RegisterSale(wanted, served);
         }
-        Log($"퇴장 seat={seatIndex}, wanted={wanted?.recipe_name}, served={served?.recipe_name}, " +
-       $"allocated(want)={(menus.FirstOrDefault(m => m.recipe == wanted)?.allocated)}, " +
-       $"sold(served)={(menus.FirstOrDefault(m => m.recipe == served)?.sold)}");
 
         customerCount = Mathf.Max(0, customerCount - 1);
         CheckEarlyClose();

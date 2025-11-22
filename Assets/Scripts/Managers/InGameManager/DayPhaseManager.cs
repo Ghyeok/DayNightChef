@@ -58,14 +58,12 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
         currentLoadedMap = null;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if (animalList == null)
             animalList = new List<Animal>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (animalList == null) return;

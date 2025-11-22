@@ -4,7 +4,6 @@ using UnityEngine;
 
 /// <summary>
 /// 근접 단발 공격
-/// 사용 동물 : 사슴
 /// </summary>
 public class MeleeSwipeAttack : AttackBehavior
 {

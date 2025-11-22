@@ -148,8 +148,6 @@ public class Customer : MonoBehaviour
         if (_leaving) return;
         _leaving = true;
 
-        Log($"퇴장: success={success}, served={served?.recipe_name}, rep={GameManager.Instance.restaurantReputation}");
-
         // 좌석 비우기(게임 로직상 바로 해제)
         _sales?.OnCustomerLeave(_seatIndex, success, Want, served);
 
@@ -163,7 +161,7 @@ public class Customer : MonoBehaviour
     // 퇴장 코루틴
     private IEnumerator Co_LeaveRoutine()
     {
-        // 좌석 기준 → 스폰 방향 벡터
+        // 좌석 기준 , 스폰 방향 벡터
         Vector3 dir;
         if (seatTarget != null)
             dir = (_spawnPosWS - seatTarget.position).normalized;
@@ -187,9 +185,7 @@ public class Customer : MonoBehaviour
                               .SetEase(Ease.InSine)
                               .SetLink(gameObject);
 
-        Log($"퇴장 이동 시작 → {endPos} (dur:{duration:F2}s)");
         yield return tw.WaitForCompletion();
-        Log("퇴장 이동 완료 → 오브젝트 파괴");
 
         Destroy(gameObject);
     }

@@ -30,7 +30,6 @@ public class Animal : Organism
     [Header("Reference")]
     public Transform target;
     public AttackBehavior attackBehavior; // 공격 패턴
-    [SerializeField] bool debugLogs = false;
 
     [Header("Attack Cooldown")]
     [SerializeField] public float attackCooldown = 1f; // 쿨타임
@@ -105,22 +104,15 @@ public class Animal : Organism
                 rb.linearVelocity = Vector2.zero;
                 rb.angularVelocity = 0f;
             }//  물리 속도도 즉시 0
-            if (debugLogs) Debug.Log($"[Animal] lock move ON t={Time.time:F3}");
         }
-        else
-        {
-            if (debugLogs) Debug.Log($"[Animal] lock move OFF t={Time.time:F3}");
-        }
+
     }
 
     public void EnsureAttackCooldown(float seconds)
     {
         float target = Time.time + seconds;
-        // nextAttackAllowedAt은 private이므로 SetAttackCooldown(float)로 덮어쓰기
-        // 더 긴 쿨이 이미 잡혀있을 수도 있으니, "더 늦은 시각"으로만 연장
         if (!CanAttackNow()) return; // 이미 쿨다운 중이면 그대로 두고 종료
         SetAttackCooldown(seconds);
-        if (debugLogs) Debug.Log($"[Animal] cooldown set {seconds:F2}s until t={target:F2}");
     }
 
     private void Awake()
@@ -139,7 +131,6 @@ public class Animal : Organism
     {
         string prev = fsm.current?.GetType().Name ?? "None";
         string nextName = next?.GetType().Name ?? "Null";
-        Debug.Log($"[FSM] {name} : {prev} → {nextName} (t={Time.time:F2})");
 
         fsm.ChangeState(next);
     }
@@ -214,12 +205,10 @@ public class Animal : Organism
 
         if (InAttackRange())
         {
-            Debug.Log($"[{name}] 스턴 해제 → HoldAndStrike 전이 (거리={Vector2.Distance(rb.position, target.position):F2})");
             ChangeState(new HoldAndStrike());
         }
         else
         {
-            Debug.Log($"[{name}] 스턴 해제 → Chase 전이 (거리={Vector2.Distance(rb.position, target.position):F2})");
             ChangeState(new Chase());
         }
     }
@@ -265,7 +254,6 @@ public class Animal : Organism
         // 2) SpawnPoint가 초기화 전이면 현재 위치 대체
         Vector2 spawn = (SpawnPoint.sqrMagnitude > 0.0001f) ? SpawnPoint : pos;
 
-        // (선택) Leash, Patrol, Return 범위도 함께 확인하고 싶으면 유지
         // Leash Distance
         Gizmos.color = leashColor;
         Gizmos.DrawWireSphere(spawn, leashDIstance);

@@ -10,46 +10,6 @@ public enum AnimalStates
     Die
 }
 
-/*public class Patrol : IState<Animal>
-{
-    Vector2 target;
-    bool waiting;
-    float waitUntil;
-
-    public void Enter(Animal a)
-    {
-        waiting = true;
-        waitUntil = Time.time + Random.Range(a.IdleMin, a.IdleMax);
-        a.SetRunning(false);
-        a.StopMove();
-    }
-
-    public void Execute(Animal a, float dt)
-    {
-        if (waiting)
-        {
-            if (Time.time >= waitUntil)
-            {
-                waiting = false;
-                var rnd = Random.insideUnitCircle * a.PatrolRadius;
-                target = a.SpawnPoint + rnd;
-            }
-            else { a.StopMove(); return; }
-        }
-
-        a.SetRunning(false);
-        a.MoveToWards(target, a.WalkSpeed);
-
-        if(Vector2.Distance(a.rb.position, target) < 0.2f)
-        {
-            waiting = true;
-            waitUntil = Time.time + Random.Range(a.IdleMin, a.IdleMax);
-            a.StopMove();
-        }
-    }
-
-    public void Exit(Animal a) { }
-}*/
 public class Patrol : IState<Animal>
 {
     enum SubState { Idle, Move }

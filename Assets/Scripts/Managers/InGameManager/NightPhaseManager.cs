@@ -21,7 +21,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
 
     [Header("레스토랑 스텟")]
     [SerializeField] private int _maxSeat = 5; // 최대 좌석 수
-    [SerializeField] private float _serviceTime = 120f; // 현재 레스토랑 레벨에 따른 영업 시간
+    [SerializeField] private float _serviceTime = 120f; // 영업 시간
     public int MaxSeat => _maxSeat;
     public float ServiceTime => _serviceTime;
 

@@ -5,7 +5,6 @@ using DG.Tweening;
 
 /// <summary>
 /// 선딜 후 일정 시간 타깃을 향해 돌진하면서 공격
-/// 사용 동물 : 늑대
 /// </summary>
 
 public class ChargeAttack : AttackBehavior
