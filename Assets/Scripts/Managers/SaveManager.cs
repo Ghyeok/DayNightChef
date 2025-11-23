@@ -23,6 +23,7 @@ public class GameSaveData
     // 2. 게임 진행도 저장
     public int currentWeek;
     public int currentGold;
+    public float currentHP = -1f;
     public int reputation;
     public bool isFeePayed;
     public bool unlockSwampLand;

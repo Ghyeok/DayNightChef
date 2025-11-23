@@ -23,6 +23,8 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
     public float maxBagWeight => InventoryManager.Instance?.maxWeight ?? 0f;
     public float curBagWeight => InventoryManager.Instance?.CurrentWeight ?? 0f;
 
+    private float _loadedHP = -1f;
+
     public event Action OnPlayerDamaged;
     public event Action OnPlayerSpawned;
 
@@ -59,6 +61,17 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         if (InventoryManager.Instance != null) InventoryManager.Instance.OnInventoryChanged -= PushSnapshot;
     }
 
+    public void SetLoadedHP(float hp)
+    {
+        _loadedHP = hp;
+    }
+
+    public void FullRecovery()
+    {
+        playerCurHP = playerMaxHP;
+        PushSnapshot(); // UI 갱신
+    }
+
     public void ResetForNewDayPhase()
     {
         dayPlayer = null;
@@ -93,7 +106,19 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         }
 
         playerMaxHP = ps.GetValue(StatType.MaxHP);
-        playerCurHP = playerMaxHP;
+
+        if (_loadedHP > 0)
+        {
+            // 저장된 파일(중간 세이브)을 로드했으면 그 체력 사용
+            playerCurHP = Mathf.Min(_loadedHP, playerMaxHP);
+            _loadedHP = -1f; // 사용 후 초기화
+        }
+        else if (playerCurHP <= 0)
+        {
+            // 새 게임이거나 오류로 죽은 상태라면 최대 체력으로 시작
+            playerCurHP = playerMaxHP;
+        }
+
         playerAttack = ps.GetValue(StatType.Attack);
         playerMoveSpeed = ps.GetValue(StatType.MoveSpeed);
 
@@ -193,6 +218,4 @@ public class DayPhasePlayerManager : SingletonManager<DayPhasePlayerManager>
         dayPlayer.gameObject.SetActive(false);
         UIManager.Instance.ShowPopupUI<UI_DeathPopup>("UI_DeathPopup");
     }
-
-
 }

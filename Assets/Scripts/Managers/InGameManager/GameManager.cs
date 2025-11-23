@@ -71,6 +71,8 @@ public class GameManager : SingletonManager<GameManager>
         currentWeek++;
         isFeePayed = false;
 
+        DayPhasePlayerManager.Instance.FullRecovery(); // 현재 HP를 최대 HP로
+        RestaurantPrepareManager.Instance.ClearPlan(); // 판매가 완료됐으니 메뉴를 비움
         // 루프가 끝나는 순간 저장
         SaveManager.Instance.SaveGame();
     }
@@ -149,6 +151,8 @@ public class GameManager : SingletonManager<GameManager>
         // 2. 게임 진행도
         data.currentWeek = this.currentWeek;
         data.currentGold = this.totalGold;
+        if (DayPhasePlayerManager.Instance != null)
+            data.currentHP = DayPhasePlayerManager.Instance.playerCurHP;
         data.reputation = this.restaurantReputation;
         data.isFeePayed = this.isFeePayed;
         data.unlockSwampLand = this.unlockSwampLand;
@@ -189,6 +193,10 @@ public class GameManager : SingletonManager<GameManager>
         // 2. 게임 진행도
         this.currentWeek = data.currentWeek;
         this.totalGold = data.currentGold;
+        if (DayPhasePlayerManager.Instance != null && data.currentHP > 0)
+        {
+            DayPhasePlayerManager.Instance.SetLoadedHP(data.currentHP);
+        }
         this.restaurantReputation = data.reputation;
         this.isFeePayed = data.isFeePayed;
         this.unlockSwampLand = data.unlockSwampLand;
@@ -222,6 +230,8 @@ public class GameManager : SingletonManager<GameManager>
         // 2. 게임 진행도
         this.currentWeek = 1;
         this.totalGold = 0;
+        if (DayPhasePlayerManager.Instance != null)
+            DayPhasePlayerManager.Instance.FullRecovery();
         this.restaurantReputation = 0;
         this.isFeePayed = false;
         this.unlockSwampLand = false;
