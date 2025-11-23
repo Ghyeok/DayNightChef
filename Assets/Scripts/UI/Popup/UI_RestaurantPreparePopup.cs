@@ -112,7 +112,7 @@ public class UI_RestaurantPreparePopup : UI_Popup
         }
 
         // 최대 제조 가능 수량 계산
-        currentRecipeMaxCookableCount = WarehouseManager.Instance.GetMaxCookableCount(recipe);
+        currentRecipeMaxCookableCount = currentRecipeSavedCount + WarehouseManager.Instance.GetMaxCookableCount(recipe);
         // 이 레시피의 이미 저장된 수량 가져오기
         currentRecipeSavedCount = RestaurantPrepareManager.Instance.GetPlannedCount(recipe);
         // U! 조작용 수량을 저장된 값으로 초기화
