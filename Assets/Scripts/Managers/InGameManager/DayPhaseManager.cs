@@ -98,6 +98,8 @@ public class DayPhaseManager : SingletonManager<DayPhaseManager>
 
     private IEnumerator LoadMapRoutine(MapType mapType)
     {
+        curMapType = mapType;
+
         string newScene = mapSceneNames[(int)mapType];
         yield return StartCoroutine(UnloadOldScene());
 
