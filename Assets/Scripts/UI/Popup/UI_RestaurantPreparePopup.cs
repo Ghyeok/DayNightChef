@@ -141,7 +141,6 @@ public class UI_RestaurantPreparePopup : UI_Popup
         }
 
         // 2. 메뉴판에 자리가 있는가?
-        // '현재 총 개수' = (전체 저장된 개수) - (이 아이템의 '저장된' 개수) + (이 아이템의 'UI상' 개수)
         int totalSaved = RestaurantPrepareManager.Instance.CurTotalPlannedCount;
         int maxTotal = RestaurantPrepareManager.Instance.MaxTotalItemCount;
 
@@ -156,7 +155,7 @@ public class UI_RestaurantPreparePopup : UI_Popup
 
         plus.interactable = canAddMore;
     }
-    // 필요 재료 UI를 새로고침하는 함수 (OnClickConfirmPlan에서 호출)
+    // 필요 재료 UI를 새로고침하는 함수
     private void UpdateRequiredItemsUI(Recipe recipe)
     {
         foreach (Transform child in itemRequirementTransform)
@@ -194,7 +193,6 @@ public class UI_RestaurantPreparePopup : UI_Popup
     {
         if (currentSelectedRecipe == null) return;
 
-        // 1. 매니저에게 (레시피, 희망 수량)으로 갱신 '요청'
         bool success = RestaurantPrepareManager.Instance.UpdateMenuPlan(currentSelectedRecipe, currentRecipeCount);
 
         if (success)
@@ -207,7 +205,7 @@ public class UI_RestaurantPreparePopup : UI_Popup
             currentRecipeCount = currentRecipeSavedCount;
             Debug.LogWarning("재료가 부족하거나 한도를 초과하여 계획을 되돌립니다.");
         }
-        // 4. UI 갱신
+
         UpdatePlanUI();
         UpdateRequiredItemsUI(currentSelectedRecipe);
     }
@@ -235,7 +233,6 @@ public class UI_RestaurantPreparePopup : UI_Popup
 
         if (result)
         {
-            // 1. 데이터 전달
             Debug.Log("--- 영업 시작! ---");
             SalesManager.Instance.SetMenus(menuList);
             NightPhaseManager.Instance.StartService();

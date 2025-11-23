@@ -62,7 +62,6 @@ public class GatherSpawner : MonoBehaviour
         var node = Instantiate(gatherPrefab, slots[index].point.position, Quaternion.identity, spawnPoints[index]);
         node.name = $"GatherNode_{index}";
 
-        // 아이템을 정하지 않고, 컨텍스트만 전달
         node.SetContext(ItemType.Gather, curTier);
 
         node.OnCollected -= HandleCollected;
@@ -73,8 +72,8 @@ public class GatherSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// 채집물이 수거되면 호출되는 콜백.
-    /// 그 포인트에 대해 respawnDelay 후 재스폰 코루틴 시작.
+    /// 채집물이 수거되면 호출되는 콜백
+    /// 그 포인트에 대해 respawnDelay 후 재스폰 코루틴 시작
     /// </summary>
     private void HandleCollected(GatheringInteraciton g)
     {

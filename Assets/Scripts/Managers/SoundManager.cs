@@ -30,10 +30,9 @@ public class SoundManager : SingletonManager<SoundManager>
     public float BGMVolume => bgmVolume;
     public float SFXVolume => sfxVolume;
 
-    // 싱글톤 초기화는 다른 스크립트의 Awake()보다 먼저 실행되도록 Awake()에서 처리
     public override void Awake()
     {
-        base.Awake(); // SingletonManager의 Awake()가 있다면 호출
+        base.Awake();
         InitializeAudioSources();
         LoadSavedVolumes();
     }

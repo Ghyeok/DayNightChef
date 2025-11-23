@@ -1,3 +1,4 @@
+
 using NUnit.Framework;
 using UnityEngine;
 using System;
@@ -27,7 +28,5 @@ public class StoreManager : SingletonManager<StoreManager>
             OnPurchased?.Invoke(item);
             return true;
         }
-
-
     }
 }

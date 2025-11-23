@@ -40,7 +40,6 @@ RectTransform:
   - {fileID: 7441035990470402943}
   - {fileID: 3135924074061105001}
   - {fileID: 2493895883514121767}
-  - {fileID: 481169497846096559}
   - {fileID: 7465373705973793904}
   - {fileID: 4550519028027492132}
   - {fileID: 3634361591763551330}
@@ -768,6 +767,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3135924074061105001 stripped
 RectTransform:
@@ -907,6 +908,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2949878433003180099 stripped
 RectTransform:
@@ -1046,6 +1049,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3020851436960104166 stripped
 RectTransform:
@@ -1185,6 +1190,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3391071644057660790 stripped
 RectTransform:
@@ -1324,6 +1331,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2493895883514121767 stripped
 RectTransform:
@@ -1463,6 +1472,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2441807780208946837 stripped
 RectTransform:
@@ -1602,6 +1613,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2399391318116362344 stripped
 RectTransform:
@@ -1741,6 +1754,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2756730689802259888 stripped
 RectTransform:
@@ -1880,6 +1895,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &4207502371232755702 stripped
 RectTransform:
@@ -2027,6 +2044,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &4301837093135299042 stripped
 RectTransform:
@@ -2166,6 +2185,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &4550519028027492132 stripped
 RectTransform:
@@ -2305,6 +2326,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3672142986860675104 stripped
 RectTransform:
@@ -2444,6 +2467,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3634361591763551330 stripped
 RectTransform:
@@ -2583,6 +2608,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3596058935904914766 stripped
 RectTransform:
@@ -2722,6 +2749,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3938418178820199459 stripped
 RectTransform:
@@ -2861,6 +2890,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3763433190535067057 stripped
 RectTransform:
@@ -3005,6 +3036,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &2684194374522781188
 PrefabInstance:
@@ -3144,6 +3177,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3005174534840226771
 PrefabInstance:
@@ -3283,6 +3318,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3012641444249938206
 PrefabInstance:
@@ -3422,6 +3459,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3167065355180148617
 PrefabInstance:
@@ -3561,6 +3600,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3177512433178048978
 PrefabInstance:
@@ -3568,7 +3609,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 3275042153270289127}
+    m_TransformParent: {fileID: 7465373705973793904}
     m_Modifications:
     - target: {fileID: 1526829040971483395, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_Name
@@ -3588,7 +3629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_AnchorMin.x
@@ -3596,15 +3637,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3636,11 +3677,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -65
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3700,6 +3741,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3259116225692360789
 PrefabInstance:
@@ -3839,6 +3882,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3280199778113538415
 PrefabInstance:
@@ -3978,6 +4023,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3695303981766343637
 PrefabInstance:
@@ -4117,6 +4164,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3754243430021321955
 PrefabInstance:
@@ -4256,6 +4305,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3849897591457251414
 PrefabInstance:
@@ -4395,6 +4446,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &4108796851370241617
 PrefabInstance:
@@ -4534,6 +4587,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &4177544827312425530
 PrefabInstance:
@@ -4673,6 +4728,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &4508358342448966034
 PrefabInstance:
@@ -4812,6 +4869,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &4564551993107027094
 PrefabInstance:
@@ -4951,6 +5010,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &5044941774628018605
 PrefabInstance:
@@ -5085,6 +5146,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7833594229133869776 stripped
 RectTransform:
@@ -5224,6 +5287,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7105077996653498844 stripped
 RectTransform:
@@ -5363,6 +5428,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7149387812595815772 stripped
 RectTransform:
@@ -5502,6 +5569,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7004513512721746345 stripped
 RectTransform:
@@ -5641,6 +5710,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7387051082453009754 stripped
 RectTransform:
@@ -5753,7 +5824,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3077576626828499837, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 481169497846096559}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1526829040971483395, guid: c1bb2b771be7e494cb56b6b2d950f92b, type: 3}
       insertIndex: -1
@@ -5780,6 +5854,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7465373705973793904 stripped
 RectTransform:
@@ -5919,6 +5995,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7441035990470402943 stripped
 RectTransform:
@@ -6058,6 +6136,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &8239541873895385298 stripped
 RectTransform:
@@ -6197,6 +6277,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &8181775360830395485 stripped
 RectTransform:
@@ -6336,6 +6418,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &8548904372541278272 stripped
 RectTransform:
@@ -6480,6 +6564,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &7273964114392356048
 PrefabInstance:
@@ -6619,6 +6705,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &7539910673848304116
 PrefabInstance:
@@ -6758,6 +6846,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &7567417689218904492
 PrefabInstance:
@@ -6897,6 +6987,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &8259451633340105248
 PrefabInstance:
@@ -7036,6 +7128,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &8393360011497974695
 PrefabInstance:
@@ -7175,6 +7269,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &8720574601993452258
 PrefabInstance:
@@ -7314,6 +7410,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &8822678356398232919
 PrefabInstance:
@@ -7453,6 +7551,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &9069799157002317865
 PrefabInstance:
@@ -7592,4 +7692,6 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7

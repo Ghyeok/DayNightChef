@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
 {
-    // --- 1단계: 인스펙터 표시용 내부 클래스 추가 ---
     [System.Serializable]
     private class StatLevelDebugView
     {
@@ -19,12 +18,11 @@ public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
             level = l;
         }
     }
-    // ------------------------------------------
 
     public event Action OnReady;
     public event Action<StatType, int, int> OnStatChanged;
 
-    //각 스텟의 현재 레벨을 저장하는 딕셔너리
+    // 각 스텟의 현재 레벨을 저장하는 딕셔너리
     [SerializeField]
     private Dictionary<StatType, int> levels = new()
     {
@@ -36,11 +34,9 @@ public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
         { StatType.Restaurant, 1 },
     };
 
-    // --- 2단계: 디버그용 리스트 필드 추가 ---
     [Header("Debug View (Read-Only)")]
     [SerializeField]
     private List<StatLevelDebugView> currentLevelsForInspector = new List<StatLevelDebugView>();
-    // -------------------------------------
 
     private StatsDatabase db;
     private GameManager _gm;
@@ -165,16 +161,14 @@ public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
 #endif
     }
 
-    // --- 3단계: 디버그 리스트 업데이트 함수 추가 ---
 #if UNITY_EDITOR
     private void UpdateInspectorDebugView()
     {
-        // (게임이 실행 중이 아닐 때는 실행 방지)
         if (!Application.isPlaying || levels == null) return;
 
         currentLevelsForInspector.Clear();
 
-        // 딕셔너리의 모든 키를 가져와 스탯 타입 순서대로 정렬 (선택 사항이지만 깔끔함)
+        // 딕셔너리의 모든 키를 가져와 스탯 타입 순서대로 정렬
         var sortedKeys = levels.Keys.OrderBy(key => key.ToString());
 
         foreach (var key in sortedKeys)
@@ -183,5 +177,4 @@ public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
         }
     }
 #endif
-    // ------------------------------------------
 }

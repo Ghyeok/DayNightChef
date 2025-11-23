@@ -3,8 +3,6 @@ using System.Collections;
 using UnityEngine;
 
 /* 낮, 밤 공통으로 사용되는 기능을 관리
- * 골드 추가 시 AddGold(int g)
- * 골드 소비 시 TrySpendGold(int g) -> true시 SpendGold(int g)
  */
 public class GameManager : SingletonManager<GameManager>
 {

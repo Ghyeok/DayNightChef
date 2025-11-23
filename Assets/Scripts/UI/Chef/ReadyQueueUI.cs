@@ -22,8 +22,6 @@ public class ReadyQueueUI : MonoBehaviour
     {
         var sales = SalesManager.Instance;
         if (sales == null) return 3f;
-        // 권장: SalesManager에 public float CookSeconds => defaultCookSeconds; 추가
-        // 없으면 3초 폴백
         try { return sales.CookSeconds; } catch { return 3f; }
     }
 
@@ -39,7 +37,6 @@ public class ReadyQueueUI : MonoBehaviour
     {
         if (chefProgressFill) chefProgressFill.fillAmount = Mathf.Clamp01(v);
     }
-    // =====================================================================
 
     private void OnEnable()
     {
@@ -78,7 +75,6 @@ public class ReadyQueueUI : MonoBehaviour
         KillCookTween();
     }
 
-    // -------------------- Ready 큐 슬롯 관리 --------------------
     private void HandleOrderReady(SalesManager.Order od)
     {
         if (_map.ContainsKey(od.orderId)) return;

@@ -55,7 +55,7 @@ public class SaveManager : SingletonManager<SaveManager>
         // 2. JSON으로 직렬화 하기
         string json = JsonUtility.ToJson(dataToSave, true);
 
-        // 3. 파일 쓰기 (Safe Save 방식으로 변경)
+        // 3. 파일 쓰기
         try
         {
             File.WriteAllText(TempSavePath, json); // 임시 경로에 먼저 씀

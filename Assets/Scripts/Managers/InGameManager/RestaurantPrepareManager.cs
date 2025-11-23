@@ -88,7 +88,7 @@ public class RestaurantPrepareManager : SingletonManager<RestaurantPrepareManage
         {
             int amountToConsume = delta;
 
-            // 창고에 'delta'만큼의 재료가 있는지 확인하고 '차감'
+            // 창고에 delta 만큼의 재료가 있는지 확인하고 차감
             bool consumeSuccess = WarehouseManager.Instance.TryConsumeForRecipe(recipe, amountToConsume);
 
             if (!consumeSuccess)

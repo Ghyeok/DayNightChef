@@ -132,7 +132,7 @@ public class NightPhaseManager : SingletonManager<NightPhaseManager>
     /// <summary>
     /// 밤 페이즈의 끝
     /// 1. 관리비 납부 주인지 확인, 만약 관리비 납부 주라면 관리비 납부 팝업이 뜬다.
-    /// 2. 
+    /// 2. 정산 팝업 띄우기
     /// </summary>
     public void EndNightPhase()
     {

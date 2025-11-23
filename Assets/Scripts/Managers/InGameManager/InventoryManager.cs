@@ -133,7 +133,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
         int addedCount = 0; // 실제로 몇 개 추가했는지 카운트
 
-        // 'count' 횟수만큼 1개씩 추가 시도
+        // count 횟수만큼 1개씩 추가 시도
         for (int i = 0; i < count; i++)
         {
             if (!CanAdd(item, 1))

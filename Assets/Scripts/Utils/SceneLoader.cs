@@ -60,15 +60,15 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadSceneCoroutine(string sceneName, LoadSceneMode mode, Action onLoadComplete)
     {
-        // --- 1. 로딩창 켜기 ---
+        //  1. 로딩창 켜기
         loadingScreenInstance.gameObject.SetActive(true);
         loadingScreenInstance.SetProgress(0); // LoadingScreenUI 스크립트의 함수 호출
 
-        // --- 2. 새 씬 로드 시작 ---
+        // 2. 새 씬 로드 시작
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName, mode);
         op.allowSceneActivation = false;
 
-        // --- 3. 로딩 진행률 로직 ---
+        // 3. 로딩 진행률 로직
         float timer = 0f;
         while (!op.isDone)
         {
@@ -96,14 +96,14 @@ public class SceneLoader : MonoBehaviour
             loadingScreenInstance.SetProgress(progressValue);
         }
 
-        // --- 4. 로드 완료 처리 ---
+        // 4. 로드 완료 처리
         if (mode == LoadSceneMode.Additive)
         {
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
         }
         onLoadComplete?.Invoke();
 
-        // --- 5. 로딩창 끄기 ---
+        // 5. 로딩창 끄기
         loadingScreenInstance.gameObject.SetActive(false);
     }
 }

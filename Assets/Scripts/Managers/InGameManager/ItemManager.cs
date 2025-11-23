@@ -159,8 +159,8 @@ public class ItemManager : SingletonManager<ItemManager>
             return null;
         }
 
-        // 2) 1% 스페셜 시도 → 없으면 노말(→ 전체)로 폴백
-        bool wantSpecial = Random.value < specialItemProb; // specialItemProb = 0.01f
+        // 2) 1% 스페셜 시도 → 없으면 노말
+        bool wantSpecial = Random.value < specialItemProb;
         Item chosen = null;
 
         if (wantSpecial)
@@ -178,7 +178,7 @@ public class ItemManager : SingletonManager<ItemManager>
             if (normals.Count > 0)
                 chosen = normals[Random.Range(0, normals.Count)];
             else
-                chosen = fishCandidate[Random.Range(0, fishCandidate.Count)]; // 최종 폴백
+                chosen = fishCandidate[Random.Range(0, fishCandidate.Count)];
         }
 
         // 3) 인벤토리에 지급

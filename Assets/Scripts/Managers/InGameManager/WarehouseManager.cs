@@ -228,7 +228,7 @@ public class WarehouseManager : SingletonManager<WarehouseManager>
         }
         else
         {
-            // 세이브 파일이 없거나(null), 버전이 달라 슬롯 카운트가 맞지 않으면
+            // 세이브 파일이 없거나(null), 슬롯 카운트가 맞지 않으면
             // 창고를 초기화합니다.
             Debug.LogWarning($"[WarehouseManager] 로드할 데이터가 없거나(null) 슬롯 카운트({loadedSlots?.Count ?? 0}개)가 맞지 않아 새로 생성합니다. (기존: {slotCount}개)");
             _slots = new List<WarehouseEntry>(slotCount);

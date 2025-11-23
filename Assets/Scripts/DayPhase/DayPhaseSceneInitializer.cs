@@ -1,8 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-// 이 스크립트는 'DayPhaseScene'에만 존재하며, 싱글톤이 아닙니다.
-// 씬이 로드될 때마다 새로 실행됩니다.
 public class DayPhaseSceneInitializer : MonoBehaviour
 {
     void Start()

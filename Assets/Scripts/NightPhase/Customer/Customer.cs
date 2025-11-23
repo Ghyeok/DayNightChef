@@ -18,7 +18,6 @@ public class Customer : MonoBehaviour
     [Header("이동/인내심")]
     [Min(0.5f)] public float moveSpeed = 2f;
     [Min(1f)] public float patienceSeconds = 25f;
-    // 인내심 그래프 추가 필요
 
     [Header("좌석")]
     [SerializeField] private Transform seatTarget;
@@ -41,7 +40,6 @@ public class Customer : MonoBehaviour
     public bool IsServed { get; private set; }
 
     // SalesManager에서 생성 직후 호출
-
     public void Begin(SalesManager sales, int seatIndex, Recipe want, Transform seat, Vector2 spawnPos)
     {
         _sales = sales;
