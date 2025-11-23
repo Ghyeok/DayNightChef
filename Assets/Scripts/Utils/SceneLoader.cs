@@ -15,11 +15,12 @@ public class SceneLoader : MonoBehaviour
 
     public enum LoadType
     {
+        None,
         NewGame,
         Continue,
     }
 
-    public LoadType CurrentLoadType = LoadType.NewGame;
+    public LoadType CurrentLoadType = LoadType.None;
     public void SetLoadType(LoadType loadType) {  CurrentLoadType = loadType; }
 
     private void Awake()

@@ -116,6 +116,7 @@ public class PlayerStatsManager : SingletonManager<PlayerStatsManager>
         levels[type] = newLv;
 
         OnStatChanged?.Invoke(type, oldLv, newLv);
+        // 재화를 사용하여 업그레이드 하면 저장
         SaveManager.Instance.SaveGame();
 
 #if UNITY_EDITOR

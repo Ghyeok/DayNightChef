@@ -12,7 +12,7 @@ public class GameManager : SingletonManager<GameManager>
         NightPhase,
     }
 
-    private bool isDataLoaded = false;
+    public bool isDataLoaded = false;
     public bool IsPaused { get; private set; }
     public void isDataLoadedFalse() { isDataLoaded = false; }
     public event Action OnGoldChanged;
@@ -71,6 +71,7 @@ public class GameManager : SingletonManager<GameManager>
         currentWeek++;
         isFeePayed = false;
 
+        // 루프가 끝나는 순간 저장
         SaveManager.Instance.SaveGame();
     }
 
@@ -93,6 +94,7 @@ public class GameManager : SingletonManager<GameManager>
     {
         Debug.Log("게임 오버! 세이브 파일을 삭제합니다.");
         SaveManager.Instance.DeleteSaveData();
+        isDataLoadedFalse();
 
         bool result = await UI_ConfirmPopup.ShowAsync(
             info: "게임 오버!",

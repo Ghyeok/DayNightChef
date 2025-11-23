@@ -1,5 +1,3 @@
-
-using NUnit.Framework;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
@@ -25,6 +23,7 @@ public class StoreManager : SingletonManager<StoreManager>
         {
             inv.TryAdd(item, 1);
             GameManager.Instance.SpendGold(item.item_price);
+            SaveManager.Instance.SaveGame();
             OnPurchased?.Invoke(item);
             return true;
         }

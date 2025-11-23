@@ -91,9 +91,15 @@ public class SaveManager : SingletonManager<SaveManager>
     {
         if (data == null) return false;
 
-        // 0주차 방지
-        if (data.currentWeek <= 0)
-            return false;
+        if(data.maxHPLevel < 0) return false;
+        if(data.moveSpeedLevel < 0) return false;
+        if (data.attackLevel < 0) return false;
+        if (data.weightLevel < 0) return false;
+        if(data.fishingLevel < 0) return false;
+        if(data.restaurantLevel < 0) return false;
+        if(data.maxHPLevel < 0) return false;
+
+        if (data.currentWeek <= 0) return false;
 
         return true;
     }
@@ -120,13 +126,14 @@ public class SaveManager : SingletonManager<SaveManager>
 
             GameSaveData data = JsonUtility.FromJson<GameSaveData>(json);
 
-            if (data == null || data.currentWeek <= 0)
+            if (!IsValidGameData(data))
             {
                 Debug.LogWarning("[SaveManager] 유효하지 않은 세이브 데이터(currentWeek <= 0). 새 게임 시작.");
                 StartNewGame();
                 return;
             }
 
+            // 저장 데이터 덮어쓰기
             GameManager.Instance.ApplyAllSaveData(data);
         }
         catch (System.Exception e)
@@ -162,6 +169,8 @@ public class SaveManager : SingletonManager<SaveManager>
 
     public void StartNewGame()
     {
+        DeleteSaveData();
+
         Debug.Log("새 게임 시작");
         GameManager.Instance.StartNewGame();
     }

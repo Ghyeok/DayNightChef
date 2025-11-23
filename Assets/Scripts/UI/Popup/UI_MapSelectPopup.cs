@@ -31,8 +31,6 @@ public class UI_MapSelectPopup : UI_Popup
         swampLandSelect.onClick.AddListener(OnClickedSwampLandSelect);
         winterLandSelect.onClick.AddListener(OnClickedWinterLandSelect);
         mainLobbyButton.onClick.AddListener(OnClickedMainLobbyButton);
-
-        GameManager.Instance.isDataLoadedFalse();
     }
 
     private void OnEnable()
@@ -63,7 +61,10 @@ public class UI_MapSelectPopup : UI_Popup
     }
     private void OnClickedMainLobbyButton()
     {
+        GameManager.Instance.isDataLoadedFalse();
+
         UIManager.Instance.ClosePopupUI(this);
+        SceneLoader.Instance.SetLoadType(SceneLoader.LoadType.None);
         SceneLoader.Instance.LoadScene("MainLobbyScene",LoadSceneMode.Single);
     }
 }

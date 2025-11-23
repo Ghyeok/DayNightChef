@@ -143,6 +143,7 @@ public class UI_SettingPopup : UI_Popup
         UIManager.Instance.CloseAllPopupUI();
         if (SceneLoader.Instance != null)
         {
+            GameManager.Instance.isDataLoadedFalse();
             SceneLoader.Instance.SetLoadType(SceneLoader.LoadType.Continue);
             SceneLoader.Instance.LoadScene("MainLobbyScene", UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
