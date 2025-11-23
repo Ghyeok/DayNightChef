@@ -64,4 +64,10 @@ public class RecipeManager : SingletonManager<RecipeManager>
 
     public List<Recipe> GetAllRecipes() { return recipes; }
     public string GetRecipeDescription(int index) { return recipeDescriptions[index]; }
+
+    public Recipe GetRecipeByName(string name)
+    {
+        // 모든 레시피 중에서 이름이 같은 것을 찾아서 반환
+        return recipes.Find(r => r.recipe_name == name);
+    }
 }

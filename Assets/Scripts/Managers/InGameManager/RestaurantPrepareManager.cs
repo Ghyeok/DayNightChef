@@ -164,4 +164,51 @@ public class RestaurantPrepareManager : SingletonManager<RestaurantPrepareManage
     {
         maxTotalItemCount = (int)PlayerStatsManager.Instance.GetValue(StatType.Restaurant);
     }
+
+    // 저장하기: 현재 메뉴 리스트 -> 저장용 데이터로 변환
+    public List<MenuPlanSaveData> GetDataToSave()
+    {
+        List<MenuPlanSaveData> saveDataList = new List<MenuPlanSaveData>();
+
+        foreach (var plan in todayMenu)
+        {
+            if (plan.recipe != null && plan.planned > 0)
+            {
+                saveDataList.Add(new MenuPlanSaveData
+                {
+                    recipeName = plan.recipe.recipe_name,
+                    count = plan.planned
+                });
+            }
+        }
+        return saveDataList;
+    }
+
+    // 불러오기: 저장용 데이터 -> 현재 메뉴 리스트로 복구
+    public void LoadData(List<MenuPlanSaveData> loadedData)
+    {
+        ClearPlan(); // 기존 데이터 초기화
+
+        if (loadedData == null || loadedData.Count == 0) return;
+
+        foreach (var data in loadedData)
+        {
+            // 이름으로 레시피 원본 찾기
+            Recipe recipe = RecipeManager.Instance.GetRecipeByName(data.recipeName);
+
+            if (recipe != null)
+            {
+                // 로드할 때는 재료 차감 로직 없이 리스트에만 담습니다.
+                todayMenu.Add(new MenuPlan
+                {
+                    recipe = recipe,
+                    planned = data.count,
+                    sold = 0
+                });
+            }
+        }
+
+        // UI 갱신 알림
+        OnMenuChanged?.Invoke();
+    }
 }

@@ -3,6 +3,13 @@ using System.IO;
 using UnityEngine;
 
 [System.Serializable]
+public struct MenuPlanSaveData
+{
+    public string recipeName; // 레시피를 찾기 위한 키값
+    public int count;         // 등록한 수량
+}
+
+[System.Serializable]
 public class GameSaveData
 {
     // 1. 게임 내 업그레이드 수치 저장
@@ -26,6 +33,9 @@ public class GameSaveData
 
     // 4. 인벤토리 저장
     public List<InventoryManager.Entry> inventoryEntries;
+
+    // 5. 오늘의 메뉴 리스트 저장
+    public List<MenuPlanSaveData> menuPlans;
 }
 
 public class SaveManager : SingletonManager<SaveManager>

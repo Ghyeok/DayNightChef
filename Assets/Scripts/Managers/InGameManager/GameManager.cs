@@ -158,6 +158,9 @@ public class GameManager : SingletonManager<GameManager>
         data.warehouseEntries = WarehouseManager.Instance.GetDataToSave();
         data.inventoryEntries = InventoryManager.Instance.GetDataToSave();
 
+        // 4. 오늘의 메뉴
+        data.menuPlans = RestaurantPrepareManager.Instance.GetDataToSave();
+
         return data;
     }
 
@@ -195,6 +198,9 @@ public class GameManager : SingletonManager<GameManager>
         WarehouseManager.Instance.LoadData(data.warehouseEntries);
         InventoryManager.Instance.LoadData(data.inventoryEntries);
 
+        // 4. 오늘의 메뉴
+        RestaurantPrepareManager.Instance.LoadData(data.menuPlans);
+
         Debug.Log($"[Save] week={data.currentWeek}, " +
            $"HP={data.maxHPLevel}, Atk={data.attackLevel}, Spd={data.moveSpeedLevel}, " +
            $"Bag={data.weightLevel}, Fish={data.fishingLevel}, Rest={data.restaurantLevel}");
@@ -224,7 +230,7 @@ public class GameManager : SingletonManager<GameManager>
         // 3. 창고/인벤 초기화 (null을 보내 초기화)
         WarehouseManager.Instance.LoadData(null);
         InventoryManager.Instance.LoadData(null);
-
+        RestaurantPrepareManager.Instance.LoadData(null);
         // 4. 새 게임 로드 완료 후, 이어하기 모드로
         SceneLoader.Instance.SetLoadType(SceneLoader.LoadType.Continue);
         OnGoldChanged?.Invoke();
