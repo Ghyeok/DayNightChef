@@ -467,8 +467,8 @@ RectTransform:
   - {fileID: 6878653461759807141}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -511,7 +511,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -758,6 +758,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3135924074061105001 stripped
 RectTransform:
@@ -897,6 +899,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2949878433003180099 stripped
 RectTransform:
@@ -1036,6 +1040,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2493895883514121767 stripped
 RectTransform:
@@ -1175,6 +1181,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2441807780208946837 stripped
 RectTransform:
@@ -1314,6 +1322,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2399391318116362344 stripped
 RectTransform:
@@ -1453,6 +1463,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &2756730689802259888 stripped
 RectTransform:
@@ -1600,6 +1612,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &4301837093135299042 stripped
 RectTransform:
@@ -1739,6 +1753,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &4550519028027492132 stripped
 RectTransform:
@@ -1878,6 +1894,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3634361591763551330 stripped
 RectTransform:
@@ -2017,6 +2035,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3596058935904914766 stripped
 RectTransform:
@@ -2156,6 +2176,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &3763433190535067057 stripped
 RectTransform:
@@ -2300,6 +2322,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &2684194374522781188
 PrefabInstance:
@@ -2439,6 +2463,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3005174534840226771
 PrefabInstance:
@@ -2578,6 +2604,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3012641444249938206
 PrefabInstance:
@@ -2717,6 +2745,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3167065355180148617
 PrefabInstance:
@@ -2856,6 +2886,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3177512433178048978
 PrefabInstance:
@@ -2995,6 +3027,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3259116225692360789
 PrefabInstance:
@@ -3134,6 +3168,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3280199778113538415
 PrefabInstance:
@@ -3273,6 +3309,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3695303981766343637
 PrefabInstance:
@@ -3412,6 +3450,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3754243430021321955
 PrefabInstance:
@@ -3551,6 +3591,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &3849897591457251414
 PrefabInstance:
@@ -3690,6 +3732,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &4108796851370241617
 PrefabInstance:
@@ -3829,6 +3873,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &4177544827312425530
 PrefabInstance:
@@ -3968,6 +4014,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &4508358342448966034
 PrefabInstance:
@@ -4107,6 +4155,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &5044941774628018605
 PrefabInstance:
@@ -4241,6 +4291,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7833594229133869776 stripped
 RectTransform:
@@ -4380,6 +4432,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7105077996653498844 stripped
 RectTransform:
@@ -4519,6 +4573,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7004513512721746345 stripped
 RectTransform:
@@ -4658,6 +4714,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7387051082453009754 stripped
 RectTransform:
@@ -4797,6 +4855,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7465373705973793904 stripped
 RectTransform:
@@ -4936,6 +4996,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &7441035990470402943 stripped
 RectTransform:
@@ -5075,6 +5137,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &8239541873895385298 stripped
 RectTransform:
@@ -5214,6 +5278,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!224 &8548904372541278272 stripped
 RectTransform:
@@ -5358,6 +5424,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &7273964114392356048
 PrefabInstance:
@@ -5497,6 +5565,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &7539910673848304116
 PrefabInstance:
@@ -5636,6 +5706,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &7567417689218904492
 PrefabInstance:
@@ -5775,6 +5847,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &8259451633340105248
 PrefabInstance:
@@ -5914,6 +5988,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &8393360011497974695
 PrefabInstance:
@@ -6053,6 +6129,8 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7
 --- !u!1001 &9069799157002317865
 PrefabInstance:
@@ -6192,4 +6270,6 @@ MonoBehaviour:
   itemImage: {fileID: 0}
   countText: {fileID: 0}
   itemWeight: {fileID: 0}
+  itemShowPanel: {fileID: 0}
+  itemText: {fileID: 0}
   draggingAlpha: 0.7

@@ -3,30 +3,46 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class AspectRatio : MonoBehaviour
 {
-    // 목표하는 가로 세로 비율 (1920 / 1080 = 1.777...)
     public float targetAspect = 16.0f / 9.0f;
+
+    private Camera _cam;
+    private float _lastWidth;
+    private float _lastHeight;
 
     void Start()
     {
-        SetViewport();
+        _cam = GetComponent<Camera>();
+        UpdateViewport();
     }
 
-    void SetViewport()
+    void Update()
     {
-        Camera camera = GetComponent<Camera>();
+        // 화면 크기가 변했는지 매 프레임 체크 (모바일 회전 대응)
+        if (Screen.width != _lastWidth || Screen.height != _lastHeight)
+        {
+            UpdateViewport();
+        }
+    }
+
+    void UpdateViewport()
+    {
+        // 현재 해상도 저장 (다음 프레임 비교용)
+        _lastWidth = Screen.width;
+        _lastHeight = Screen.height;
+
         float windowAspect = (float)Screen.width / (float)Screen.height;
         float scaleHeight = windowAspect / targetAspect;
 
-        Rect rect = camera.rect;
+        Rect rect = _cam.rect;
 
-        if (scaleHeight < 1.0f) // 현재 화면이 목표보다 세로로 길다 (레터박스 필요)
+        if (scaleHeight < 1.0f) // 레터박스 (위아래)
         {
             rect.width = 1.0f;
             rect.height = scaleHeight;
             rect.x = 0;
             rect.y = (1.0f - scaleHeight) / 2.0f;
         }
-        else // 현재 화면이 목표보다 가로로 길다 (필러박스 필요)
+        else // 필러박스 (좌우)
         {
             float scaleWidth = 1.0f / scaleHeight;
             rect.width = scaleWidth;
@@ -35,7 +51,7 @@ public class AspectRatio : MonoBehaviour
             rect.y = 0;
         }
 
-        camera.rect = rect;
+        _cam.rect = rect;
     }
 
     void OnPreCull() => GL.Clear(true, true, Color.black);

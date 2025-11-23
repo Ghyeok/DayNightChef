@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : SingletonManager<UIManager>
 {
@@ -10,9 +11,28 @@ public class UIManager : SingletonManager<UIManager>
     public float canvasWidth = 1920f;
     public float canvasHeight = 1080f;
 
-    public void Init()
+    public override void Awake()
     {
-        ShowSceneUI<UI_Scene>("UI_MainMenuScene");
+        base.Awake();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    // 씬 로딩이 끝나면 자동으로 호출되는 함수
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 로드된 씬의 이름에 따라 UI를 자동으로 띄워줌
+        switch (scene.name)
+        {
+            case "MainLobbyScene":
+                ShowSceneUI<UI_MainLobbyScene>("UI_MainLobbyScene");
+                break;
+            case "NightPhaseScene":
+                ShowSceneUI<UI_NightPhaseScene>("UI_NightPhaseScene");
+                break;
+        }
     }
 
     public static GameObject Root
