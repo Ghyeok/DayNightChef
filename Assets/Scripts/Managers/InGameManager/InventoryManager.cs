@@ -126,76 +126,86 @@ public class InventoryManager : SingletonManager<InventoryManager>
         return after <= maxWeight;
     }
 
+    /// <summary>
+    /// 아이템 획득을 시도합니다.
+    /// 무게와 슬롯이 허용하는 만큼 최대한 넣고, 남은 개수를 반환합니다.
+    /// </summary>
+    /// <returns>인벤토리에 들어가지 못하고 남은 개수 (0이면 모두 획득 성공)</returns>
     public int TryAdd(Item item, int count)
     {
-        if (item == null || count <= 0)
-            return 0;
+        if (item == null || count <= 0) return count;
 
-        int addedCount = 0; // 실제로 몇 개 추가했는지 카운트
+        // 1. 무게 체크: 현재 여유 무게로 몇 개까지 더 넣을 수 있는지 계산
+        float weightPerItem = item.item_weight;
+        float remainingWeight = maxWeight - CurrentWeight;
 
-        // count 횟수만큼 1개씩 추가 시도
-        for (int i = 0; i < count; i++)
+        // 무게가 0 이하거나 매우 가벼운 아이템 처리
+        int maxAddableByWeight = int.MaxValue;
+        if (weightPerItem > 0.0001f)
         {
-            if (!CanAdd(item, 1))
-            {
-                break;
-            }
-
-            if (InternalAdd(item, 1))
-            {
-                // 슬롯에 추가 성공
-                addedCount++;
-            }
-            else
-            {
-                // 슬롯이 꽉 찼으면 중단
-                break;
-            }
+            maxAddableByWeight = (int)(remainingWeight / weightPerItem);
         }
 
-        // 3. 하나라도 추가했다면 이벤트를 호출하고 true 반환
-        if (addedCount > 0)
+        // 실제로 시도할 개수 (요청 개수 vs 무게 한계 중 작은 값)
+        int actualToAdd = Mathf.Min(count, maxAddableByWeight);
+
+        if (actualToAdd <= 0)
         {
-            OnInventoryChanged?.Invoke();
-            OnInventoryGetted?.Invoke(item, addedCount);
+            // 무게 초과로 1개도 넣을 수 없음
+            Debug.Log("[Inventory] 무게 한계로 아이템 획득 실패");
+            return count; // 요청 개수 전량 반환
         }
 
-        return addedCount;
-    }
+        // 2. 슬롯에 넣기 (기존 스택 -> 빈 슬롯 순서)
+        int remainToAdd = actualToAdd;
 
-    private bool InternalAdd(Item item, int count)
-    {
-        int remain = count;
-
-        // 1. 이미 있는 아이템에 추가
+        // A. 기존 스택에 합치기
         if (item.stackable)
         {
-            for (int i = 0; i < _entries.Count; i++)
+            for (int i = 0; i < _entries.Count && remainToAdd > 0; i++)
             {
                 if (_entries[i].item == item && _entries[i].count < item.item_maxcount)
                 {
-                    int canPut = Math.Min(item.item_maxcount - _entries[i].count, remain);
-                    _entries[i] = new Entry { item = item, count = _entries[i].count + canPut };
-                    remain -= canPut;
+                    int space = item.item_maxcount - _entries[i].count;
+                    int toPut = Mathf.Min(space, remainToAdd);
 
-                    if (remain == 0) return true; // 다 채움
+                    // 구조체 수정 후 재할당
+                    var entry = _entries[i];
+                    entry.count += toPut;
+                    _entries[i] = entry;
+
+                    remainToAdd -= toPut;
                 }
             }
         }
 
-        // 2. 빈 슬롯에 추가
-        for (int i = 0; i < _entries.Count && remain > 0; i++)
+        // B. 빈 슬롯에 채우기
+        for (int i = 0; i < _entries.Count && remainToAdd > 0; i++)
         {
             if (_entries[i].item == null)
             {
-                int put = item.stackable ? Math.Min(item.item_maxcount, remain) : 1;
-                _entries[i] = new Entry { item = item, count = put };
-                remain -= put;
+                int maxStack = item.stackable ? item.item_maxcount : 1;
+                int toPut = Mathf.Min(maxStack, remainToAdd);
 
-                if (remain == 0) return true; // 다 채움
+                _entries[i] = new Entry { item = item, count = toPut };
+                remainToAdd -= toPut;
             }
         }
-        return remain == 0;
+
+        // 3. 결과 정산
+        // 원래 넣으려고 했던 양(actualToAdd) 중에서 슬롯 부족으로 못 넣은 양(remainToAdd)을 뺌
+        int successCount = actualToAdd - remainToAdd;
+
+        // 최종적으로 못 넣은 양 = (무게 때문에 잘린 것) + (슬롯 없어서 못 넣은 것)
+        int totalLeftover = (count - actualToAdd) + remainToAdd;
+
+        if (successCount > 0)
+        {
+            OnInventoryChanged?.Invoke();
+            OnInventoryGetted?.Invoke(item, successCount); // 획득한 개수만 이벤트 알림
+        }
+
+        return totalLeftover;
     }
 
     // 슬롯 간 이동

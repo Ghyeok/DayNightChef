@@ -78,12 +78,27 @@ public class ItemManager : SingletonManager<ItemManager>
         return specials[idx];
     }
 
+    /// <summary>
+    /// 인벤토리에 아이템 추가를 시도합니다.
+    /// </summary>
     private void GetItem(Item item)
     {
         if (item == null) return;
         int count = Random.Range(minItemCount, maxItemCount);
-        if (InventoryManager.Instance.CanAdd(item, count))
-            InventoryManager.Instance.TryAdd(item, count);
+
+        if (InventoryManager.Instance != null)
+        {
+            int leftover = InventoryManager.Instance.TryAdd(item, count);
+
+            if (leftover > 0)
+            {
+                Debug.Log($"가방이 가득 차서 '{item.item_name}' {leftover}개를 획득하지 못했습니다.");
+            }
+            else
+            {
+                Debug.Log($"'{item.item_name}' {count}개 획득 완료");
+            }
+        }
     }
 
     /// <summary>
