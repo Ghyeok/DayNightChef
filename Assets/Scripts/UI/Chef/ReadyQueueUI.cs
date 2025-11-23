@@ -17,6 +17,7 @@ public class ReadyQueueUI : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Image chefProgressFill;
 
     private Tween _cookTween;
+    private SalesManager.Order _currentCookingOrder;
 
     private float GetCookSeconds()
     {
@@ -28,9 +29,14 @@ public class ReadyQueueUI : MonoBehaviour
     private void ShowChefProgress(bool on, float alpha = 1f)
     {
         if (!chefProgressGroup) return;
+        var go = chefProgressGroup.gameObject;
+        if (go.activeSelf != on)
+            go.SetActive(on);
         chefProgressGroup.alpha = on ? alpha : 0f;
         chefProgressGroup.interactable = on; 
         chefProgressGroup.blocksRaycasts = on;
+        if (on)
+            chefProgressGroup.transform.SetAsLastSibling();
     }
 
     private void SetChefFill(float v)
@@ -132,13 +138,14 @@ public class ReadyQueueUI : MonoBehaviour
 
     private void HandleOrderStarted(SalesManager.Order od)
     {
+        _currentCookingOrder = od;
         KillCookTween();
 
         float duration = Mathf.Max(0.05f, GetCookSeconds());
         SetChefFill(0f);
 
         ShowChefProgress(true, 1f);
-
+        DebugCanvasGroups();
         _cookTween = DG.Tweening.DOTween.To(
             () => chefProgressFill ? chefProgressFill.fillAmount : 0f,
             v => SetChefFill(v),
@@ -149,6 +156,7 @@ public class ReadyQueueUI : MonoBehaviour
 
     private void HandleOrderReadyBar(SalesManager.Order od)
     {
+        if (_currentCookingOrder == od) _currentCookingOrder = null;
         SetChefFill(1f);
         KillCookTween();
 
@@ -175,8 +183,11 @@ public class ReadyQueueUI : MonoBehaviour
 
     private void HandleOrderRemovedBar(SalesManager.Order od)
     {
-        // 취소/고객 소멸 → 진행바 정리
+        if(_currentCookingOrder != od)
+            return;
+
         KillCookTween();
+        _currentCookingOrder = null;
         SetChefFill(0f);
         ShowChefProgress(false);
     }
@@ -187,6 +198,17 @@ public class ReadyQueueUI : MonoBehaviour
         {
             _cookTween.Kill();
             _cookTween = null;
+        }
+    }
+
+    private void DebugCanvasGroups()
+    {
+        if (!chefProgressGroup) return;
+
+        var groups = chefProgressGroup.GetComponentsInParent<CanvasGroup>(true);
+        foreach (var g in groups)
+        {
+            Debug.Log($"[CG] {g.name} alpha={g.alpha}, active={g.gameObject.activeInHierarchy}");
         }
     }
 }

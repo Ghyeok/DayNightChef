@@ -59,6 +59,11 @@ public class SalesManager : SingletonManager<SalesManager>
     public event Action<Order> OnOrderRemoved;
     public event Action<Order> OnReadyDequeued; // 완료 큐에서 꺼낼때
 
+    public bool IsServiceRunning => _isServiceRunning;
+    public bool IsCooking => _cookingNow != null;
+    public int ReadyCount => _readyQueue.Count;
+    public Order CurrentCookingOrder => _cookingNow;
+
     public event Action<Recipe, Recipe, int, bool> OnSaleRecorded;
 
     private int _orderSeq = 0;
@@ -234,6 +239,13 @@ public class SalesManager : SingletonManager<SalesManager>
         if (_readyQueue.Count > 0)
         {
             order = _readyQueue.Dequeue();
+
+            if (order == null || order.recipe == null)
+            {
+                order = null;
+                return false;
+            }
+            order.state = OrderState.Served;
             Log($"완료 요리 수령: #{order.orderId} {order.recipe.recipe_name}");
             OnReadyDequeued?.Invoke(order); // UI에 제거하라고 알림
             return true;

@@ -27,6 +27,8 @@ public class WaiterController : MonoBehaviour
     [SerializeField] Vector3 carryIconOffset = new Vector3(0, 0.8f, 0);
 
     private Recipe carriedRecipe = null; // 들고있는 요리
+    [SerializeField] private float interactCooldown = 0.1f;
+    private float _lastInteractTime = -999f;
 
     // 애니메이터 파라미터
     private int hashIsWalk, hashSpeed, hashMoveX, hashMoveY;
@@ -83,6 +85,9 @@ public class WaiterController : MonoBehaviour
     // 요리 관련
     public void OnInteract()
     {
+        if (Time.time - _lastInteractTime < interactCooldown)
+            return;
+        _lastInteractTime = Time.time;
         // 1. 들고있는 요리가 없으면 셰프에서 수령
         if (carriedRecipe == null)
         {
@@ -98,6 +103,8 @@ public class WaiterController : MonoBehaviour
 
     private bool TryTakeFromChef()
     {
+        if (carriedRecipe != null)
+            return false;
         Debug.Log(" 셰프 감지 시작");
         // 주변 원형 감지로 셰프 확인
         var hits = Physics2D.OverlapCircleAll(transform.position, chefPickupRadius, chefLayer);
@@ -110,6 +117,12 @@ public class WaiterController : MonoBehaviour
 
         if (sales.TryPopReadyOrder(out var order))
         {
+            if (order == null || order.recipe == null)
+                return false;
+
+            if (carriedRecipe != null)
+                return false;
+
             carriedRecipe = order.recipe;
             UpdateCarryIcon();
             //TODO 이펙트 or 사운드
