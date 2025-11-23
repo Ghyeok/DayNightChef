@@ -155,8 +155,6 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IB
         if (canvasGroup != null)
             canvasGroup.alpha = 1f;
 
-        // TODO: 툴팁 닫기
-        // UITooltip.Hide();
         itemShowPanel.SetActive(false);
     }
 

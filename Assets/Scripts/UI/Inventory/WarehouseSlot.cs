@@ -14,6 +14,8 @@ public class WarehouseSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private Image itemImage; // 아이템이미지
     [SerializeField] private TextMeshProUGUI countText; // 아이템갯수
     [SerializeField] private TextMeshProUGUI itemWeight; // 아이템무게
+    [SerializeField] private GameObject itemShowPanel; // 아이템 하이라이트 패널
+    [SerializeField] private TextMeshProUGUI itemText; // 아이템 이름 텍스트
 
     [Header("Drag Visual")]
     [SerializeField] private float draggingAlpha = 0.7f;
@@ -33,6 +35,8 @@ public class WarehouseSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     // anchor/pivot 백업용
     private Vector2 oldAnchorMin, oldAnchorMax, oldPivot;
+    // 하이라이트용 원래 스케일
+    private Vector3 originalScale = Vector3.one;
 
     void Awake()
     {
@@ -56,6 +60,10 @@ public class WarehouseSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             countText = transform.Find("CountText")?.GetComponent<TextMeshProUGUI>();
         if (itemWeight == null)
             itemWeight = transform.Find("ItemWeight")?.GetComponent<TextMeshProUGUI>();
+        if (itemShowPanel == null)
+            itemShowPanel = transform.Find("ItemShowPanel")?.gameObject;
+        if (itemShowPanel != null && itemText == null)
+            itemText = itemShowPanel.transform.Find("ItemText")?.GetComponent<TextMeshProUGUI>();
     }
 
     /// <summary>
@@ -99,17 +107,52 @@ public class WarehouseSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             float w = has ? e.item.item_weight * e.count : 0f;
             itemWeight.text = has ? $"{w:0.##}kg" : string.Empty;
         }
+        if (itemText)
+        {
+            itemText.text = has ? e.item.item_name : string.Empty;
+        }
     }
-
     //포인터/드래그(터치+마우스)
     public void OnPointerEnter(PointerEventData e)
     {
-        // 아이템 터치 했을때 표시 (툴팁 & 하이라이트)
+        if (!HasItem() || isDragging) return;
+
+        if (rectTransform != null)
+            rectTransform.localScale = originalScale * 1.05f;
+
+        if (canvasGroup != null)
+            canvasGroup.alpha = 1f;
+
+        if (itemImage != null)
+        {
+            var c = itemImage.color;
+            itemImage.color = new Color(c.r, c.g, c.b, 1f);
+        }
+
+        itemShowPanel.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData e)
     {
-        // 아이템 터치 땠을때 표시 (툴팁 & 하이라이트 해체)
+        if (isDragging) return;
+
+        if (rectTransform != null)
+            rectTransform.localScale = originalScale;
+
+        if (canvasGroup != null)
+            canvasGroup.alpha = 1f;
+
+        itemShowPanel.SetActive(false);
+    }
+
+    private bool HasItem()
+    {
+        var wh = WarehouseManager.Instance;
+        if (wh == null || wh.Slots == null) return false;
+        if (index < 0 || index >= wh.Slots.Count) return false;
+
+        var e = wh.Slots[index];
+        return (e.item != null && e.count > 0);
     }
 
     public void OnBeginDrag(PointerEventData e)
