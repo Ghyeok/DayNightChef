@@ -25,7 +25,7 @@ public class UI_RecipeRequiredSlot : MonoBehaviour
         itemImage.sprite = item.item_image;
         itemName.text = item.item_name;
 
-        int remain = WarehouseManager.Instance.GetCount(item);
+        int remain = InventoryManager.Instance.GetCount(item) + WarehouseManager.Instance.GetCount(item);
         itemCount.text = $"{remain} / {required}";
 
         if (remain < required)

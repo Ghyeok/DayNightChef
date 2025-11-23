@@ -119,6 +119,25 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
     }
 
+    /// <summary>
+    /// 인벤토리에 있는 특정 아이템의 총 개수를 반환합니다.
+    /// </summary>
+    public int GetCount(Item item)
+    {
+        if (item == null || _entries == null) return 0;
+
+        int total = 0;
+        foreach (var entry in _entries)
+        {
+            // 아이템이 일치하면 개수 더하기
+            if (entry.item == item)
+            {
+                total += entry.count;
+            }
+        }
+        return total;
+    }
+
     public bool CanAdd(Item item, int count) // 아이템 추가 가능 여부 확인
     {
         if (item == null || count <= 0) return false;
