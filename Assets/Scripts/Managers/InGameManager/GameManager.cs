@@ -72,7 +72,6 @@ public class GameManager : SingletonManager<GameManager>
         isFeePayed = false;
 
         DayPhasePlayerManager.Instance.FullRecovery(); // 현재 HP를 최대 HP로
-        RestaurantPrepareManager.Instance.ClearPlan(); // 판매가 완료됐으니 메뉴를 비움
         // 루프가 끝나는 순간 저장
         SaveManager.Instance.SaveGame();
     }

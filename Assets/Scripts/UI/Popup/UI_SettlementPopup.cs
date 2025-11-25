@@ -46,6 +46,8 @@ public class UI_SettlementPopup : UI_Popup
                 Debug.Log("MenuPlan이 없습니다.");
             }
         }
+
+        RestaurantPrepareManager.Instance.ClearPlan(); // 판매가 완료됐으니 메뉴를 비움
     }
 
     private void SetResultData()

@@ -33,7 +33,5 @@ public class GatheringInteraciton : MonoBehaviour, IInteract
 
         OnCollected?.Invoke(this);
         Destroy(gameObject);
-
-        if (result != null) Debug.Log($"{result.item_name} 획득!");
     }
 }
