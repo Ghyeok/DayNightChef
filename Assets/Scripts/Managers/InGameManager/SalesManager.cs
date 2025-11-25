@@ -316,9 +316,8 @@ public class SalesManager : SingletonManager<SalesManager>
                 continue;
             }
 
-            // 레퓨테이션에 따라 스폰 간격 동적 조정
-            float rep = GameManager.Instance.restaurantReputation;
-            float interval = Mathf.Max(2f, spawnInterval - 0.04f * rep);
+
+            float interval = spawnInterval;
 
             // 다음 스폰 시간이 지났다면 손님 스폰
             if (Time.realtimeSinceStartup >= nextSpawnTime)
