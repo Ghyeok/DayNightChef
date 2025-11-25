@@ -7,7 +7,7 @@ public class RestaurantPrepareManager : SingletonManager<RestaurantPrepareManage
     [SerializeField] private List<MenuPlan> todayMenu = new List<MenuPlan>();
 
     // 등록할 수 있는 레시피의 개수, 레스토랑 레벨에 따라 달라짐
-    [SerializeField] private int maxTotalItemCount = 7;
+    [SerializeField] private int maxTotalItemCount;
 
     public List<MenuPlan> TodayMenu => todayMenu;
 
@@ -41,7 +41,7 @@ public class RestaurantPrepareManager : SingletonManager<RestaurantPrepareManage
 
     void Start()
     {
-
+        maxTotalItemCount = (int)PlayerStatsManager.Instance.GetValue(StatType.Restaurant);
     }
     private void OnEnable()
     {

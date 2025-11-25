@@ -196,7 +196,15 @@ public class SalesManager : SingletonManager<SalesManager>
                 OnOrderStarted?.Invoke(_cookingNow);
 
                 float cookSec = defaultCookSeconds;
-                yield return new WaitForSeconds(cookSec);
+                float cookStart = Time.realtimeSinceStartup;
+                float cookEnd = cookStart + cookSec;
+
+                while (Time.realtimeSinceStartup < cookEnd)
+                {
+                    if (!_isServiceRunning)
+                        yield break;
+                    yield return null;
+                }
 
                 // 조리 중 고객이 사라졌다면 폐기
                 if (_cookingNow == null || _cookingNow.customer == null)
@@ -291,15 +299,38 @@ public class SalesManager : SingletonManager<SalesManager>
     // 손님 생성 루프
     private IEnumerator Co_SpawnLoop()
     {
-        while (_timeLeft > 0f)
-        {
-            if (_spawnedTotal >= _totalCapacity) { yield return new WaitForSeconds(0.25f); continue; }
+        // 첫 스폰은 기존처럼 "즉시" 한 번 일어나도록, 현재 시간으로 초기화
+        float nextSpawnTime = Time.realtimeSinceStartup;
 
+        while (_timeLeft > 0f && _isServiceRunning)
+        {
+            // 오늘 올 손님 다 찼으면, 잠깐씩만 실시간으로 쉰 뒤 다시 검사
+            if (_spawnedTotal >= _totalCapacity)
+            {
+                // 0.25초 후에 다시 체크 (실시간 기준)
+                float checkUntil = Time.realtimeSinceStartup + 0.25f;
+                while (Time.realtimeSinceStartup < checkUntil)
+                    yield return null;
+
+                // 여전히 서비스 중/시간 남았는지 확인 후 루프 계속
+                continue;
+            }
+
+            // 레퓨테이션에 따라 스폰 간격 동적 조정
             float rep = GameManager.Instance.restaurantReputation;
             float interval = Mathf.Max(2f, spawnInterval - 0.04f * rep);
 
-            TrySpawnCustomer();
-            yield return new WaitForSeconds(interval);
+            // 다음 스폰 시간이 지났다면 손님 스폰
+            if (Time.realtimeSinceStartup >= nextSpawnTime)
+            {
+                TrySpawnCustomer();
+
+                // 다음 스폰 예정 시간(실시간) 갱신
+                nextSpawnTime = Time.realtimeSinceStartup + interval;
+            }
+
+            // 한 프레임 쉬면서 다시 검사
+            yield return null;
         }
     }
 
