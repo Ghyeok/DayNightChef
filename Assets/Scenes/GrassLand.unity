@@ -127,6 +127,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1308110311987606542, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 13.020174
+      objectReference: {fileID: 0}
+    - target: {fileID: 1308110311987606542, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -20.999859
+      objectReference: {fileID: 0}
+    - target: {fileID: 1308110311987606542, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9999758
+      objectReference: {fileID: 0}
+    - target: {fileID: 1308110311987606542, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.006961468
+      objectReference: {fileID: 0}
+    - target: {fileID: 1308110311987606542, guid: 067b51d71b933c94f897071c12972080, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.798
+      objectReference: {fileID: 0}
     - target: {fileID: 3421403883646978716, guid: 067b51d71b933c94f897071c12972080, type: 3}
       propertyPath: m_Name
       value: GrassLand
